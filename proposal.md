@@ -1,7 +1,7 @@
 Vaping – the new go-to drug?
 ================
-Ying Chen(yc384), Daniela Quigee(dq2147), Siquan Wang(sw3442), Jin
-Ge(jg4197), Hao Sun(hs3163)
+Ying Chen(yc384), Jin Ge(jg4197), Daniela Quigee(dq2147), Hao
+Sun(hs3163), Siquan Wang(sw3442) \[in alphabetical order\]
 
 ## Motivation
 
@@ -22,10 +22,10 @@ interventions on this “scourge of
 drug”\[[4](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)\],
 we will evaluate the current landscape of vaping usage among teenagers
 and young adults in NYC using pre-collected data and analyze the
-potential risks of vaping in terms of future drug uses and psychiatry
-conditions.
+potential risks of vaping in terms of future substance abuse and mental
+hygiene condistions.
 
-## Datasources:
+## Data sources:
 
 Below are some datasets that dive into these topics and we intend on
 using
@@ -55,7 +55,7 @@ anticipate to create the following products:
   - Report
   - Webpage
   - Screencast
-  - Dashboard visualizing crucial findings
+  - Dashboard visualizing significant findings
 
 ## The planned analyses / visualizations / coding challenges
 
