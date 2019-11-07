@@ -17,17 +17,17 @@ Vaping, the inhaling of a vapor created by vaping devices like
 e-cigarettes, was initially regarded as a less harmful substitution for
 cigarettes. However, vaping still introduces nicotine into the body. The
 prevalence of lung damage caused by vaping is actually so high that the
-CDC\[[2](https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub)\]
+CDC\[[1](https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub)\]
 needed to issue guidance explicitly on it. As the popularity of vaping
 grows, concerns about vaping are covered both in academia and in the
-press\[[1](https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction),[4](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)\].
+press\[[2](https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction),[3](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)\].
 A journal article published last week even describes the prevalence of
 vaping in a “red alert”
-state\[[3](https://link.springer.com/article/10.1057/s41271-019-00193-2)\].
+state\[[4](https://link.springer.com/article/10.1057/s41271-019-00193-2)\].
 In press, vaping is accused of being both a gateway drug and a new
 “drug” itself. To provide grounds for potential public health
 interventions on this “scourge of
-drug”\[[4](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)\],
+drug”\[[5](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)\],
 we will evaluate the current landscape of vaping usage among teenagers
 and young adults in NYC using pre-collected data and analyze the
 potential risks of vaping in terms of future substance abuse and mental
