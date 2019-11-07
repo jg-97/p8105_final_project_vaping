@@ -1,7 +1,15 @@
 Vaping – the new go-to drug?
 ================
-Ying Chen(yc384), Jin Ge(jg4197), Daniela Quigee(dq2147), Hao
-Sun(hs3163), Siquan Wang(sw3442) \[in alphabetical order\]
+
+## Team members are:
+
+**Name (UNI)**
+
+1.  Ying Chen (yc384)
+2.  Jin Ge (jg4197)
+3.  Daniela Quigee (dq2147)
+4.  Hao Sun (hs3163)
+5.  Siquan Wang (sw3442) \[in alphabetical order\]
 
 ## Motivation
 
