@@ -1,7 +1,7 @@
 # p8105_final_project_vaping
 This is the repo for p8105 final group project!
 
-##Team members are:
+# Team members are:
 1. Ying Chen(yc384)
 2. Jin Ge(jg4197)
 3. Daniela Quigee(dq2147)
