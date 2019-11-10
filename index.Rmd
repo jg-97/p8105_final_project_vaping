@@ -1,0 +1,14 @@
+---
+title: "Home"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cerulean
+---
+
+# Vaping - a new go-to drug !?
+The analysis of the association among mental illnesses, vaping and other drug use
+Ying Chen, Jin Ge, Daniela Quigee, Han Sun, Siquan Wang
+
+

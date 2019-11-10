@@ -1,7 +1,7 @@
 ---
 title: "Vaping – the new go-to drug?"
 author: "Ying Chen(yc384), Daniela Quigee(dq2147), Siquan Wang(sw3442), Jin Ge(jg4197), Hao Sun(hs3163)"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
