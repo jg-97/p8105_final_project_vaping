@@ -1,0 +1,36 @@
+---
+title: "Report"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    theme: cerulean
+---
+Author: 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+theme_set(theme_bw())
+```
+
+# Motivation
+
+# Questions
+
+# Explorary Analysis
+
+## Distribution of vaping and other drug use
+
+## Comparing vaping trend with other drug use
+
+## Hypothesis testing
+
+## Association between vaping and mental illnesses
+
+## Regression model
+
+# Conclusion
+
+# Discussion

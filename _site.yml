@@ -1,0 +1,18 @@
+name: "Vaping_website"
+output_dir: "."
+navbar:
+  title: "Home"
+  left:
+    - text: "Overview"
+      href: Overview.html
+    - text: "Analysis"
+      href: Analysis.html
+    - text: "Report"
+      href: Report.html
+    - icon: fa-envelope fa-lg
+      href: mailto:<jg4197@cumc.columbia.edu>
+    - icon: fa-github fa-lg
+      href: https://github.com/jg-97/p8105_final_project_vaping
+output:
+  html_document:
+   theme: cerulean
