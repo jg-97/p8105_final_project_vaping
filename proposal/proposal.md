@@ -1,7 +1,17 @@
 Vaping – the new go-to drug?
 ================
-Ying Chen(yc384), Daniela Quigee(dq2147), Siquan Wang(sw3442), Jin
-Ge(jg4197), Hao Sun(hs3163)
+Ying Chen(yc384), Jin Ge(jg4197), Daniela Quigee(dq2147), Hao
+Sun(hs3163), Siquan Wang(sw3442)
+
+## Team members are:
+
+**Name (UNI)**
+
+1.  Ying Chen (yc384)
+2.  Jin Ge (jg4197)
+3.  Daniela Quigee (dq2147)
+4.  Hao Sun (hs3163)
+5.  Siquan Wang (sw3442) \[in alphabetical order\]
 
 ## Motivation
 
@@ -9,23 +19,23 @@ Vaping, the inhaling of a vapor created by vaping devices like
 e-cigarettes, was initially regarded as a less harmful substitution for
 cigarettes. However, vaping still introduces nicotine into the body. The
 prevalence of lung damage caused by vaping is actually so high that the
-CDC\[[2](https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub)\]
+CDC\[[1](https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub)\]
 needed to issue guidance explicitly on it. As the popularity of vaping
 grows, concerns about vaping are covered both in academia and in the
-press\[[1](https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction),[4](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)\].
+press\[[2](https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction),[3](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)\].
 A journal article published last week even describes the prevalence of
 vaping in a “red alert”
-state\[[3](https://link.springer.com/article/10.1057/s41271-019-00193-2)\].
+state\[[4](https://link.springer.com/article/10.1057/s41271-019-00193-2)\].
 In press, vaping is accused of being both a gateway drug and a new
 “drug” itself. To provide grounds for potential public health
 interventions on this “scourge of
-drug”\[[4](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)\],
+drug”\[[5](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)\],
 we will evaluate the current landscape of vaping usage among teenagers
 and young adults in NYC using pre-collected data and analyze the
-potential risks of vaping in terms of future drug uses and psychiatry
-conditions.
+potential risks of vaping in terms of future substance abuse and mental
+hygiene condistions.
 
-## Datasources:
+## Data sources:
 
 Below are some datasets that dive into these topics and we intend on
 using
@@ -55,7 +65,7 @@ anticipate to create the following products:
   - Report
   - Webpage
   - Screencast
-  - Dashboard visualizing crucial findings
+  - Dashboard visualizing significant findings
 
 ## The planned analyses / visualizations / coding challenges
 
