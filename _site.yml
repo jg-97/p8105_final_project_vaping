@@ -2,7 +2,7 @@ name: "Vaping_website"
 output_dir: "."
 navbar:
   title: "Home"
-  left:
+  right:
     - text: "Overview"
       href: Overview.html
     - text: "Analysis"

@@ -7,8 +7,14 @@ output:
     theme: cerulean
 ---
 
+```{r include = FALSE}
+library(tidyverse)
+theme_set(theme_bw())
+```
+
 # Vaping - a new go-to drug !?
 The analysis of the association among mental illnesses, vaping and other drug use
+
 Ying Chen, Jin Ge, Daniela Quigee, Han Sun, Siquan Wang
 
 
