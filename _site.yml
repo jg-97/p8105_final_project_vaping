@@ -4,7 +4,9 @@ navbar:
   title: "Home"
   right:
     - text: "Overview"
-      href: Overview.html
+      href:  Overview.html
+    - text: "Explore the Data"
+      href: https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use
     - text: "Analysis"
       href: Analysis.html
     - text: "Report"
@@ -13,6 +15,7 @@ navbar:
       href: mailto:<jg4197@cumc.columbia.edu>
     - icon: fa-github fa-lg
       href: https://github.com/jg-97/p8105_final_project_vaping
+
 output:
   html_document:
    theme: cerulean

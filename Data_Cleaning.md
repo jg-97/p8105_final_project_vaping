@@ -1,0 +1,894 @@
+Data Cleaning
+================
+Daniela Quigee (dq2147)
+11/15/2019
+
+``` r
+df_Bronx = read_excel(path = "./raw_data/Bronx.xlsx", col_types = "text")
+df_Queens = read_excel(path = "./raw_data/Queens.xlsx", col_types = "text")
+df_Manhattan = read_excel(path = "./raw_data/Manhattan.xlsx", col_types = "text")
+df_StatenIsland = read_excel(path = "./raw_data/Staten_Island.xlsx", col_types = "text")
+df_Brooklyn = read_excel(path = "./raw_data/Brooklyn.xlsx", col_types = "text")
+```
+
+``` r
+data_cleaning = function(df) {
+df = df %>% 
+    # Removing duplicate rows
+    distinct() %>% 
+    # Deleting unnecessary variables
+    select(-sitecode, -sitetype, -sitetypenum,
+           -survyear, -weight, -stratum, -PSU,
+           -record, -qnobese, -qnowt, -sexid2, -sexpart2,
+           -qnwater, -qnwater1, -qnwater2, -qnwater3,
+           -qngenderexp, -qntypealcohol, -qnpropertydamage,
+           -qndlype, -qnpa7day, -qnpa0day, -qnbk7day, -qnmilk3,
+           -qnmilk2, -qnmilk1, -qnsoda3, -qnsoda2, -qnsoda1, 
+           -qnveg3, -qnveg2, -qnveg1, -qnveg0, -qnfr3,
+           -qnfr2, -qnfr1, -qnfr0, -qnowt, -qnobese, -qnbcnone,
+           -qndualbc, -qnothhpl, -qnshparg, -qniudimp, -qntb2, 
+           -qntb3, qntb4) %>% 
+     # No data
+     select(
+       -qn20, -qn31, -qn34, -qn36, -qn39, -qn56, -qn84,
+       -qnspeakenglish, -qnwheresleep, -qncurrentasthma, 
+       -qnconcentrating, -qnsunburn, -qnwenthungry, 
+       -qnfoodallergy, -qnfastfood, -qnsugardrink, 
+       -qnenergydrink, -qnspdrk1, -qnspdrk2, -qnspdrk3, 
+       -qnsportsdrink, -qncoffeetea, -qndietpop, -qntaughtbc,
+       -qntaughtcondom, -qntaughtstd, -qntaughtsexed, 
+       -qnprescription30d, -qnhallucdrug, -qncurrentmeth, 
+       -qncurrentheroin, -qnhowmarijuana, -qnchokeself, 
+       -qnbullygay, -qnbullygender, -qnbullyweight, 
+       -qncelldriving, -qndrivemarijuana) %>%
+    rename(
+      borough = sitename) %>%
+    mutate(
+      borough = recode(borough,
+                       "Borough of Bronx (NYG)" = "Bronx",
+                       "Borough of Queens (NYJ)" = "Queens",
+                       "Borough of Manhattan (NYI)" = "Manhattan",
+                       "Borough of Staten Island (NYK)" = "Staten Island",
+                       "Borough of Brooklyn (NYH)" = "Brooklyn"),
+      borough = as.factor(borough)) %>%
+    mutate(
+      year = as.numeric(year),
+      stheight = as.numeric(stheight),
+      stweight = as.numeric(stweight),
+      bmi = as.numeric(bmi),
+      bmipct = as.numeric(bmipct)) %>%
+    mutate(
+      age = recode(age,
+                   "1" = "12 years old or younger", 
+                   "2" = "13 years old",
+                   "3" = "14 years old",
+                   "4" = "15 years old",
+                   "5" = "16 years old",
+                   "6" = "17 years old",
+                   "7" = "18 years old or older"),
+      age = as.factor(age)) %>%
+    mutate(
+      sex = recode(sex,
+                   "1" = "female", 
+                   "2" = "male"),
+      sex = as.factor(sex)) %>%
+    mutate(
+      grade = recode(grade,
+                 "1" = "9th grade", 
+                 "2" = "10th grade", 
+                 "3" = "11th grade", 
+                 "4" = "12th grade", 
+                 "5" = "ungraded or other grade"),
+      grade = as.factor(grade)) %>%
+    mutate(
+      race4 = recode(race4,
+                     "1" = "White", 
+                     "2" = "Black or African American", 
+                     "3" = "Hispanic/Latino", 
+                     "4" = "All Other Races"),
+      race4 = as.factor(race4)) %>%
+    mutate(
+      race7 = recode(race7,
+                     "1" = "American Indian/Alaska Native", 
+                     "2" = "Asian", 
+                     "3" = "Black or African American", 
+                     "4" = "Hispanic/Latino", 
+                     "5" = "Native Hawaiian/Other Pacific Islander", 
+                     "6" = "White",
+                     "7" = "Multiple Races (Non-Hispanic)"),
+      race7 = as.factor(race7)) %>%
+    # Sexual identity
+    mutate(
+      q67 = recode(q67,
+                   "1" = "heterosexual", 
+                   "2" = "gay/lesbian", 
+                   "3" = "bisexual", 
+                   "4" = "not sure"),
+      q67 = as.factor(q67)) %>%
+    rename(sexual_identity = q67) %>%
+    # Sexual identity 2
+    mutate(
+      sexid = recode(sexid, 
+                     "1" = "heterosexual", 
+                     "2" = "gay/lesbian", 
+                     "3" = "bisexual", 
+                     "4" = "not sure"),
+      sexid = as.factor(sexid)) %>%
+    rename(sexual_identity_2 = sexid) %>%
+    # Sexual Contact
+    mutate(
+      q66 = recode(q66,
+                   "1" = "no sexual contact", 
+                   "2" = "females", 
+                   "3" = "males", 
+                   "4" = "females and males"),
+      q66 = as.factor(q66)) %>% 
+    rename(sexual_contact = q66) %>% 
+    # Sexual Contact 2
+    mutate(
+      sexpart = recode(sexpart,
+                       "1" = "never had sex", 
+                       "2" = "opposite sex only", 
+                       "3" = "same sex only", 
+                       "4" = "both sexes"),
+      sexpart = as.factor(sexpart)) %>% 
+    rename(sexual_contact_2 = sexpart) %>% 
+#####################################################################################
+    # How often do you wear a seat belt when riding in a car driven by someone else?
+    mutate(
+      qn8 = recode(qn8,
+                   "1" = "never/rarely",
+                   "2" = "sometimes or more"),
+      qn8 = as.factor(qn8)) %>% 
+    rename(seatbelt_use = qn8) %>% 
+##################################################################################### 
+    # During the past 30 days, how many times did you ride in a car or other vehicle driven by someone who had been drinking alcohol?
+    mutate(
+      qn9 = recode(qn9,
+                   "1" = "1 or more times",
+                   "2" = "0 times"),
+      qn9 = as.factor(qn9)) %>% 
+    rename(riding_with_drinking_driver = qn9) %>% 
+##################################################################################### 
+    # During the past 30 days, how many times did you drive a car or other vehicle when you had been drinking alcohol?
+    mutate(
+      qn10 = recode(qn10,
+                    "1" = "1 or more times",
+                    "2" = "did not drive/0 times"),
+      qn10 = as.factor(qn10)) %>% 
+    rename(drinking_and_driving = qn10) %>% 
+##################################################################################### 
+    # During the past 30 days, on how many days did you text or e-mail while driving a car or other vehicle?
+    mutate(
+      qn11 = recode(qn11,
+                 "1" = "1 or more days",
+                 "2" = "did not drive/0 days"),
+      qn11 = as.factor(qn11)) %>% 
+    rename(texting_and_driving = qn11) %>% 
+##################################################################################### 
+    # During the past 30 days, on how many days did you carry a weapon such as a gun, knife, or club?
+    mutate(
+      qn12 = recode(qn12,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn12 = as.factor(qn12)) %>% 
+    rename(carring_weapon = qn12) %>%
+##################################################################################### 
+    # During the past 30 days, on how many days did you carry a weapon such as a gun, knife, or club on school property?
+    mutate(
+      qn13 = recode(qn13,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn13 = as.factor(qn13)) %>% 
+    rename(carring_weapon_school = qn13) %>% 
+##################################################################################### 
+    # During the past 12 months, on how many days did you carry a gun? (Do not count the days when you carried a gun only for hunting or for a sport, such as target shooting.)
+    mutate(
+      qn14 = recode(qn14,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn14 = as.factor(qn14)) %>% 
+    rename(gun_carrying_past_12_month = qn14) %>%
+##################################################################################### 
+    # During the past 30 days, on how many days did you not go to school because you felt you would be unsafe at school or on your way to or from school?
+    mutate(
+      qn15 = recode(qn15,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn15 = as.factor(qn15)) %>% 
+    rename(safety_concerns_at_school = qn15) %>%
+##################################################################################### 
+    # During the past 12 months, how many times has someone threatened or injured you with a weapon such as a gun, knife, or club on school property?
+    mutate(
+      qn16 = recode(qn16,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn16 = as.factor(qn16)) %>% 
+    rename(threatened_at_school = qn16) %>%
+##################################################################################### 
+    # During the past 12 months, how many times were you in a physical fight?
+    mutate(
+      qn17 = recode(qn17,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn17 = as.factor(qn17)) %>% 
+    rename(physical_fighting = qn17) %>%
+##################################################################################### 
+    # During the past 12 months, how many times were you in a physical fight on school property?
+    mutate(
+      qn18 = recode(qn18,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn18 = as.factor(qn18)) %>% 
+    rename(physical_fighting_at_school = qn18) %>%
+##################################################################################### 
+    # Have you ever been physically forced to have sexual intercourse when you did not want to?
+    mutate(
+      qn19 = recode(qn19,
+                 "1" = "yes",
+                 "2" = "no"),
+      qn19 = as.factor(qn19)) %>% 
+    rename(forced_sexual_intercourse = qn19) %>%
+##################################################################################### 
+    # During the past 12 months, how many times did someone you were dating or going out with force you to do sexual things that you did not want to do? (Count such things as kissing, touching, or being physically forced to have sexual intercourse.)
+    mutate(
+      qn21 = recode(qn21,
+                    "1" = "1 or more times",
+                    "2" = "did not date/0 times"),
+      qn21 = as.factor(qn21)) %>% 
+    rename(sexual_dating_violence = qn21) %>%
+##################################################################################### 
+    # During the past 12 months, how many times did someone you were dating or going out with physically hurt you on purpose? (Count such things as being hit, slammed into something, or injured with an object or weapon.)
+    mutate(
+      qn22 = recode(qn22,
+                    "1" = "1 or more times",
+                    "2" = "did not date/0 times"),
+      qn22 = as.factor(qn22)) %>% 
+    rename(physical_dating_violence = qn22) %>%
+##################################################################################### 
+    # During the past 12 months, have you ever been bullied on school property?
+    mutate(
+      qn23 = recode(qn23,
+                 "1" = "yes",
+                 "2" = "no"),
+      qn23 = as.factor(qn23)) %>% 
+    rename(bullying_at_school = qn23) %>%
+##################################################################################### 
+    # During the past 12 months, have you ever been electronically bullied? (Count being bullied through texting, Instagram, Facebook, or other social media.)
+    mutate(
+      qn24 = recode(qn24,
+                    "1" = "yes",
+                    "2" = "no"),
+      qn24 = as.factor(qn24)) %>% 
+    rename(bullying_electronically = qn24) %>%
+##################################################################################### 
+    # During the past 12 months, did you ever feel so sad or hopeless almost every day for two weeks or more in a row that you stopped doing some usual activities?
+    mutate(
+      qn25 = recode(qn25,
+                    "1" = "yes",
+                    "2" = "no"),
+      qn25 = as.factor(qn25)) %>% 
+    rename(sad_hopeless = qn25) %>%
+##################################################################################### 
+    # During the past 12 months, did you ever seriously consider attempting suicide?
+    mutate(
+      qn26 = recode(qn26, 
+                    "1" = "yes",
+                    "2" = "no"),
+      qn26 = as.factor(qn26)) %>% 
+    rename(considered_suicide = qn26) %>% 
+##################################################################################### 
+    # During the past 12 months, did you make a plan about how you would attempt suicide?
+    mutate(
+      qn27 = recode(qn27,
+                    "1" = "yes",
+                    "2" = "no"),
+      qn27 = as.factor(qn27)) %>% 
+    rename(made_suicide_plan = qn27) %>% 
+##################################################################################### 
+    # During the past 12 months, how many times did you actually attempt suicide?
+    mutate(
+      qn28 = recode(qn28,
+                    "1" = "at least 1 time",
+                    "2" = "0 times"),
+      qn28 = as.factor(qn28)) %>% 
+    rename(attempted_suicide = qn28) %>% 
+##################################################################################### 
+    # If you attempted suicide during the past 12 months, did any attempt result in an injury, poisoning, or overdose that had to be treated by a doctor or nurse?
+    mutate(
+      qn29 = recode(qn29,
+                    "1" = "yes",
+                    "2" = "did not attempt suicide/no"),
+      qn29 = as.factor(qn29)) %>% 
+    rename(injurious_suicide_attempt = qn29) %>%
+##################################################################################### 
+    # Have you ever tried cigarette smoking, even one or two puffs?
+    mutate(
+      qn30 = recode(qn30,
+                    "1" = "yes",
+                    "2" = "no"),
+      qn30 = as.factor(qn30)) %>% 
+    rename(ever_cigarette_use = qn30) %>% 
+##################################################################################### 
+    # During the past 30 days, on how many days did you smoke cigarettes?
+    mutate(
+      qn32 = recode(qn32,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn32 = as.factor(qn32)) %>% 
+    rename(current_cigarette_use = qn32) %>% 
+##################################################################################### 
+    # During the past 30 days, on the days you smoked, how many cigarettes did you smoke per day?
+    mutate(
+      qn33 = recode(qn33,
+                    "1" = "11 or more cigarettes per day",
+                    "2" = "no smoking/less than 11 cigarettes"),
+      qn33 = qn33) %>% 
+    rename(smoked_greater_10 = qn33) %>%
+##################################################################################### 
+    # During the past 30 days, on how many days did you use an electronic vapor product?
+    mutate(
+      qn35 = recode(qn35,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn35 = as.factor(qn35)) %>% 
+    rename(current_vaping = qn35) %>%
+##################################################################################### 
+    # During the past 30 days, on how many days did you use chewing tobacco, snuff, dip, snus, or dissolvable tobacco products, such as Redman, Levi Garrett, Beechnut, Skoal, Skoal Bandits, Copenhagen, Camel Snus, Marlboro Snus, General Snus, Ariva, Stonewall, or Camel Orbs? (Do not count any electronic vapor products.)
+    mutate(
+      qn37 = recode(qn37,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn37 = as.factor(qn37)) %>% 
+    rename(current_smokeless_tobacco_use = qn37) %>% 
+#####################################################################################
+    # During the past 30 days, on how many days did you smoke cigars, cigarillos, or little cigars?
+    mutate(
+      qn38 = recode(qn38,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn38 = as.factor(qn38)) %>% 
+    rename(current_cigar_use = qn38) %>% 
+#####################################################################################
+    # During your life, on how many days have you had at least one drink of alcohol?
+    mutate(
+      qn40 = recode(qn40,
+                    "1" = "1 day or more",
+                    "2" = "0 days"),
+      qn40 = as.factor(qn40)) %>% 
+    rename(ever_alcohol_use = qn40) %>%
+#####################################################################################
+    # How old were you when you had your first drink of alcohol other than a few sips?
+    mutate(
+      qn41 = recode(qn41,
+                    "1" = "12 years or younger",
+                    "2" = "never had a drink/13 years or older"),
+      qn41 = as.factor(qn41)) %>% 
+    rename(initiation_alcohol_use = qn41) %>%
+#####################################################################################
+    # During the past 30 days, on how many days did you have at least one drink of alcohol?
+    mutate(
+      qn42 = recode(qn42,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn42 = as.factor(qn42)) %>% 
+    rename(current_alcohol_use = qn42) %>%
+#####################################################################################
+    # During the past 30 days, how did you usually get the alcohol you drank?
+    mutate(
+      qn43 = recode(qn43,
+                    "1" = "someone gave it to me",
+                    "2" = "otherwise"),
+      qn43 = as.factor(qn43)) %>% 
+    rename(source_alcohol = qn43) %>%
+#####################################################################################
+    # During the past 30 days, on how many days did you have 4 or more drinks of alcohol in a row (if you are female) or 5 or more drinks of alcohol in a row (if you are male)?
+    mutate(
+      qn44 = recode(qn44,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn44 = as.factor(qn44)) %>% 
+    rename(currret_binge_drinking = qn44) %>%
+#####################################################################################
+    # During the past 30 days, what is the largest number of alcoholic drinks you had in a row?
+    mutate(
+      qn45 = recode(qn45,
+                    "1" = "10 or more drinks",
+                    "2" = "less than 10 drinks"),
+      qn45 = as.factor(qn45)) %>% 
+    rename(largest_n_drinks = qn45) %>%
+#####################################################################################
+    # During your life, how many times have you used marijuana?
+    mutate(
+      qn46 = recode(qn46,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn46 = as.factor(qn46)) %>% 
+    rename(ever_marijuana_use = qn46) %>%
+#####################################################################################
+    # How old were you when you tried marijuana for the first time?
+    mutate(
+      qn47 = recode(qn47,
+                    "1" = "12 years or younger",
+                    "2" = "never tried/13 years or older"),
+      qn47 = as.factor(qn47)) %>% 
+    rename(initiation_marijuana_use  = qn47) %>%
+#####################################################################################
+    # During the past 30 days, how many times did you use marijuana?
+    mutate(
+      qn48 = recode(qn48,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn48 = as.factor(qn48)) %>% 
+    rename(current_marijuana_use  = qn48) %>%
+#####################################################################################
+    # During your life, how many times have you used any form of cocaine, including powder, crack, or freebase
+    mutate(
+      qn49 = recode(qn49,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn49 = as.factor(qn49)) %>% 
+    rename(ever_cocaine_use  = qn49) %>%
+#####################################################################################
+    # During your life, how many times have you sniffed glue, breathed the contents of aerosol spray cans, or inhaled any paints or sprays to get high?
+    mutate(
+      qn50 = recode(qn50,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn50 = as.factor(qn50)) %>% 
+    rename(ever_inhalant_use  = qn50) %>%
+#####################################################################################
+    # During your life, how many times have you used heroin (also called smack, junk, or China White)?
+    mutate(
+      qn51 = recode(qn51,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn51 = as.factor(qn51)) %>% 
+    rename(ever_heroin_use  = qn51) %>%
+#####################################################################################
+    # During your life, how many times have you used methamphetamines (also called speed, crystal, crank, or ice)? A. 0 times
+    mutate(
+      qn52 = recode(qn52,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn52 = as.factor(qn52)) %>% 
+    rename(ever_methamphetamine_use  = qn52) %>%
+#####################################################################################
+    # During your life, how many times have you used ecstasy (also called MDMA)?
+    mutate(
+      qn53 = recode(qn53,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn53 = as.factor(qn53)) %>% 
+    rename(ever_ecstasy_use  = qn53) %>%
+#####################################################################################
+    # During your life, how many times have you used synthetic marijuana (also called K2, Spice, fake weed, King Kong, Yucatan Fire, Skunk, or Moon Rocks)?
+    mutate(
+      qn54 = recode(qn54,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn54 = as.factor(qn54)) %>% 
+    rename(ever_synthetic_marijuana_use  = qn54) %>%
+#####################################################################################
+    # During your life, how many times have you taken steroid pills or shots without a doctor's prescription?
+    mutate(
+      qn55 = recode(qn55,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn55 = as.factor(qn55)) %>% 
+    rename(ever_steroid_use  = qn55) %>%
+#####################################################################################
+    # During your life, how many times have you used a needle to inject any illegal drug into your body?
+    mutate(
+      qn57 = recode(qn57,
+                    "1" = "1 or more times",
+                    "2" = "0 times"),
+      qn57 = as.factor(qn57)) %>% 
+    rename(illegal_injected_drug_use  = qn57) %>%
+#####################################################################################
+    # During the past 12 months, has anyone offered, sold, or given you an illegal drug on school property?
+    mutate(
+      qn58 = recode(qn58,
+                    "1" = "yes",
+                    "2" = "no"),
+      qn58 = as.factor(qn58)) %>% 
+    rename(illegal_drugs_at_school  = qn58) %>%
+#####################################################################################
+    # Have you ever had sexual intercourse?
+    mutate(
+      qn59 = recode(qn59,
+                    "1" = "yes",
+                    "2" = "no"),
+      qn59 = as.factor(qn59)) %>% 
+    rename(ever_sexual_intercourse  = qn59) %>%
+#####################################################################################
+    # How old were you when you had sexual intercourse for the first time?
+    mutate(
+      qn60 = recode(qn60,
+                    "1" = "12 years or younger",
+                    "2" = "never sexual intercourse/ 13 years or older"),
+      qn60 = as.factor(qn60)) %>% 
+    rename(sex_before_13 = qn60) %>%
+#####################################################################################
+    # During your life, with how many people have you had sexual intercourse?
+    mutate(
+      qn61 = recode(qn61, 
+                    "1" = "4 people or more",
+                    "2" = "3 people or less"),
+      qn61 = as.factor(qn61)) %>% 
+    rename(multiple_sex_partner = qn61) %>%
+#####################################################################################
+    # During the past 3 months, with how many people did you have sexual intercourse?
+    mutate(
+      qn62 = recode(qn62,
+                    "1" = "1 people or more",
+                    "2" = "never sex/no sex during past 3 month"),
+      qn62 = as.factor(qn62)) %>% 
+    rename(current_sexual_activity = qn62) %>%
+#####################################################################################
+    # Did you drink alcohol or use drugs before you had sexual intercourse the last time?
+    mutate(
+      qn63 = recode(qn63,
+                    "1" = "yes",
+                    "2" = "no/not had sex yet"),
+      qn63 = as.factor(qn63)) %>% 
+    rename(alcohol_drugs_sex = qn63) %>%
+#####################################################################################
+    # The last time you had sexual intercourse, did you or your partner use a condom?
+    mutate(
+      qn64 = recode(qn64,
+                    "1" = "yes",
+                    "2" = "no/ not had sex yet"),
+      qn64 = as.factor(qn64)) %>% 
+    rename(condom_use = qn64) %>%
+#####################################################################################
+    # The last time you had sexual intercourse, what one method did you or your partner use to prevent pregnancy? (Select only one response.)
+    mutate(
+      qn65 = recode(qn65,
+                    "1" = "Birth control",
+                    "2" = "never sexual intercourse/nothing/other method"),
+      qn65 = as_factor(qn65)) %>% 
+    rename(birth_control_use = qn65) %>%
+#####################################################################################
+    # How do you describe your weight?
+    mutate(
+      qn68 = recode(qn68,
+                    "1" = "Slightly overweight/very overweight",
+                    "2" = "very underweight/ slightly underweight/ about the right weight"),
+      qn68 = as.factor(qn68)) %>% 
+    rename(perception_weight = qn68) %>%
+#####################################################################################
+    # Which of the following are you trying to do about your weight?
+    mutate(
+      qn69 = recode(qn69,
+                    "1" = "lose weight",
+                    "2" = "nothing, gain, stay the same"),
+      qn69 = as.factor(qn69)) %>% 
+    rename(weight_loss = qn69) %>%
+#####################################################################################
+    # During the past 7 days, how many times did you drink 100% fruit juices such as orange juice, apple juice, or grape juice? (Do not count punch, Kool-Aid, sports drinks, or other fruit-flavored drinks.)
+    mutate(
+      qn70 = recode(qn70,
+                    "1" = "I did not drink 100% fruit juice during the past 7 days",
+                    "2" = "1 or more times"),
+      qn70 = as.factor(qn70)) %>% 
+    rename(fruit_juice_drinking = qn70) %>%
+#####################################################################################
+    # During the past 7 days, how many times did you eat fruit? (Do not count fruit juice.)
+    mutate(
+      qn71 = recode(qn71,
+                    "1" = "I did not eat fruit during the past 7 days",
+                    "2" = "1 or more times"),
+      qn71 = as.factor(qn71)) %>% 
+    rename(fruit_eating = qn71) %>%
+#####################################################################################
+    # During the past 7 days, how many times did you eat green salad?
+    mutate(
+      qn72 = recode(qn72,
+                    "1" = "I did not eat green salad during the past 7 days",
+                    "2" = "1 or more times"),
+      qn72 = as.factor(qn72)) %>% 
+    rename(green_salad_eating = qn72) %>%
+#####################################################################################
+    # During the past 7 days, how many times did you eat potatoes? (Do not count french fries, fried potatoes, or potato chips.)
+    mutate(
+      qn73 = recode(qn73,
+                     "1" = "I did not eat potatoes during the past 7 days",
+                     "2" = "1 or more times"),
+      qn73 = as.factor(qn73)) %>% 
+    rename(potatoe_eating = qn73) %>%
+#####################################################################################
+    # During the past 7 days, how many times did you eat carrots?
+    mutate(
+      qn74 = recode(qn74,
+                    "1" = "I did not eat carrotes during the past 7 days",
+                    "2" = "1 or more times"),
+      qn74 = as.factor(qn74)) %>% 
+    rename(carrots_eating = qn74) %>%  
+#####################################################################################
+    # During the past 7 days, how many times did you eat other vegetables? (Do not count green salad, potatoes, or carrots.)
+    mutate(
+      qn75 = recode(qn75,
+                    "1" = "I did not eat other vegetables during the past 7 days",
+                    "2" = "1 or more times"),
+      qn75 = as.factor(qn75)) %>% 
+    rename(other_vegetables_eating = qn75) %>%
+#####################################################################################
+    # During the past 7 days, how many times did you drink a can, bottle, or glass of soda or pop, such as Coke, Pepsi, or Sprite? (Do not count diet soda or diet pop.)
+    mutate(
+      qn76 = recode(qn76,
+                    "1" = "I did not drink soda or pop during the past 7 days",
+                    "2" = "1 or more times"),
+      qn76 = as.factor(qn76)) %>% 
+    rename(no_soda_drinking = qn76) %>%
+#####################################################################################
+    # During the past 7 days, how many glasses of milk did you drink? (Count the milk you drank in a glass or cup, from a carton, or with cereal. Count the half pint of milk served at school as equal to one glass.)
+    mutate(
+      qn77 = recode(qn77,
+                    "1" = "I did not drink milk during the past 7 days",
+                    "2" = "1 or more glasses"),
+      qn77 = as.factor(qn77)) %>% 
+    rename(no_milk_drinking = qn77) %>%
+#####################################################################################
+    # During the past 7 days, on how many days did you eat breakfast?
+    mutate(
+      qn78 = recode(qn78,
+                    "1" = "0 days",
+                    "2" = "1 or more days"),
+      qn78 = as.factor(qn78)) %>% 
+    rename(no_breakfast = qn78) %>%
+#####################################################################################
+    # During the past 7 days, on how many days were you physically active for a total of at least 60 minutes per day? (Add up all the time you spent in any kind of physical activity that increased your heart rate and made you breathe hard some of the time.)
+    mutate(
+      qn79 = recode(qn79,
+                    "1" = "5 or more days",
+                    "2" = "less than 5 days"),
+      qn79 = as.factor(qn79)) %>% 
+    rename(physical_activity_greater_4 = qn79) %>%
+#####################################################################################
+    # On an average school day, how many hours do you watch TV?
+    mutate(
+      qn80 = recode(qn80,
+                    "1" = "3 or more hours per day",
+                    "2" = "less than 3 hours per day"),
+      qn80 = as.factor(qn80)) %>% 
+    rename(tv_watching_greater_3_h = qn80) %>%
+#####################################################################################
+    # On an average school day, how many hours do you play video or computer games or use a computer for something that is not school work? (Count time spent on things such as Xbox, PlayStation, an iPad or other tablet, a smartphone, texting, YouTube, Instagram, Facebook, or other social media.)
+    mutate(
+      qn81 = recode(qn81,
+                    "1" = "3 or more hours per day",
+                    "2" = "less than 3 hours per day"),
+      qn81 = as.factor(qn81)) %>% 
+    rename(computer_use_greater_3_h = qn81) %>%
+#####################################################################################
+    # In an average week when you are in school, on how many days do you go to physical education (PE) classes?
+    mutate(
+      qn82 = recode(qn82,
+                    "1" = "1 or more days",
+                    "2" = "0 days"),
+      qn82 = as.factor(qn82)) %>% 
+    rename(PE_attendance = qn82) %>%
+#####################################################################################
+    # During the past 12 months, on how many sports teams did you play? (Count any teams run by your school or community groups.)
+    mutate(
+      qn83 = recode(qn83,
+                    "1" = "1 or more teams",
+                    "2" = "0 teams"),
+      qn83 = as.factor(qn83)) %>% 
+    rename(sports_team_participation = qn83) %>%
+#####################################################################################
+    # Have you ever been tested for HIV, the virus that causes AIDS? (Do not count tests done if you donated blood.)
+    mutate(
+      qn85 = recode(qn85,
+                    "1" = "yes",
+                    "2" = "no"),
+      qn85 = as.factor(qn85)) %>% 
+    rename(HIV_testing = qn85) %>%
+#####################################################################################
+    # When was the last time you saw a dentist for a check-up, exam, teeth cleaning, or other dental work?
+    mutate(
+      qn86 = recode(qn86,
+                    "1" = "During the past 12 months",
+                    "2" = "more than 12 months ago/never"),
+      qn86 = as.factor(qn86)) %>% 
+    rename(oral_health_care = qn86) %>%
+#####################################################################################
+    # Has a doctor or nurse ever told you that you have asthma?
+    mutate(
+      qn87 = recode(qn87,
+                    "1" = "yes",
+                    "2" = "no"),
+      qn87 = as.factor(qn87)) %>% 
+    rename(asthma = qn87) %>%
+#####################################################################################
+    # On an average school night, how many hours of sleep do you get?
+    mutate(
+      qn88 = recode(qn88,
+                 "1" = "8 hours or more",
+                 "2" = "less than 8 hours"),
+      qn88 = as.factor(qn88)) %>% 
+    rename(sleep = qn88) %>%
+#####################################################################################
+    # During the past 12 months, how would you describe your grades in school?
+    mutate(
+      qn89 = recode(qn89,
+                 "1" = "Mostly A's and Mostly B's",
+                 "2" = "Mostly C's and worse"),
+      qn89 = as.factor(qn89)) %>% 
+    rename(grades_in_school = qn89) %>% 
+#####################################################################################
+    # Are you transgender?
+    mutate(
+      qntransgender = recode(qntransgender,
+                             "1" = "yes",
+                             "2" = "no/other"),
+      qntransgender = as.factor(qntransgender)) %>% 
+    rename(transgender = qntransgender)  %>% 
+#####################################################################################
+    # During the past 12 months, how many times did you use an indoor tanning device such as a sunlamp, sunbed, or tanning booth? (Do not count getting a spray-on tan.)
+    mutate(
+      qnindoortanning = recode(qnindoortanning,
+                               "1" = "1 or more times",
+                               "2" = "0 times"),
+      qnindoortanning = as.factor(qnindoortanning)) %>% 
+    rename(indoortanning = qnindoortanning) %>% 
+#####################################################################################
+    # When you are outside for more than one hour on a sunny day, how often do you wear sunscreen with an SPF of 15 or higher?
+    mutate(
+      qnsunscreenuse = recode(qnsunscreenuse,
+                              "1" = "most of the time/always",
+                              "2" = "sometimes/rarely/never"),
+      qnsunscreenuse = as.factor(qnsunscreenuse)) %>%
+    rename(sunscreenuse = qnsunscreenuse) %>% 
+#####################################################################################
+    # During the past 7 days, on how many days did you do exercises to strengthen or tone your muscles, such as push-ups, sit-ups, or weight lifting?
+    mutate(
+      qnmusclestrength = recode(qnmusclestrength,
+                                "1" = "3 or more days",
+                                "2" = "less than three days"),
+      qnmusclestrength = as.factor(qnmusclestrength)) %>% 
+    rename(musclestrength = qnmusclestrength) %>%
+#####################################################################################
+    # Have you ever been taught about AIDS or HIV infection in school?
+    mutate(
+      qntaughtHIV = recode(qntaughtHIV,
+                           "1" = "yes",
+                           "2" = "no"),
+      qntaughtHIV = as.factor(qntaughtHIV)) %>% 
+    rename(taughtHIV = qntaughtHIV) %>% 
+#####################################################################################
+    # During the past 30 days, how many times did you use any form of cocaine, including powder, crack, or freebase?
+    mutate(
+      qncurrentcocaine = recode(qncurrentcocaine,
+                                "1" = "1 or more times",
+                                "2" = "0 times"),
+      qncurrentcocaine = as.factor(qncurrentcocaine)) %>% 
+    rename(currentcocaine = qncurrentcocaine) %>% 
+#####################################################################################
+    # During the past 30 days, how many times did you use marijuana on school property?
+    mutate(
+      qnmarijuanaschool = recode(qnmarijuanaschool,
+                                 "1" = "1 or more times",
+                                 "2" = "0 times"),
+      qnmarijuanaschool = as.factor(qnmarijuanaschool)) %>% 
+    rename(marijuana_use_school = qnmarijuanaschool) %>%
+#####################################################################################
+    # During the past 30 days, on how many days did you have at least one drink of alcohol on school property?
+    mutate(
+      qnalcoholschool = recode(qnalcoholschool,
+                               "1" = "1 or more days",
+                               "2" = "0 days"),
+      qnalcoholschool = as.factor(qnalcoholschool)) %>% 
+    rename(current_alcohol_school = qnalcoholschool) %>%
+#####################################################################################
+    # During the past 30 days, on how many days did you use chewing tobacco, snuff, or dip on school property?
+    mutate(
+      qnchewtobschool = recode(qnchewtobschool,
+                               "1" = "1 or more days",
+                               "2" = "0 days"),
+      qnchewtobschool = as.factor(qnchewtobschool)) %>% 
+    rename(chew_tabocco_school = qnchewtobschool) %>%
+#####################################################################################
+    # During the past 30 days, on how many days did you smoke cigarettes on school property?
+    mutate(
+      qncigschool = recode(qncigschool,
+                           "1" = "1 or more days",
+                           "2" = "0 days"),
+      qncigschool = as.factor(qncigschool)) %>% 
+    rename(current_cigarettes_school = qncigschool) %>%
+#####################################################################################
+    # When you rode a bicycle during the past 12 months, how often did you wear a helmet?
+    mutate(
+      qnbikehelmet = recode(qnbikehelmet,
+                            "1" = "never/rarely wore a helmet",
+                            "2" = "did not ride a bike/sometimes or more wore a helmet"),
+      qnbikehelmet = as.factor(qnbikehelmet)) %>% 
+    rename(bike_helmet_use = qnbikehelmet) %>%
+#####################################################################################
+    # Never saw a dentist?
+    mutate( 
+      qnnodnt = recode(qnnodnt,
+                       "1" = "true",
+                       "2" = "false"),
+      qnnodnt = as.factor(qnnodnt)) %>% 
+    rename(never_dentist = qnnodnt) %>% 
+#####################################################################################
+    # Currently smoked cigarettes frequently
+    mutate(
+      qnfrcig = recode(qnfrcig,
+                       "1" = "20 or more days over the last month",
+                       "2" = "less than 20 days the last month"),
+      qnfrcig = as.factor(qnfrcig)) %>% 
+    rename(frequent_current_cigarette_smoking = qnfrcig) %>% 
+#####################################################################################
+    # Currently smoked cigarettes daily
+    mutate(
+      qndaycig = recode(qndaycig,
+                        "1" = "smoking cigarettes daily",
+                        "2" = "not smoking cigarettes daily"),
+      qndaycig = as.factor(qndaycig)) %>% 
+    rename(daily_current_cigarette_smoking = qndaycig) %>% 
+#####################################################################################
+    # Currently used an electronic vapor product frequently
+    mutate(
+      qnfrevp = recode(qnfrevp,
+                       "1" = "20 or more days last month",
+                       "2" = "less than 20 days last month"),
+      qnfrevp = as.factor(qnfrevp)) %>% 
+    rename(frequent_current_vaping = qnfrevp) %>% 
+#####################################################################################
+    # Currently vaping daily
+    mutate(
+      qndayevp = recode(qndayevp,
+                       "1" = "vaping daily",
+                       "2" = "not vaping daily"),
+      qndayevp = as.factor(qndayevp)) %>% 
+    rename(daily_current_vaping = qndayevp) %>%
+#####################################################################################
+    # Currently used smokeless tobacco frequently
+    mutate(
+      qnfrskl = recode(qnfrskl,
+                       "1" = "20 or more days a month",
+                       "2" = "less than 20 days a month"), 
+      qnfrskl = as.factor(qnfrskl)) %>% 
+    rename(frequent_current_smokeless_tobacco = qnfrskl) %>% 
+#####################################################################################
+    # Currently used smokeless tobacco daily
+    mutate(
+      qndayskl = recode(qndayskl,
+                        "1" = "smokeless tobacco daily",
+                        "2" = "not smokeless tobacco daily"),
+      qndayskl = as.factor(qndayskl)) %>% 
+    rename(daily_current_smokeless_tobacco = qndayskl) %>% 
+#####################################################################################
+    # Currently smoked cigars frequently
+    mutate(
+      qnfrcgr = recode(qnfrcgr,
+                       "1" = "20 or more days a month",
+                       "2" = "less than 20 days a month"),
+      qnfrcgr = as.factor(qnfrcgr)) %>% 
+    rename(frequent_current_cigars = qnfrcgr) %>%
+#####################################################################################
+    # Currently smoked cigars daily
+    mutate(
+      qndaycgr = recode(qndaycgr,
+                        "1" = "cigars daily",
+                        "2" = "not cigars daily"),
+      qndaycgr = as.factor(qndaycgr)) %>% 
+    rename(daily__current_cigar = qndaycgr) 
+##################################################################################### 
+
+  df = rowid_to_column(df, "id")
+}
+```
+
+``` r
+df_total = bind_rows(df_Bronx, df_Queens, df_Manhattan, df_StatenIsland, df_Brooklyn)
+df_total = data_cleaning(df_total)
+```
+
+``` r
+write_xlsx(x = df_total, path = "./data/nyc_data.xlsx", col_names = TRUE)
+save(df_total, file = "./data/nyc_data.RData")
+```
