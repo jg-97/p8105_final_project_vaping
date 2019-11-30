@@ -69,43 +69,31 @@ renderPlotly({
     if (input$drugs_1 == "Marijuana") {
       df_11 = df_11 %>%
         filter(!(is.na(current_marijuana_use))) %>% 
-        mutate(current_marijuana_use = fct_recode(current_marijuana_use, "Yes" = "1 or more times")) %>% 
-        mutate(current_marijuana_use = fct_recode(current_marijuana_use, "No" = "0 times")) %>% 
         count(current_marijuana_use) %>% 
         rename(x = current_marijuana_use)}
     else if (input$drugs_1 == "Alcohol") {
       df_11 = df_11 %>%
         filter(!(is.na(current_alcohol_use))) %>% 
-        mutate(current_alcohol_use = fct_recode(current_alcohol_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_alcohol_use = fct_recode(current_alcohol_use, "No" = "0 days")) %>% 
         count(current_alcohol_use) %>% 
         rename(x = current_alcohol_use)}
     else if (input$drugs_1 == "Cigarettes") {
       df_11 = df_11 %>%
         filter(!(is.na(current_cigarette_use))) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "No" = "0 days")) %>% 
         count(current_cigarette_use) %>% 
         rename(x = current_cigarette_use)}
     else if (input$drugs_1 == "Vaping") {
       df_11 = df_11 %>%
         filter(!(is.na(current_vaping))) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "Yes" = "1 or more days")) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "No" = "0 days")) %>% 
         count(current_vaping) %>% 
         rename(x = current_vaping)}
     else if (input$drugs_1 == "Smokeless Tobacco") {
       df_11 = df_11 %>%
         filter(!(is.na(current_smokeless_tobacco_use))) %>% 
-        mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "No" = "0 days")) %>% 
         count(current_smokeless_tobacco_use) %>% 
         rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_1 == "Cigar") {
       df_11 = df_11 %>%
         filter(!(is.na(current_cigar_use))) %>% 
-        mutate(current_cigar_use = fct_recode(current_cigar_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_cigar_use = fct_recode(current_cigar_use, "No" = "0 days")) %>% 
         count(current_cigar_use) %>% 
         rename(x = current_cigar_use)}
     
@@ -157,48 +145,36 @@ renderPlotly({
     if (input$drugs_1 == "Marijuana") {
       df_11 = df_11 %>%
         filter((!(is.na(current_marijuana_use))) & (!(is.na(sex)))) %>% 
-        mutate(current_marijuana_use = fct_recode(current_marijuana_use, "Yes" = "1 or more times")) %>% 
-        mutate(current_marijuana_use = fct_recode(current_marijuana_use, "No" = "0 times")) %>% 
         group_by(sex) %>% 
         count(current_marijuana_use) %>% 
         rename(x = current_marijuana_use)}
     else if (input$drugs_1 == "Alcohol") {
       df_11 = df_11 %>%
         filter((!(is.na(current_alcohol_use))) & (!(is.na(sex)))) %>% 
-        mutate(current_alcohol_use = fct_recode(current_alcohol_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_alcohol_use = fct_recode(current_alcohol_use, "No" = "0 days")) %>% 
         group_by(sex) %>% 
         count(current_alcohol_use) %>% 
         rename(x = current_alcohol_use)}
     else if (input$drugs_1 == "Cigarettes") {
       df_11 = df_11 %>%
         filter((!(is.na(current_cigarette_use))) & (!(is.na(sex)))) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "No" = "0 days")) %>% 
         group_by(sex) %>% 
         count(current_cigarette_use) %>% 
         rename(x = current_cigarette_use)}
     else if (input$drugs_1 == "Vaping") {
       df_11 = df_11 %>%
         filter((!(is.na(current_vaping))) & (!(is.na(sex)))) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "Yes" = "1 or more days")) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "No" = "0 days")) %>% 
         group_by(sex) %>% 
         count(current_vaping) %>% 
         rename(x = current_vaping)}
     else if (input$drugs_1 == "Smokeless Tobacco") {
       df_11 = df_11 %>%
         filter((!(is.na(current_smokeless_tobacco_use))) & (!(is.na(sex)))) %>% 
-        mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "No" = "0 days")) %>% 
         group_by(sex) %>% 
         count(current_smokeless_tobacco_use) %>% 
         rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_1 == "Cigar") {
       df_11 = df_11 %>%
         filter((!(is.na(current_cigar_use))) & (!(is.na(sex)))) %>% 
-        mutate(current_cigar_use = fct_recode(current_cigar_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_cigar_use = fct_recode(current_cigar_use, "No" = "0 days")) %>% 
         group_by(sex) %>% 
         count(current_cigar_use) %>% 
         rename(x = current_cigar_use)}
@@ -249,48 +225,36 @@ renderPlotly({
     if (input$drugs_1 == "Marijuana") {
       df_11 = df_11 %>%
         filter((!(is.na(current_marijuana_use))) & (!(is.na(age)))) %>% 
-        mutate(current_marijuana_use = fct_recode(current_marijuana_use, "Yes" = "1 or more times")) %>% 
-        mutate(current_marijuana_use = fct_recode(current_marijuana_use, "No" = "0 times")) %>% 
         group_by(age) %>% 
         count(current_marijuana_use) %>% 
         rename(x = current_marijuana_use)}
     else if (input$drugs_1 == "Alcohol") {
       df_11 = df_11 %>%
         filter((!(is.na(current_alcohol_use))) & (!(is.na(age)))) %>% 
-        mutate(current_alcohol_use = fct_recode(current_alcohol_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_alcohol_use = fct_recode(current_alcohol_use, "No" = "0 days")) %>% 
         group_by(age) %>% 
         count(current_alcohol_use) %>% 
         rename(x = current_alcohol_use)}
     else if (input$drugs_1 == "Cigarettes") {
       df_11 = df_11 %>%
         filter((!(is.na(current_cigarette_use))) & (!(is.na(age)))) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "No" = "0 days")) %>% 
         group_by(age) %>% 
         count(current_cigarette_use) %>% 
         rename(x = current_cigarette_use)}
     else if (input$drugs_1 == "Vaping") {
       df_11 = df_11 %>%
         filter((!(is.na(current_vaping))) & (!(is.na(age)))) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "Yes" = "1 or more days")) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "No" = "0 days")) %>% 
         group_by(age) %>% 
         count(current_vaping) %>% 
         rename(x = current_vaping)}
     else if (input$drugs_1 == "Smokeless Tobacco") {
       df_11 = df_11 %>%
         filter((!(is.na(current_smokeless_tobacco_use))) & (!(is.na(age)))) %>% 
-        mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "No" = "0 days")) %>% 
         group_by(age) %>% 
         count(current_smokeless_tobacco_use) %>% 
         rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_1 == "Cigar") {
       df_11 = df_11 %>%
         filter((!(is.na(current_cigar_use))) & (!(is.na(age)))) %>% 
-        mutate(current_cigar_use = fct_recode(current_cigar_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_cigar_use = fct_recode(current_cigar_use, "No" = "0 days")) %>% 
         group_by(age) %>% 
         count(current_cigar_use) %>% 
         rename(x = current_cigar_use)}
@@ -341,48 +305,36 @@ renderPlotly({
     if (input$drugs_1 == "Marijuana") {
       df_11 = df_11 %>%
         filter((!(is.na(current_marijuana_use))) & (!(is.na(race7)))) %>% 
-        mutate(current_marijuana_use = fct_recode(current_marijuana_use, "Yes" = "1 or more times")) %>% 
-        mutate(current_marijuana_use = fct_recode(current_marijuana_use, "No" = "0 times")) %>% 
         group_by(race7) %>% 
         count(current_marijuana_use) %>% 
         rename(x = current_marijuana_use)}
     else if (input$drugs_1 == "Alcohol") {
       df_11 = df_11 %>%
         filter((!(is.na(current_alcohol_use))) & (!(is.na(race7)))) %>% 
-        mutate(current_alcohol_use = fct_recode(current_alcohol_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_alcohol_use = fct_recode(current_alcohol_use, "No" = "0 days")) %>% 
         group_by(race7) %>% 
         count(current_alcohol_use) %>% 
         rename(x = current_alcohol_use)}
     else if (input$drugs_1 == "Cigarettes") {
       df_11 = df_11 %>%
         filter((!(is.na(current_cigarette_use))) & (!(is.na(race7)))) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "No" = "0 days")) %>% 
         group_by(race7) %>% 
         count(current_cigarette_use) %>% 
         rename(x = current_cigarette_use)}
     else if (input$drugs_1 == "Vaping") {
       df_11 = df_11 %>%
         filter((!(is.na(current_vaping))) & (!(is.na(race7)))) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "Yes" = "1 or more days")) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "No" = "0 days")) %>% 
         group_by(race7) %>% 
         count(current_vaping) %>% 
         rename(x = current_vaping)}
     else if (input$drugs_1 == "Smokeless Tobacco") {
       df_11 = df_11 %>%
         filter((!(is.na(current_smokeless_tobacco_use))) & (!(is.na(race7)))) %>% 
-        mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "No" = "0 days")) %>% 
         group_by(race7) %>% 
         count(current_smokeless_tobacco_use) %>% 
         rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_1 == "Cigar") {
       df_11 = df_11 %>%
         filter((!(is.na(current_cigar_use))) & (!(is.na(race7)))) %>% 
-        mutate(current_cigar_use = fct_recode(current_cigar_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_cigar_use = fct_recode(current_cigar_use, "No" = "0 days")) %>% 
         group_by(race7) %>% 
         count(current_cigar_use) %>% 
         rename(x = current_cigar_use)}
@@ -459,8 +411,6 @@ renderPlotly({
   if (input$drugs_2 == "Marijuana") {
     df_12 = df_total %>% 
       filter(!(is.na(current_marijuana_use))) %>%
-      mutate(current_marijuana_use = fct_recode(current_marijuana_use, "Yes" = "1 or more times")) %>% 
-      mutate(current_marijuana_use = fct_recode(current_marijuana_use, "No" = "0 times")) %>% 
       group_by(year, borough) %>% 
       count(current_marijuana_use) %>% 
       mutate(
@@ -472,8 +422,6 @@ renderPlotly({
   else if (input$drugs_2 == "Alcohol") {
     df_12 = df_total %>% 
       filter(!(is.na(current_alcohol_use))) %>% 
-      mutate(current_alcohol_use = fct_recode(current_alcohol_use, "Yes" = "1 or more days")) %>% 
-      mutate(current_alcohol_use = fct_recode(current_alcohol_use, "No" = "0 days")) %>% 
       group_by(year, borough) %>% 
       count(current_alcohol_use) %>% 
       mutate(
@@ -485,8 +433,6 @@ renderPlotly({
   else if (input$drugs_2 == "Cigarettes") {
     df_12 = df_total %>% 
       filter(!(is.na(current_cigarette_use))) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "Yes" = "1 or more days")) %>% 
-        mutate(current_cigarette_use = fct_recode(current_cigarette_use, "No" = "0 days")) %>% 
       group_by(year, borough) %>% 
       count(current_cigarette_use) %>% 
       mutate(
@@ -498,8 +444,6 @@ renderPlotly({
   else if (input$drugs_2 == "Vaping") {
     df_12 = df_total %>% 
       filter(!(is.na(current_vaping))) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "Yes" = "1 or more days")) %>% 
-        mutate(current_vaping = fct_recode(current_vaping, "No" = "0 days")) %>% 
       group_by(year, borough) %>% 
       count(current_vaping) %>% 
       mutate(
@@ -511,8 +455,6 @@ renderPlotly({
   else if (input$drugs_2 == "Smokeless Tobacco") {
     df_12 = df_total %>% 
       filter(!(is.na(current_smokeless_tobacco_use))) %>% 
-      mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "Yes" = "1 or more days")) %>% 
-      mutate(current_smokeless_tobacco_use = fct_recode(current_smokeless_tobacco_use, "No" = "0 days")) %>% 
       group_by(year, borough) %>% 
       count(current_smokeless_tobacco_use) %>% 
       mutate(
@@ -524,8 +466,6 @@ renderPlotly({
   else if (input$drugs_2 == "Cigar") {
     df_12 = df_total %>% 
       filter(!(is.na(current_cigar_use))) %>% 
-      mutate(current_cigar_use = fct_recode(current_cigar_use, "Yes" = "1 or more days")) %>% 
-      mutate(current_cigar_use = fct_recode(current_cigar_use, "No" = "0 days")) %>% 
       group_by(year, borough) %>% 
       count(current_cigar_use) %>% 
       mutate(
@@ -613,22 +553,16 @@ renderPlotly({
     if (input$mental_health_1 == "feel sad or hopeless") {
       df_21 = df_21 %>%
         filter(!(is.na(sad_hopeless))) %>% 
-        mutate(sad_hopeless = fct_recode(sad_hopeless, "Yes" = "yes")) %>% 
-        mutate(sad_hopeless = fct_recode(sad_hopeless, "No" = "no")) %>% 
         count(sad_hopeless) %>% 
         rename(x = sad_hopeless)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter(!(is.na(attempted_suicide))) %>% 
-        mutate(attempted_suicide = fct_recode(attempted_suicide, "Yes" = "at least 1 time")) %>% 
-        mutate(attempted_suicide = fct_recode(attempted_suicide, "No" = "0 times")) %>% 
         count(attempted_suicide) %>% 
         rename(x = attempted_suicide)}
     else if (input$mental_health_1 == "injured during attempted suicide") {
       df_21 = df_21 %>%
         filter(!(is.na(injurious_suicide_attempt))) %>% 
-        mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "Yes" = "yes")) %>% 
-        mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "No" = "did not attempt suicide/no")) %>% 
         count(injurious_suicide_attempt) %>% 
         rename(x = injurious_suicide_attempt)}
     
@@ -682,24 +616,18 @@ renderPlotly({
     if (input$mental_health_1 == "feel sad or hopeless") {
       df_21 = df_21 %>%
         filter((!(is.na(sad_hopeless))) & (!(is.na(sex)))) %>% 
-        mutate(sad_hopeless = fct_recode(sad_hopeless, "Yes" = "yes")) %>% 
-        mutate(sad_hopeless = fct_recode(sad_hopeless, "No" = "no")) %>% 
         group_by(sex) %>% 
         count(sad_hopeless) %>% 
         rename(x = sad_hopeless)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(attempted_suicide))) & (!(is.na(sex)))) %>% 
-        mutate(attempted_suicide = fct_recode(attempted_suicide, "Yes" = "at least 1 time")) %>% 
-        mutate(attempted_suicide = fct_recode(attempted_suicide, "No" = "0 times")) %>% 
         group_by(sex) %>% 
         count(attempted_suicide) %>% 
         rename(x = attempted_suicide)}
     else if (input$mental_health_1 == "injured during attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(injurious_suicide_attempt))) & (!(is.na(sex)))) %>% 
-        mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "Yes" = "yes")) %>% 
-        mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "No" = "did not attempt suicide/no")) %>% 
         group_by(sex) %>% 
         count(injurious_suicide_attempt) %>% 
         rename(x = injurious_suicide_attempt)}
@@ -752,24 +680,18 @@ renderPlotly({
     if (input$mental_health_1 == "feel sad or hopeless") {
       df_21 = df_21 %>%
         filter((!(is.na(sad_hopeless))) & (!(is.na(age)))) %>% 
-        mutate(sad_hopeless = fct_recode(sad_hopeless, "Yes" = "yes")) %>% 
-        mutate(sad_hopeless = fct_recode(sad_hopeless, "No" = "no")) %>% 
         group_by(age) %>% 
         count(sad_hopeless) %>% 
         rename(x = sad_hopeless)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(attempted_suicide))) & (!(is.na(age)))) %>% 
-        mutate(attempted_suicide = fct_recode(attempted_suicide, "Yes" = "at least 1 time")) %>% 
-        mutate(attempted_suicide = fct_recode(attempted_suicide, "No" = "0 times")) %>% 
         group_by(age) %>% 
         count(attempted_suicide) %>% 
         rename(x = attempted_suicide)}
     else if (input$mental_health_1 == "injured during attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(injurious_suicide_attempt))) & (!(is.na(age)))) %>% 
-        mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "Yes" = "yes")) %>% 
-        mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "No" = "did not attempt suicide/no")) %>% 
         group_by(age) %>% 
         count(injurious_suicide_attempt) %>% 
         rename(x = injurious_suicide_attempt)}
@@ -822,24 +744,18 @@ renderPlotly({
     if (input$mental_health_1 == "feel sad or hopeless") {
       df_21 = df_21 %>%
         filter((!(is.na(sad_hopeless))) & (!(is.na(race7)))) %>% 
-        mutate(sad_hopeless = fct_recode(sad_hopeless, "Yes" = "yes")) %>% 
-        mutate(sad_hopeless = fct_recode(sad_hopeless, "No" = "no")) %>% 
         group_by(race7) %>% 
         count(sad_hopeless) %>% 
         rename(x = sad_hopeless)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(attempted_suicide))) & (!(is.na(race7)))) %>% 
-        mutate(attempted_suicide = fct_recode(attempted_suicide, "Yes" = "at least 1 time")) %>% 
-        mutate(attempted_suicide = fct_recode(attempted_suicide, "No" = "0 times")) %>% 
         group_by(race7) %>% 
         count(attempted_suicide) %>% 
         rename(x = attempted_suicide)}
     else if (input$mental_health_1 == "injured during attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(injurious_suicide_attempt))) & (!(is.na(race7)))) %>% 
-        mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "Yes" = "yes")) %>% 
-        mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "No" = "did not attempt suicide/no")) %>% 
         group_by(race7) %>% 
         count(injurious_suicide_attempt) %>% 
         rename(x = injurious_suicide_attempt)}
@@ -916,8 +832,6 @@ renderPlotly({
   if (input$mental_health_2 == "feel sad or hopeless") {
     df_22 = df_total %>%
       filter(!(is.na(sad_hopeless))) %>% 
-      mutate(sad_hopeless = fct_recode(sad_hopeless, "Yes" = "yes")) %>% 
-      mutate(sad_hopeless = fct_recode(sad_hopeless, "No" = "no")) %>% 
       group_by(year, borough) %>% 
       count(sad_hopeless) %>% 
       mutate(
@@ -929,8 +843,6 @@ renderPlotly({
   else if (input$mental_health_2 == "attempted suicide") {
     df_22 = df_total %>%
       filter(!(is.na(attempted_suicide))) %>% 
-      mutate(attempted_suicide = fct_recode(attempted_suicide, "Yes" = "at least 1 time")) %>% 
-      mutate(attempted_suicide = fct_recode(attempted_suicide, "No" = "0 times")) %>% 
       group_by(year, borough) %>% 
       count(attempted_suicide) %>% 
       mutate(
@@ -942,8 +854,6 @@ renderPlotly({
   else if (input$mental_health_2 == "injured during attempted suicide") {
     df_22 = df_total %>%
       filter(!(is.na(injurious_suicide_attempt))) %>% 
-      mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "Yes" = "yes")) %>% 
-      mutate(injurious_suicide_attempt = fct_recode(injurious_suicide_attempt, "No" = "did not attempt suicide/no")) %>%
       group_by(year, borough) %>% 
       count(injurious_suicide_attempt) %>% 
       mutate(
