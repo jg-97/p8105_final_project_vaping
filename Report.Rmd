@@ -19,7 +19,9 @@ library(tidyverse)
 library(gganimate)
 library(transformr)
 library(readxl)
-theme_set(theme_bw())
+library(gifski)
+library(png)
+library(magick)
 ```
 
 # Motivation
@@ -54,7 +56,9 @@ We will give the analysis and visualization accorded with the questions
 
 ```{r load_the_cleaned_data}
 ### load the cleaned data
-nyc_drug <- read_xlsx("./data/nyc_data.xlsx")
+load("./data/nyc_data.RData")
+nyc_drug <- df_total
+####A bette way to do it by avoiding uneeded format transformation_byHS
 ```
 
 ## Distribution of existing drug use over time by borough
@@ -106,26 +110,23 @@ marijuana_full <- nyc_drug_used %>%
                values_to = "frequency")
 
 drug_p <- marijuana_full %>%
-  filter(!(is.na(frequency))) %>% 
-  ggplot(aes(x = year, y = frequency, color = borough, shape = drug_type, 
+  filter(!(is.na(frequency)))%>%ggplot(aes(x = year, y = frequency, color = borough, shape = drug_type, 
              group = interaction(borough, drug_type))) +
   geom_point(size = 2.2) + geom_path(size = .8) +
   labs(x = "Year",
-       y = "Frequency of drug use") 
-#+
-#  transition_states(drug_type, transition_length = 1, state_length = 3, wrap = TRUE) +
-#  enter_fade() + exit_fade()
+       y = "Frequency of drug use")+
+transition_states(drug_type, transition_length = 1, state_length = 3, wrap = TRUE) +
+  enter_fade() + exit_fade()
+```
 
-drug_p
-  
-# animate(drug_p, fps = 2) 
 
+```{r distribution_vaping_other_drugs_1}
+animate(drug_p, fps = 2)
 ```
 
 
 ## Distribution of mental health over time by borough
 ```{r distribution_mental_health}
-
 nyc_drug_health <- nyc_drug %>% 
   select(id, year, borough, sad = sad_hopeless, 
          suicide = attempted_suicide, injury = injurious_suicide_attempt) %>% 
@@ -163,14 +164,16 @@ mental_p <- injury_full %>%
              group = interaction(borough, mental_disorder))) +
   geom_point(size = 2.2) + geom_path(size = .8) +
   labs(x = "Year",
-       y = "Frequency of mental disorder") 
-#+
-#  transition_states(mental_disorder, transition_length = 1, state_length = 3, wrap = TRUE) +
-#  enter_fade() + exit_fade()
+       y = "Frequency of mental disorder") +
+  transition_states(mental_disorder, transition_length = 1, state_length = 3, wrap = TRUE) +
+  enter_fade() + exit_fade()
 
 mental_p
-  
-# animate(mental_p, fps = 2) 
+```
+
+
+```{r distribution_mental_health_2}
+animate(mental_p, fps = 2) 
 
 ```
 
