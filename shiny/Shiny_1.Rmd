@@ -512,7 +512,7 @@ Mental Health by Demographics
 Column {.sidebar}
 -----------------------------------------------------------------------
 ```{r Sidebar_21}
-mental_health_1 = c("feel sad or hopeless", "attempted suicide", "injured during attempted suicide")
+mental_health_1 = c("feel sad or hopeless", "considered suicide", "made suicide plans", "attempted suicide", "injured during attempted suicide")
   
 selectInput("mental_health_1", label = h3("Choose Mental Health"),
             choices = as.list(mental_health_1), selected = "Felt Sad")
@@ -555,6 +555,16 @@ renderPlotly({
         filter(!(is.na(sad_hopeless))) %>% 
         count(sad_hopeless) %>% 
         rename(x = sad_hopeless)}
+    else if (input$mental_health_1 == "considered suicide") {
+      df_21 = df_21 %>%
+        filter(!(is.na(considered_suicide))) %>% 
+        count(considered_suicide) %>% 
+        rename(x = considered_suicide)}
+    else if (input$mental_health_1 == "made suicide plans") {
+      df_21 = df_21 %>%
+        filter(!(is.na(made_suicide_plan))) %>% 
+        count(made_suicide_plan) %>% 
+        rename(x = made_suicide_plan)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter(!(is.na(attempted_suicide))) %>% 
@@ -619,6 +629,18 @@ renderPlotly({
         group_by(sex) %>% 
         count(sad_hopeless) %>% 
         rename(x = sad_hopeless)}
+    else if (input$mental_health_1 == "considered suicide") {
+      df_21 = df_21 %>%
+        filter((!(is.na(considered_suicide))) & (!(is.na(sex)))) %>%
+        group_by(sex) %>% 
+        count(considered_suicide) %>% 
+        rename(x = considered_suicide)}
+    else if (input$mental_health_1 == "made suicide plans") {
+      df_21 = df_21 %>%
+        filter((!(is.na(made_suicide_plan)))  & (!(is.na(sex)))) %>% 
+        group_by(sex) %>% 
+        count(made_suicide_plan) %>% 
+        rename(x = made_suicide_plan)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(attempted_suicide))) & (!(is.na(sex)))) %>% 
@@ -683,6 +705,18 @@ renderPlotly({
         group_by(age) %>% 
         count(sad_hopeless) %>% 
         rename(x = sad_hopeless)}
+    else if (input$mental_health_1 == "considered suicide") {
+      df_21 = df_21 %>%
+        filter((!(is.na(considered_suicide)))  & (!(is.na(age)))) %>% 
+        group_by(age) %>% 
+        count(considered_suicide) %>% 
+        rename(x = considered_suicide)}
+    else if (input$mental_health_1 == "made suicide plans") {
+      df_21 = df_21 %>%
+        filter((!(is.na(made_suicide_plan)))  & (!(is.na(age)))) %>% 
+        group_by(age) %>% 
+        count(made_suicide_plan) %>% 
+        rename(x = made_suicide_plan)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(attempted_suicide))) & (!(is.na(age)))) %>% 
@@ -747,6 +781,18 @@ renderPlotly({
         group_by(race7) %>% 
         count(sad_hopeless) %>% 
         rename(x = sad_hopeless)}
+    else if (input$mental_health_1 == "considered suicide") {
+      df_21 = df_21 %>%
+        filter((!(is.na(considered_suicide)))  & (!(is.na(race7)))) %>% 
+        group_by(race7) %>%
+        count(considered_suicide) %>% 
+        rename(x = considered_suicide)}
+    else if (input$mental_health_1 == "made suicide plans") {
+      df_21 = df_21 %>%
+        filter((!(is.na(made_suicide_plan)))  & (!(is.na(race7)))) %>% 
+        group_by(race7) %>%
+        count(made_suicide_plan) %>% 
+        rename(x = made_suicide_plan)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(attempted_suicide))) & (!(is.na(race7)))) %>% 
@@ -815,7 +861,7 @@ Mental Health over Time
 Column {.sidebar}
 -----------------------------------------------------------------------
 ```{r Sidebar_22}
-mental_health_2 = c("feel sad or hopeless", "attempted suicide", "injured during attempted suicide")
+mental_health_2 = c("feel sad or hopeless", "considered suicide", "made suicide plans", "attempted suicide", "injured during attempted suicide")
   
 selectInput("mental_health_2", label = h3("Choose Mental Health"),
             choices = as.list(mental_health_2), selected = "Felt Sad")
@@ -839,6 +885,28 @@ renderPlotly({
         percent = percent * 100,
         percent = round(percent, digits = 2)) %>% 
       filter(sad_hopeless == "Yes")
+  }
+  else if (input$mental_health_2 == "considered suicide") {
+    df_22 = df_total %>%
+      filter(!(is.na(considered_suicide))) %>% 
+      group_by(year, borough) %>% 
+      count(considered_suicide) %>% 
+      mutate(
+        percent = (n / sum(n)),
+        percent = percent * 100,
+        percent = round(percent, digits = 2)) %>% 
+      filter(considered_suicide == "Yes")
+  }
+  else if (input$mental_health_2 == "made suicide plans") {
+    df_22 = df_total %>%
+      filter(!(is.na(made_suicide_plan))) %>% 
+      group_by(year, borough) %>% 
+      count(made_suicide_plan) %>% 
+      mutate(
+        percent = (n / sum(n)),
+        percent = percent * 100,
+        percent = round(percent, digits = 2)) %>% 
+      filter(made_suicide_plan == "Yes")
   }
   else if (input$mental_health_2 == "attempted suicide") {
     df_22 = df_total %>%
