@@ -16,7 +16,7 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -109,33 +109,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 61px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .dropdown-submenu {
   position: relative;
@@ -396,29 +396,156 @@ div.tocify {
 </div>
 
 
-<p>Author:</p>
+<p>Author: Jin Ge</p>
 <div id="motivation" class="section level1">
 <h1>Motivation</h1>
+<div id="facts-about-vaping" class="section level3">
+<h3>Facts about vaping</h3>
+<ul>
+<li><p>2,051 reported lung illness cases and 39 lung illness deaths due to vaping.</p></li>
+<li><p>81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes</p></li>
+<li><p>Most popular e-cigarette product introduces with a 5% nicotine up to 2.7 times delievering nicotine than others</p></li>
+</ul>
+<p>According to reports in recent years, we can see an underlying trend of vaping is increasing, especially in the teenager group.</p>
+</div>
+<div id="data-introduction" class="section level3">
+<h3>Data introduction</h3>
+</div>
 </div>
 <div id="questions" class="section level1">
 <h1>Questions</h1>
+<p>According to the existing defined drugs, such as traditional tobacco use, alcohol, and the recent reported facts about vaping, we want to find answers to the following questions:</p>
+<ul>
+<li>Whether the distribution of vaping has been similar with other drugs? What will the trend look like?</li>
+<li>Whether the mental health reported in company with the vaping has an association?</li>
+<li>What are drugs decomposed by demographics and year?</li>
+<li>Are there an association between licenses for selling e-cigarettes and e-cigarette usage by borough over year?</li>
+<li>Can the vaping be decomposed by experienced violenced and other risky behaviors?</li>
+</ul>
 </div>
 <div id="explorary-analysis" class="section level1">
 <h1>Explorary Analysis</h1>
-<div id="distribution-of-vaping-and-other-drug-use" class="section level2">
-<h2>Distribution of vaping and other drug use</h2>
+<p>We will give the analysis and visualization accorded with the questions</p>
+<pre class="r"><code>### load the cleaned data
+nyc_drug &lt;- read_xlsx(&quot;./data/nyc_data.xlsx&quot;)</code></pre>
+<div id="distribution-of-existing-drug-use-over-time-by-borough" class="section level2">
+<h2>Distribution of existing drug use over time by borough</h2>
+<pre class="r"><code>## filter the data used in this part
+nyc_drug_used &lt;- nyc_drug %&gt;% 
+  select(id, borough, year, 
+         cigarette = current_cigarette_use, cigar = current_cigar_use,
+         alcohol = current_alcohol_use, marijuana = current_marijuana_use) %&gt;% 
+  mutate(year = factor(year))
+
+## cigarette frequency
+cigarette &lt;- nyc_drug_used %&gt;% 
+  filter(!is.na(cigarette)) %&gt;% 
+  group_by(year, borough) %&gt;% 
+  summarize(n = n(),
+            cigarette = sum(cigarette == &quot;Yes&quot;)/n) %&gt;% 
+  select(-n)
+
+## cigar
+cigar &lt;- nyc_drug_used %&gt;% 
+  filter(!is.na(cigar)) %&gt;% 
+  group_by(year, borough) %&gt;% 
+  summarize(n = n(),
+            cigar = sum(cigar == &quot;Yes&quot;)/n) %&gt;% 
+  select(-n) 
+
+## alcohol frequency
+alcohol &lt;- nyc_drug_used %&gt;% 
+  filter(!is.na(alcohol)) %&gt;% 
+  group_by(year, borough) %&gt;% 
+  summarize(n = n(),
+            alcohol = sum(alcohol == &quot;Yes&quot;)/n) %&gt;% 
+  select(-n) 
+
+## marijuana frequency
+marijuana_full &lt;- nyc_drug_used %&gt;% 
+  filter(!is.na(marijuana)) %&gt;% 
+  group_by(year, borough) %&gt;% 
+  summarize(n = n(),
+            marijuana = sum(marijuana == &quot;Yes&quot;)/n) %&gt;% 
+  select(-n) %&gt;% 
+  left_join(cigarette, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
+  left_join(cigar, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
+  left_join(alcohol, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
+  pivot_longer(marijuana:alcohol,
+               names_to = &quot;drug_type&quot;,
+               values_to = &quot;frequency&quot;)
+
+drug_p &lt;- marijuana_full %&gt;%
+  filter(!(is.na(frequency))) %&gt;% 
+  ggplot(aes(x = year, y = frequency, color = borough, shape = drug_type, 
+             group = interaction(borough, drug_type))) +
+  geom_point(size = 2.2) + geom_path(size = .8) +
+  labs(x = &quot;Year&quot;,
+       y = &quot;Frequency of drug use&quot;) 
+#+
+#  transition_states(drug_type, transition_length = 1, state_length = 3, wrap = TRUE) +
+#  enter_fade() + exit_fade()
+
+drug_p</code></pre>
+<p><img src="Report_files/figure-html/distribution_vaping_other_drugs-1.png" width="768" /></p>
+<pre class="r"><code># animate(drug_p, fps = 2) </code></pre>
 </div>
-<div id="comparing-vaping-trend-with-other-drug-use" class="section level2">
-<h2>Comparing vaping trend with other drug use</h2>
+<div id="distribution-of-mental-health-over-time-by-borough" class="section level2">
+<h2>Distribution of mental health over time by borough</h2>
+<pre class="r"><code>nyc_drug_health &lt;- nyc_drug %&gt;% 
+  select(id, year, borough, sad = sad_hopeless, 
+         suicide = attempted_suicide, injury = injurious_suicide_attempt) %&gt;% 
+  mutate(year = factor(year))
+
+sad &lt;- nyc_drug_health %&gt;% 
+  filter(!is.na(sad)) %&gt;% 
+  group_by(year, borough) %&gt;% 
+  summarize(n = n(),
+            sad = sum(sad == &quot;Yes&quot;)/n) %&gt;% 
+  select(-n)
+
+suicide &lt;- nyc_drug_health %&gt;% 
+  filter(!is.na(suicide)) %&gt;% 
+  group_by(year, borough) %&gt;% 
+  summarize(n = n(),
+            suicide = sum(suicide == &quot;Yes&quot;)/n) %&gt;% 
+  select(-n)
+
+injury_full &lt;- nyc_drug_health %&gt;% 
+  filter(!is.na(injury)) %&gt;% 
+  group_by(year, borough) %&gt;% 
+  summarize(n = n(),
+            injury = sum(injury == &quot;Yes&quot;)/n) %&gt;% 
+  select(-n) %&gt;% 
+  left_join(sad, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
+  left_join(suicide, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
+  pivot_longer(injury:suicide,
+               names_to = &quot;mental_disorder&quot;,
+               values_to = &quot;frequency&quot;)
+
+mental_p &lt;- injury_full %&gt;%
+  filter(!(is.na(frequency))) %&gt;% 
+  ggplot(aes(x = year, y = frequency, color = borough, shape = mental_disorder, 
+             group = interaction(borough, mental_disorder))) +
+  geom_point(size = 2.2) + geom_path(size = .8) +
+  labs(x = &quot;Year&quot;,
+       y = &quot;Frequency of mental disorder&quot;) 
+#+
+#  transition_states(mental_disorder, transition_length = 1, state_length = 3, wrap = TRUE) +
+#  enter_fade() + exit_fade()
+
+mental_p</code></pre>
+<p><img src="Report_files/figure-html/distribution_mental_health-1.png" width="768" /></p>
+<pre class="r"><code># animate(mental_p, fps = 2) </code></pre>
 </div>
-<div id="hypothesis-testing" class="section level2">
-<h2>Hypothesis testing</h2>
+<div id="association-between-licenses-for-selling-e-cigarettes-and-e-cigarette-usage-by-borough-over-year" class="section level2">
+<h2>Association between licenses for selling e-cigarettes and e-cigarette usage by borough over year</h2>
 </div>
-<div id="association-between-vaping-and-mental-illnesses" class="section level2">
-<h2>Association between vaping and mental illnesses</h2>
+<div id="logistic-regression-model-to-do-prediction-of-the-vaping-trend" class="section level2">
+<h2>Logistic regression model to do prediction of the vaping trend</h2>
 </div>
-<div id="regression-model" class="section level2">
-<h2>Regression model</h2>
+<div id="drugsvaping-decomposed-by-experienced-violenced-and-other-risky-behaviors" class="section level2">
+<h2>Drugs(vaping) decomposed by experienced violenced and other risky behaviors</h2>
 </div>
 </div>
 <div id="conclusion" class="section level1">
