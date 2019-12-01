@@ -492,7 +492,7 @@ drug_p &lt;- marijuana_full %&gt;%
   transition_states(drug_type, transition_length = 1, state_length = 3, wrap = TRUE) +
   enter_fade() + exit_fade()
 
-animate(drug_p, fps = 1)</code></pre>
+animate(drug_p)</code></pre>
 <p><img src="Report_files/figure-html/distribution_vaping_other_drugs-1.gif" /><!-- --></p>
 </div>
 <div id="distribution-of-mental-health-over-time-by-borough" class="section level2">
@@ -536,7 +536,7 @@ mental_p &lt;- injury_full %&gt;%
   labs(x = &quot;Year&quot;,
        y = &quot;Frequency of mental disorder&quot;,
        color = &quot;Borough&quot;,
-       shape = &quot;Mental health disorder&quot;) +
+       shape = &quot;Mental disorder&quot;) +
   theme(plot.title = element_text(size = 30, face = &quot;bold&quot;),
         axis.text=element_text(size = 15),
         axis.title=element_text(size = 15,face = &quot;bold&quot;)) + 
@@ -544,7 +544,7 @@ mental_p &lt;- injury_full %&gt;%
   transition_states(mental_disorder, transition_length = 1, state_length = 3, wrap = TRUE) +
   enter_fade() + exit_fade()
 
-animate(mental_p, fps = 1)</code></pre>
+animate(mental_p)</code></pre>
 <p><img src="Report_files/figure-html/distribution_mental_health-1.gif" /><!-- --></p>
 </div>
 <div id="association-between-licenses-for-selling-e-cigarettes-and-e-cigarette-usage-by-borough-over-year" class="section level2">
