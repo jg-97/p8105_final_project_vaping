@@ -54,13 +54,18 @@ nyc_risky_non_stat%>%filter(response == "unknown")%>%group_by(question)%>%summar
 ```
 
 ```{r}
-map_df(df_total,fill_NA)%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)))%>%
+naperc_df=map_df(df_total,fill_NA)%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)))%>%
   select(-"id")%>%
-  pivot_longer(names_to = "question",values_to = "response",cols = 3:36)%>%
+  pivot_longer(names_to = "question",values_to = "response",cols = 3:ncol(.))%>%
   count(borough,year,question,response)%>%
   filter(response == "unknown")%>%
-  group_by(question)%>%
-  summarise(sum(n))
+  group_by(year,question)%>%
+  summarise(sum(n))%>%
+  left_join(x = . , y = df_total%>%group_by(year)%>%summarise(n()))%>%
+  mutate(naperc = `sum(n)`/`n()`)
+view(naperc_df)
 
+
+df_total%>%filter(year == c(2015,2017))%>%group_by(year)%>%summarise(n())
 ```
 
