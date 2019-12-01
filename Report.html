@@ -482,11 +482,18 @@ drug_p &lt;- marijuana_full %&gt;%
              group = interaction(borough, drug_type))) +
   geom_point(size = 2.2) + geom_path(size = .8) +
   labs(x = &quot;Year&quot;,
-       y = &quot;Frequency of drug use&quot;)+
-transition_states(drug_type, transition_length = 1, state_length = 3, wrap = TRUE) +
-  enter_fade() + exit_fade()</code></pre>
-<pre class="r"><code>animate(drug_p, fps = 2)</code></pre>
-<p><img src="Report_files/figure-html/distribution_vaping_other_drugs_1-1.gif" /><!-- --></p>
+       y = &quot;Frequency of drug use&quot;,
+       color = &quot;Borough&quot;,
+       shape = &quot;Drug type&quot;) +
+  theme(plot.title = element_text(size = 30, face = &quot;bold&quot;),
+        axis.text=element_text(size = 15),
+        axis.title=element_text(size = 15,face = &quot;bold&quot;)) + 
+  theme(legend.text=element_text(size = 10), legend.title=element_text(size = 15, face = &quot;bold&quot;)) +  
+  transition_states(drug_type, transition_length = 1, state_length = 3, wrap = TRUE) +
+  enter_fade() + exit_fade()
+
+animate(drug_p)</code></pre>
+<p><img src="Report_files/figure-html/distribution_vaping_other_drugs-1.gif" /><!-- --></p>
 </div>
 <div id="distribution-of-mental-health-over-time-by-borough" class="section level2">
 <h2>Distribution of mental health over time by borough</h2>
@@ -527,14 +534,18 @@ mental_p &lt;- injury_full %&gt;%
              group = interaction(borough, mental_disorder))) +
   geom_point(size = 2.2) + geom_path(size = .8) +
   labs(x = &quot;Year&quot;,
-       y = &quot;Frequency of mental disorder&quot;) +
+       y = &quot;Frequency of mental disorder&quot;,
+       color = &quot;Borough&quot;,
+       shape = &quot;Mental disorder&quot;) +
+  theme(plot.title = element_text(size = 30, face = &quot;bold&quot;),
+        axis.text=element_text(size = 15),
+        axis.title=element_text(size = 15,face = &quot;bold&quot;)) + 
+  theme(legend.text=element_text(size = 10), legend.title=element_text(size = 15, face = &quot;bold&quot;)) +  
   transition_states(mental_disorder, transition_length = 1, state_length = 3, wrap = TRUE) +
   enter_fade() + exit_fade()
 
-mental_p</code></pre>
+animate(mental_p)</code></pre>
 <p><img src="Report_files/figure-html/distribution_mental_health-1.gif" /><!-- --></p>
-<pre class="r"><code>animate(mental_p, fps = 2) </code></pre>
-<p><img src="Report_files/figure-html/distribution_mental_health_2-1.gif" /><!-- --></p>
 </div>
 <div id="association-between-licenses-for-selling-e-cigarettes-and-e-cigarette-usage-by-borough-over-year" class="section level2">
 <h2>Association between licenses for selling e-cigarettes and e-cigarette usage by borough over year</h2>
