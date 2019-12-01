@@ -410,6 +410,19 @@ div.tocify {
 </div>
 <div id="data-introduction" class="section level3">
 <h3>Data introduction</h3>
+<p>In order to use the data conveniently, we clean and tidy the data at the beginning, and yield file containing the data.</p>
+<ul>
+<li>sex: male, female, other(i.e.transgender)</li>
+<li>borough: five boroughs in the New York City</li>
+<li>sad_hopeless: feeling so sad or hopeless almost every day for two weeks or more</li>
+<li>attempted_suicide: ever attempted to do suicide</li>
+<li>injurious_suicide_attempt: attempted suicides result in an injury, poisoning, or overdose that had to be treated by a doctor or nurse</li>
+<li>current_cigarette_use: smoked cigarettes during the past 30 days</li>
+<li>current_vaping: used an electronic vapor product during the past 30 days</li>
+<li>current_cigar_use: smoked cigars, cigarillos, or little cigars during the past 30 days</li>
+<li>current_alcohol_use: had at least one drink of alcohol</li>
+<li>current_marijuana_use: used marijuana during the past 30 days</li>
+</ul>
 </div>
 </div>
 <div id="questions" class="section level1">
@@ -429,17 +442,19 @@ div.tocify {
 <pre class="r"><code>### load the cleaned data
 load(&quot;./data/nyc_data.RData&quot;)
 nyc_drug &lt;- df_total
-####A bette way to do it by avoiding uneeded format transformation_byHS</code></pre>
-<div id="distribution-of-existing-drug-use-over-time-by-borough" class="section level2">
-<h2>Distribution of existing drug use over time by borough</h2>
+#### A better way to do it by avoiding uneeded format transformation_byHS</code></pre>
+<div id="distribution-of-vaping-and-existing-drug-use-over-time-by-borough" class="section level2">
+<h2>Distribution of vaping and existing drug use over time by borough</h2>
+<p>We plot an animated graph to show the distribution of vaping and defined drug use. each drug will exist in an order corresponding to the legend.</p>
 <pre class="r"><code>## filter the data used in this part
 nyc_drug_used &lt;- nyc_drug %&gt;% 
   select(id, borough, year, 
          cigarette = current_cigarette_use, cigar = current_cigar_use,
-         alcohol = current_alcohol_use, marijuana = current_marijuana_use) %&gt;% 
+         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
+         vaping = current_vaping) %&gt;% 
   mutate(year = factor(year))
 
-## cigarette frequency
+## cigarette proportion
 cigarette &lt;- nyc_drug_used %&gt;% 
   filter(!is.na(cigarette)) %&gt;% 
   group_by(year, borough) %&gt;% 
@@ -447,7 +462,7 @@ cigarette &lt;- nyc_drug_used %&gt;%
             cigarette = sum(cigarette == &quot;Yes&quot;)/n) %&gt;% 
   select(-n)
 
-## cigar
+## cigar proportion
 cigar &lt;- nyc_drug_used %&gt;% 
   filter(!is.na(cigar)) %&gt;% 
   group_by(year, borough) %&gt;% 
@@ -455,7 +470,7 @@ cigar &lt;- nyc_drug_used %&gt;%
             cigar = sum(cigar == &quot;Yes&quot;)/n) %&gt;% 
   select(-n) 
 
-## alcohol frequency
+## alcohol proportion
 alcohol &lt;- nyc_drug_used %&gt;% 
   filter(!is.na(alcohol)) %&gt;% 
   group_by(year, borough) %&gt;% 
@@ -463,7 +478,16 @@ alcohol &lt;- nyc_drug_used %&gt;%
             alcohol = sum(alcohol == &quot;Yes&quot;)/n) %&gt;% 
   select(-n) 
 
-## marijuana frequency
+
+## vaping proportion 
+vaping &lt;- nyc_drug_used %&gt;% 
+  filter(!is.na(vaping)) %&gt;% 
+  group_by(year, borough) %&gt;% 
+  summarize(n = n(),
+            vaping = sum(vaping == &quot;Yes&quot;)/n) %&gt;% 
+  select(-n) 
+
+## marijuana proportion with all other proportions
 marijuana_full &lt;- nyc_drug_used %&gt;% 
   filter(!is.na(marijuana)) %&gt;% 
   group_by(year, borough) %&gt;% 
@@ -473,16 +497,19 @@ marijuana_full &lt;- nyc_drug_used %&gt;%
   left_join(cigarette, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
   left_join(cigar, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
   left_join(alcohol, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
-  pivot_longer(marijuana:alcohol,
+  left_join(vaping, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
+  pivot_longer(marijuana:vaping,
                names_to = &quot;drug_type&quot;,
-               values_to = &quot;frequency&quot;)
+               values_to = &quot;proportion&quot;)
 
 drug_p &lt;- marijuana_full %&gt;%
-  filter(!(is.na(frequency)))%&gt;%ggplot(aes(x = year, y = frequency, color = borough, shape = drug_type, 
-             group = interaction(borough, drug_type))) +
+  filter(!(is.na(proportion)))%&gt;%
+  ggplot(aes(x = year, y = proportion, color = borough, shape = drug_type, 
+             group = interaction(borough, drug_type), frame = drug_type)) +
   geom_point(size = 2.2) + geom_path(size = .8) +
-  labs(x = &quot;Year&quot;,
-       y = &quot;Frequency of drug use&quot;,
+  labs(title = &quot;{closest_state}&quot;,
+       x = &quot;Year&quot;,
+       y = &quot;Proportion of drug use&quot;,
        color = &quot;Borough&quot;,
        shape = &quot;Drug type&quot;) +
   theme(plot.title = element_text(size = 30, face = &quot;bold&quot;),
@@ -497,6 +524,7 @@ animate(drug_p)</code></pre>
 </div>
 <div id="distribution-of-mental-health-over-time-by-borough" class="section level2">
 <h2>Distribution of mental health over time by borough</h2>
+<p>We plot an animated graph to show the distribution of some mental disorders which are related to the vaping according to the recent reports. each kind of disorder will exist in an order corresponding to the legend.</p>
 <pre class="r"><code>nyc_drug_health &lt;- nyc_drug %&gt;% 
   select(id, year, borough, sad = sad_hopeless, 
          suicide = attempted_suicide, injury = injurious_suicide_attempt) %&gt;% 
@@ -526,21 +554,21 @@ injury_full &lt;- nyc_drug_health %&gt;%
   left_join(suicide, by = c(&quot;year&quot;, &quot;borough&quot;)) %&gt;% 
   pivot_longer(injury:suicide,
                names_to = &quot;mental_disorder&quot;,
-               values_to = &quot;frequency&quot;)
+               values_to = &quot;proportion&quot;)
 
 mental_p &lt;- injury_full %&gt;%
-  filter(!(is.na(frequency))) %&gt;% 
-  ggplot(aes(x = year, y = frequency, color = borough, shape = mental_disorder, 
+  filter(!(is.na(proportion))) %&gt;% 
+  ggplot(aes(x = year, y = proportion, color = borough, shape = mental_disorder, 
              group = interaction(borough, mental_disorder))) +
   geom_point(size = 2.2) + geom_path(size = .8) +
   labs(x = &quot;Year&quot;,
-       y = &quot;Frequency of mental disorder&quot;,
+       y = &quot;Proportion of mental disorder&quot;,
        color = &quot;Borough&quot;,
-       shape = &quot;Mental disorder&quot;) +
-  theme(plot.title = element_text(size = 30, face = &quot;bold&quot;),
-        axis.text=element_text(size = 15),
-        axis.title=element_text(size = 15,face = &quot;bold&quot;)) + 
-  theme(legend.text=element_text(size = 10), legend.title=element_text(size = 15, face = &quot;bold&quot;)) +  
+       shape = &quot;Mental disorder&quot;) +  
+  scale_shape_discrete(labels = c(&quot;injurious attempted suicide&quot;, &quot;sad and hopeless&quot;, &quot;attempted suicide&quot;)) +
+  theme(axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15,face = &quot;bold&quot;)) + 
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = &quot;bold&quot;))  +
   transition_states(mental_disorder, transition_length = 1, state_length = 3, wrap = TRUE) +
   enter_fade() + exit_fade()
 
@@ -550,11 +578,11 @@ animate(mental_p)</code></pre>
 <div id="association-between-licenses-for-selling-e-cigarettes-and-e-cigarette-usage-by-borough-over-year" class="section level2">
 <h2>Association between licenses for selling e-cigarettes and e-cigarette usage by borough over year</h2>
 </div>
-<div id="logistic-regression-model-to-do-prediction-of-the-vaping-trend" class="section level2">
-<h2>Logistic regression model to do prediction of the vaping trend</h2>
-</div>
 <div id="drugsvaping-decomposed-by-experienced-violenced-and-other-risky-behaviors" class="section level2">
 <h2>Drugs(vaping) decomposed by experienced violenced and other risky behaviors</h2>
+</div>
+<div id="logistic-regression-model-to-do-prediction-of-the-vaping-trend" class="section level2">
+<h2>Logistic regression model to do prediction of the vaping trend</h2>
 </div>
 </div>
 <div id="conclusion" class="section level1">
