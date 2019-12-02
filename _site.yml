@@ -2,9 +2,10 @@ name: "Vaping_website"
 output_dir: "."
 navbar:
   title: "Home"
-  right:
-    - text: "Overview"
+  left:
+    - text: "Project Overview"
       href:  Overview.html
+  right:
     - text: "Explore the Data"
       href: https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use
     - text: "Analysis"
@@ -19,3 +20,4 @@ navbar:
 output:
   html_document:
    theme: journal
+  

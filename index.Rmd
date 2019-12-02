@@ -1,20 +1,16 @@
 ---
-title: "Home"
+title: "Vaping - A new go-to drug?!"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
-    theme: journal
+  html_document
 ---
 
-```{r include = FALSE}
-library(tidyverse)
-theme_set(theme_bw())
-```
+&nbsp;
+&nbsp;
 
-# Vaping - a new go-to drug !?
-The analysis of the association among mental illnesses, vaping and other drug use
+<center><img src = "images/vaping2kids.jpg" style = "width:100%"> </center>
 
-Ying Chen, Jin Ge, Daniela Quigee, Han Sun, Siquan Wang
+&nbsp;
 
+<span style="color:#2C85C2; font-family: Babas; font-size: 1em;">Project Collaborators: </span>
 
+$Ying Chen_{yc384}$, $Jin Ge_{jg4197}$, $Daniela Quigee_{dq2147}$, $Han Sun_{hs3163}$, $Siquan Wang_{sw3442}$
