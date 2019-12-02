@@ -153,17 +153,19 @@ df = df %>%
     # During the past 30 days, how many times did you drive a car or other vehicle when you had been drinking alcohol?
     mutate(
       qn10 = recode(qn10,
-                    "1" = "1 or more times",
-                    "2" = "did not drive/0 times"),
-      qn10 = as.factor(qn10)) %>% 
+                    "1" = "Yes",
+                    "2" = "No/did not drive"),
+      qn10 = as.factor(qn10),
+      qn10 = fct_relevel(qn10, c("Yes", "No/did not drive"))) %>% 
     rename(drinking_and_driving = qn10) %>% 
 ##################################################################################### 
     # During the past 30 days, on how many days did you text or e-mail while driving a car or other vehicle?
     mutate(
       qn11 = recode(qn11,
-                 "1" = "1 or more days",
-                 "2" = "did not drive/0 days"),
-      qn11 = as.factor(qn11)) %>% 
+                 "1" = "Yes",
+                 "2" = "No/did not drive"),
+      qn11 = as.factor(qn11),
+      qn11 = fct_relevel(qn11, c("Yes", "No/did not drive"))) %>% 
     rename(texting_and_driving = qn11) %>% 
 ##################################################################################### 
     # During the past 30 days, on how many days did you carry a weapon such as a gun, knife, or club?
@@ -171,7 +173,8 @@ df = df %>%
       qn12 = recode(qn12,
                     "1" = "Yes",
                     "2" = "No"),
-      qn12 = as.factor(qn12)) %>% 
+      qn12 = as.factor(qn12),
+      qn12 = fct_relevel(qn12, c("Yes", "No"))) %>% 
     rename(carring_weapon = qn12) %>%
 ##################################################################################### 
     # During the past 30 days, on how many days did you carry a weapon such as a gun, knife, or club on school property?
@@ -195,7 +198,8 @@ df = df %>%
       qn15 = recode(qn15,
                     "1" = "Yes",
                     "2" = "No"),
-      qn15 = as.factor(qn15)) %>% 
+      qn15 = as.factor(qn15),
+      qn15 = fct_relevel(qn15, c("Yes", "No"))) %>% 
     rename(safety_concerns_at_school = qn15) %>%
 ##################################################################################### 
     # During the past 12 months, how many times has someone threatened or injured you with a weapon such as a gun, knife, or club on school property?
@@ -203,7 +207,8 @@ df = df %>%
       qn16 = recode(qn16,
                     "1" = "Yes",
                     "2" = "No"),
-      qn16 = as.factor(qn16)) %>% 
+      qn16 = as.factor(qn16),
+      qn16 = fct_relevel(qn16, c("Yes", "No"))) %>% 
     rename(threatened_at_school = qn16) %>%
 ##################################################################################### 
     # During the past 12 months, how many times were you in a physical fight?
@@ -211,7 +216,8 @@ df = df %>%
       qn17 = recode(qn17,
                     "1" = "Yes",
                     "2" = "No"),
-      qn17 = as.factor(qn17)) %>% 
+      qn17 = as.factor(qn17),
+      qn17 = fct_relevel(qn17, c("Yes", "No"))) %>% 
     rename(physical_fighting = qn17) %>%
 ##################################################################################### 
     # During the past 12 months, how many times were you in a physical fight on school property?
@@ -251,7 +257,8 @@ df = df %>%
       qn23 = recode(qn23,
                  "1" = "Yes",
                  "2" = "No"),
-      qn23 = as.factor(qn23)) %>% 
+      qn23 = as.factor(qn23),
+      qn23 = fct_relevel(qn23, c("Yes", "No"))) %>% 
     rename(bullying_at_school = qn23) %>%
 ##################################################################################### 
     # During the past 12 months, have you ever been electronically bullied? (Count being bullied through texting, Instagram, Facebook, or other social media.)
@@ -259,7 +266,8 @@ df = df %>%
       qn24 = recode(qn24,
                     "1" = "Yes",
                     "2" = "No"),
-      qn24 = as.factor(qn24)) %>% 
+      qn24 = as.factor(qn24),
+      qn24 = fct_relevel(qn24, c("Yes", "No"))) %>% 
     rename(bullying_electronically = qn24) %>%
 ##################################################################################### 
     # During the past 12 months, did you ever feel so sad or hopeless almost every day for two weeks or more in a row that you stopped doing some usual activities?
@@ -267,7 +275,8 @@ df = df %>%
       qn25 = recode(qn25,
                     "1" = "Yes",
                     "2" = "No"),
-      qn25 = as.factor(qn25)) %>% 
+      qn25 = as.factor(qn25),
+      qn25 = fct_relevel(qn25, c("Yes", "No"))) %>% 
     rename(sad_hopeless = qn25) %>%
 ##################################################################################### 
     # During the past 12 months, did you ever seriously consider attempting suicide?
@@ -275,7 +284,8 @@ df = df %>%
       qn26 = recode(qn26, 
                     "1" = "Yes",
                     "2" = "No"),
-      qn26 = as.factor(qn26)) %>% 
+      qn26 = as.factor(qn26),
+      qn26 = fct_relevel(qn26, c("Yes", "No"))) %>% 
     rename(considered_suicide = qn26) %>% 
 ##################################################################################### 
     # During the past 12 months, did you make a plan about how you would attempt suicide?
@@ -283,7 +293,8 @@ df = df %>%
       qn27 = recode(qn27,
                     "1" = "Yes",
                     "2" = "No"),
-      qn27 = as.factor(qn27)) %>% 
+      qn27 = as.factor(qn27),
+      qn27 = fct_relevel(qn27, c("Yes", "No"))) %>% 
     rename(made_suicide_plan = qn27) %>% 
 ##################################################################################### 
     # During the past 12 months, how many times did you actually attempt suicide?
@@ -291,7 +302,8 @@ df = df %>%
       qn28 = recode(qn28,
                     "1" = "Yes",
                     "2" = "No"),
-      qn28 = as.factor(qn28)) %>% 
+      qn28 = as.factor(qn28),
+      qn28 = fct_relevel(qn28, c("Yes", "No"))) %>% 
     rename(attempted_suicide = qn28) %>% 
 ##################################################################################### 
     # If you attempted suicide during the past 12 months, did any attempt result in an injury, poisoning, or overdose that had to be treated by a doctor or nurse?
@@ -299,7 +311,8 @@ df = df %>%
       qn29 = recode(qn29,
                     "1" = "Yes",
                     "2" = "did not attempt suicide/No"),
-      qn29 = as.factor(qn29)) %>% 
+      qn29 = as.factor(qn29),
+      qn29 = fct_relevel(qn29, c("Yes", "No"))) %>% 
     rename(injurious_suicide_attempt = qn29) %>%
 ##################################################################################### 
     # Have you ever tried cigarette smoking, even one or two puffs?
@@ -315,7 +328,8 @@ df = df %>%
       qn32 = recode(qn32,
                     "1" = "Yes",
                     "2" = "No"),
-      qn32 = as.factor(qn32)) %>% 
+      qn32 = as.factor(qn32),
+      qn32 = fct_relevel(qn32, c("Yes", "No"))) %>% 
     rename(current_cigarette_use = qn32) %>% 
 ##################################################################################### 
     # During the past 30 days, on the days you smoked, how many cigarettes did you smoke per day?
@@ -331,7 +345,8 @@ df = df %>%
       qn35 = recode(qn35,
                     "1" = "Yes",
                     "2" = "No"),
-      qn35 = as.factor(qn35)) %>% 
+      qn35 = as.factor(qn35),
+      qn35 = fct_relevel(qn35, c("Yes", "No"))) %>% 
     rename(current_vaping = qn35) %>%
 ##################################################################################### 
     # During the past 30 days, on how many days did you use chewing tobacco, snuff, dip, snus, or dissolvable tobacco products, such as Redman, Levi Garrett, Beechnut, Skoal, Skoal Bandits, Copenhagen, Camel Snus, Marlboro Snus, General Snus, Ariva, Stonewall, or Camel Orbs? (Do not count any electronic vapor products.)
@@ -339,7 +354,8 @@ df = df %>%
       qn37 = recode(qn37,
                     "1" = "Yes",
                     "2" = "No"),
-      qn37 = as.factor(qn37)) %>% 
+      qn37 = as.factor(qn37),
+      qn37 = fct_relevel(qn37, c("Yes", "No"))) %>% 
     rename(current_smokeless_tobacco_use = qn37) %>% 
 #####################################################################################
     # During the past 30 days, on how many days did you smoke cigars, cigarillos, or little cigars?
@@ -347,7 +363,8 @@ df = df %>%
       qn38 = recode(qn38,
                     "1" = "Yes",
                     "2" = "No"),
-      qn38 = as.factor(qn38)) %>% 
+      qn38 = as.factor(qn38),
+      qn38 = fct_relevel(qn38, c("Yes", "No"))) %>% 
     rename(current_cigar_use = qn38) %>% 
 #####################################################################################
     # During your life, on how many days have you had at least one drink of alcohol?
@@ -371,7 +388,8 @@ df = df %>%
       qn42 = recode(qn42,
                     "1" = "Yes",
                     "2" = "No"),
-      qn42 = as.factor(qn42)) %>% 
+      qn42 = as.factor(qn42),
+      qn42 = fct_relevel(qn42, c("Yes", "No"))) %>% 
     rename(current_alcohol_use = qn42) %>%
 #####################################################################################
     # During the past 30 days, how did you usually get the alcohol you drank?
@@ -419,7 +437,8 @@ df = df %>%
       qn48 = recode(qn48,
                     "1" = "Yes",
                     "2" = "No"),
-      qn48 = as.factor(qn48)) %>% 
+      qn48 = as.factor(qn48),
+      qn48 = fct_relevel(qn48, c("Yes", "No"))) %>% 
     rename(current_marijuana_use  = qn48) %>%
 #####################################################################################
     # During your life, how many times have you used any form of cocaine, including powder, crack, or freebase
@@ -888,7 +907,108 @@ df_total = bind_rows(df_Bronx, df_Queens, df_Manhattan, df_StatenIsland, df_Broo
 df_total = data_cleaning(df_total)
 ```
 
+    ## Warning: Unknown levels in `f`: No
+
 ``` r
 write_xlsx(x = df_total, path = "./data/nyc_data.xlsx", col_names = TRUE)
 save(df_total, file = "./data/nyc_data.RData")
 ```
+
+The following sections get the percentage of NA and the distribution of
+all response among all years and all question into the data cleaning
+rmd, after the undesired column is removed, can get new result by simply
+rerun the following codes.
+
+``` r
+  #### fill in missing values with "unknown" 
+fill_NA = function(vector){
+    as.factor(coalesce(as.character(vector),"unknown"))
+  }
+##This function take the df_total output and shown the amount of different response per column per year per borough
+distrib = function(df=df_total){distribution=map_df(df,fill_NA)%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)))%>%
+  select(-"id")%>%
+  pivot_longer(names_to = "question",values_to = "response",cols = 3:ncol(.))%>%
+  count(borough,year,question,response)%>%group_by(borough,year,question,response)%>%
+  summarise(sum(n))%>%left_join(x = . , y = df%>%group_by(borough,year)%>%summarise(n()))%>%
+  mutate(respons_count = `sum(n)`, total_count =`n()`, perc = `sum(n)`/`n()`)%>%select(-"sum(n)",-"n()")}
+
+distribution = distrib(df=df_total)
+```
+
+    ## Joining, by = c("borough", "year")
+
+``` r
+distribution
+```
+
+    ## # A tibble: 106,978 x 7
+    ## # Groups:   borough, year, question [4,280]
+    ##    borough  year question    response     respons_count total_count    perc
+    ##    <fct>   <dbl> <chr>       <fct>                <int>       <int>   <dbl>
+    ##  1 Bronx    2003 age         13 years old             2        1347 1.48e-3
+    ##  2 Bronx    2003 age         14 years old           172        1347 1.28e-1
+    ##  3 Bronx    2003 age         15 years old           326        1347 2.42e-1
+    ##  4 Bronx    2003 age         16 years old           375        1347 2.78e-1
+    ##  5 Bronx    2003 age         17 years old           313        1347 2.32e-1
+    ##  6 Bronx    2003 age         18 years ol…           158        1347 1.17e-1
+    ##  7 Bronx    2003 age         unknown                  1        1347 7.42e-4
+    ##  8 Bronx    2003 alcohol_dr… unknown                834        1347 6.19e-1
+    ##  9 Bronx    2003 alcohol_dr… no/not had …           444        1347 3.30e-1
+    ## 10 Bronx    2003 alcohol_dr… yes                     69        1347 5.12e-2
+    ## # … with 106,968 more rows
+
+``` r
+##This table shown the percentage of missing value per column per year
+
+
+naperc_df=map_df(df_total,fill_NA)%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)))%>%
+  select(-"id")%>%
+  pivot_longer(names_to = "question",values_to = "response",cols = 3:ncol(.))%>%
+  count(borough,year,question,response)%>%
+  filter(response == "unknown")%>%
+  group_by(year,question)%>%
+  summarise(sum(n))%>%
+  left_join(x = . , y = df_total%>%group_by(year)%>%summarise(n()))%>%
+  mutate(naperc = `sum(n)`/`n()`,actrsp =-`sum(n)`+`n()` )
+```
+
+    ## Joining, by = "year"
+
+``` r
+   regression_variable<-c(
+    # binary respone
+    "current_vaping",
+    # possible predictor
+    "texting_and_driving",
+    "carring_weapon",
+    "sad_hopeless",
+    "attempted_suicide",
+    "injurious_suicide_attempt",
+    "safety_concerns_at_school",
+    "threatened_at_school",
+    "physical_fighting",
+    "bullying_at_school",
+    "bullying_electronically",
+    "sex",
+    "age",
+    "race7",
+    "seatbelt_use")
+   
+   naperc_df%>%filter(year %in% c(2015,2017))
+```
+
+    ## # A tibble: 214 x 6
+    ## # Groups:   year [2]
+    ##     year question                `sum(n)` `n()`  naperc actrsp
+    ##    <dbl> <chr>                      <int> <int>   <dbl>  <int>
+    ##  1  2015 age                           36  8522 0.00422   8486
+    ##  2  2015 alcohol_drugs_sex           7239  8522 0.849     1283
+    ##  3  2015 asthma                      2524  8522 0.296     5998
+    ##  4  2015 attempted_suicide           1445  8522 0.170     7077
+    ##  5  2015 bike_helmet_use             3481  8522 0.408     5041
+    ##  6  2015 birth_control_use           7309  8522 0.858     1213
+    ##  7  2015 bmi                         1134  8522 0.133     7388
+    ##  8  2015 bmipct                      1194  8522 0.140     7328
+    ##  9  2015 bullying_at_school           179  8522 0.0210    8343
+    ## 10  2015 bullying_electronically      210  8522 0.0246    8312
+    ## # … with 204 more rows
