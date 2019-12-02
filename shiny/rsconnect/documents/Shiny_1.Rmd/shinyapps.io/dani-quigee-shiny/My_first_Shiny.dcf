@@ -5,8 +5,8 @@ account: dani-quigee-shiny
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1538922
-bundleId: 2630549
+bundleId: 2631355
 url: https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/
-when: 1575231553.03465
+when: 1575256145.0196
 asMultiple: FALSE
 asStatic: FALSE
