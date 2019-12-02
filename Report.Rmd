@@ -218,6 +218,186 @@ animate(mental_p)
 
 ## Drugs(vaping) decomposed by experienced violenced and other risky behaviors
 
+We are interested in whether there will be something worth being examined if we decompose the drug by the experienced violenced behaviors 
+
+```{r drug_with_violence}
+## drugs with violence
+nyc_drug_violence <- nyc_drug %>% 
+  select(id, borough, year, 
+         cigarette = current_cigarette_use, cigar = current_cigar_use,
+         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
+         vaping = current_vaping, safety_concerns_at_school, threatened_at_school,
+         physical_fighting, bullying_at_school, bullying_electronically) %>% 
+  mutate(year = factor(year))
+
+## cigaretteYes
+cigarette_yes <- nyc_drug_violence %>% 
+  filter(cigarette == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            cigarette = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## cigarYes
+cigar_yes <- nyc_drug_violence %>% 
+  filter(cigar == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            cigar = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## alcoholYes
+alcohol_yes <- nyc_drug_violence %>% 
+  filter(alcohol == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            alcohol = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## vapingYes
+vaping_yes <- nyc_drug_violence %>% 
+  filter(vaping == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            vaping = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## marijuanaYes with all other drugs
+marijuana_yes_full <- nyc_drug_violence %>% 
+  filter(marijuana == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            marijuana = sum(reply == "Yes")/n) %>% 
+  select(-n) %>% 
+  left_join(cigarette_yes, by = c("year", "violence")) %>% 
+  left_join(cigar_yes, by = c("year", "violence")) %>% 
+  left_join(alcohol_yes, by = c("year", "violence")) %>% 
+  left_join(vaping_yes, by = c("year", "violence")) %>% 
+  gather(key = "drug", value = "proportion", 
+         marijuana, cigarette, cigar, alcohol, vaping)
+
+## animated plot
+violence_p <- marijuana_yes_full %>%
+  ggplot(aes(x = drug, y = proportion, fill = violence, group = violence)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Year: {closest_state}",
+       x = "Drug Type",
+       y = "Proportion of happening violence",
+       fill = "Violence Type") +
+  scale_fill_discrete(labels = c("Bullying in school", "Bullying electronically",
+                                 "Physical fighting", "Safely concerns at school",
+                                 "Threatened at school")) +
+  theme(axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15,face = "bold")) + 
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = "bold")) +
+  transition_states(year, transition_length = 2, state_length = 3) +
+  enter_fade() + exit_shrink()
+  
+animate(violence_p)
+```
+
+We are also interested in whether there will be something worth being examined if we decompose the drug by risky behaviors
+
+```{r drug_with_risky_behavior}
+
+## drugs with risky behavior
+nyc_drug_risk <- nyc_drug %>% 
+  select(id, borough, year, 
+         cigarette = current_cigarette_use, cigar = current_cigar_use,
+         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
+         vaping = current_vaping, texting_and_driving, drinking_and_driving) %>% 
+  mutate(year = factor(year))
+
+## cigaretteYes
+cigarette_yes_risk <- nyc_drug_risk %>% 
+  filter(cigarette == "Yes") %>% 
+  gather(key = "risk", value = "reply", 
+         texting_and_driving, drinking_and_driving, na.rm = TRUE) %>% 
+  group_by(year, risk) %>% 
+  summarize(n = n(),
+            cigarette = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## cigarYes
+cigar_yes_risk <- nyc_drug_risk %>% 
+  filter(cigar == "Yes") %>% 
+  gather(key = "risk", value = "reply", 
+         texting_and_driving, drinking_and_driving, na.rm = TRUE) %>% 
+  group_by(year, risk) %>% 
+  summarize(n = n(),
+            cigar = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## alcoholYes
+alcohol_yes_risk <- nyc_drug_risk %>% 
+  filter(alcohol == "Yes") %>% 
+  gather(key = "risk", value = "reply", 
+         texting_and_driving, drinking_and_driving, na.rm = TRUE) %>% 
+  group_by(year, risk) %>% 
+  summarize(n = n(),
+            alcohol = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## vapingYes
+vaping_yes_risk <- nyc_drug_risk %>% 
+  filter(vaping == "Yes") %>% 
+  gather(key = "risk", value = "reply", 
+         texting_and_driving, drinking_and_driving, na.rm = TRUE) %>% 
+  group_by(year, risk) %>% 
+  summarize(n = n(),
+            vaping = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## marijuanaYes with all other drugs
+marijuana_yes_risk_full <- nyc_drug_risk %>% 
+  filter(marijuana == "Yes") %>% 
+  gather(key = "risk", value = "reply", 
+         texting_and_driving, drinking_and_driving, na.rm = TRUE) %>% 
+  group_by(year, risk) %>% 
+  summarize(n = n(),
+            marijuana = sum(reply == "Yes")/n) %>% 
+  select(-n) %>% 
+  left_join(cigarette_yes_risk, by = c("year", "risk")) %>% 
+  left_join(cigar_yes_risk, by = c("year", "risk")) %>% 
+  left_join(alcohol_yes_risk, by = c("year", "risk")) %>% 
+  left_join(vaping_yes_risk, by = c("year", "risk")) %>% 
+  gather(key = "drug", value = "proportion", 
+         marijuana, cigarette, cigar, alcohol, vaping)
+
+## animated plot
+risk_p <- marijuana_yes_risk_full %>%
+  ggplot(aes(x = drug, y = proportion, fill = risk, group = risk)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Year: {closest_state}",
+       x = "Drug Type",
+       y = "Proportion of happening risky behaviors",
+       fill = "Risky behavior Type") +
+  scale_fill_discrete(labels = c("Drinking and Driving", "Texting and Driving")) +
+  theme(axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15,face = "bold")) + 
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = "bold")) +
+  transition_states(year, transition_length = 2, state_length = 3) +
+  enter_fade() + exit_shrink()
+  
+animate(risk_p)
+
+```
+
 ## Logistic regression model to do prediction of the vaping trend
 
 
