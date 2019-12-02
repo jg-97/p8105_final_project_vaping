@@ -10,7 +10,9 @@ output:
 <center><img src = "images/vaping2kids.jpg" style = "width:100%"> </center>
 
 &nbsp;
+&nbsp;
 
-<span style="color:#2C85C2; font-family: Babas; font-size: 1em;">Project Collaborators: </span>
+<span style="color:#2C85C2; font-family: Babas; font-size: 1em;">Final Project for Dr. Jeff Goldsmith's Course - P8105 Data Science I</span><right><img src = "images/sticker.jpg" style = "width:5%"> </right></br>
+<span style="color:#2C85C2; font-family: Babas; font-size: 1em;">Project Collaborators: </span>$Ying Chen_{yc384}$, $Jin Ge_{jg4197}$, $Daniela Quigee_{dq2147}$, $Han Sun_{hs3163}$, $Siquan Wang_{sw3442}$
 
-$Ying Chen_{yc384}$, $Jin Ge_{jg4197}$, $Daniela Quigee_{dq2147}$, $Han Sun_{hs3163}$, $Siquan Wang_{sw3442}$
+
