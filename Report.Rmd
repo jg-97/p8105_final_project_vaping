@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE,
                       message = FALSE,
                       fig.height = 5,
-                      fig.width = 8)
+                      fig.width = 9)
 library(tidyverse)
 library(gganimate)
 library(transformr)
@@ -38,6 +38,19 @@ According to reports in recent years, we can see an underlying trend of vaping i
 
 ### Data introduction
 
+In order to use the data conveniently, we clean and tidy the data at the beginning, and yield file containing the data.
+
+* sex: male, female, other(i.e.transgender)
+* borough: five boroughs in the New York City
+* sad_hopeless: feeling so sad or hopeless almost every day for two weeks or more
+* attempted_suicide: ever attempted to do suicide
+* injurious_suicide_attempt: attempted suicides result in an injury, poisoning, or overdose that had to be treated by a doctor or nurse
+* current_cigarette_use: smoked cigarettes during the past 30 days
+* current_vaping: used an electronic vapor product during the past 30 days
+* current_cigar_use: smoked cigars, cigarillos, or little cigars during the past 30 days
+* current_alcohol_use: had at least one drink of alcohol
+* current_marijuana_use: used marijuana during the past 30 days
+
 
 # Questions
 
@@ -58,20 +71,23 @@ We will give the analysis and visualization accorded with the questions
 ### load the cleaned data
 load("./data/nyc_data.RData")
 nyc_drug <- df_total
-####A bette way to do it by avoiding uneeded format transformation_byHS
+#### A better way to do it by avoiding uneeded format transformation_byHS
 ```
 
-## Distribution of existing drug use over time by borough
+## Distribution of vaping and existing drug use over time by borough
+
+We plot an animated graph to show the distribution of vaping and defined drug use. each drug will exist in an order corresponding to the legend.
 
 ```{r distribution_vaping_other_drugs}
 ## filter the data used in this part
 nyc_drug_used <- nyc_drug %>% 
   select(id, borough, year, 
          cigarette = current_cigarette_use, cigar = current_cigar_use,
-         alcohol = current_alcohol_use, marijuana = current_marijuana_use) %>% 
+         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
+         vaping = current_vaping) %>% 
   mutate(year = factor(year))
 
-## cigarette frequency
+## cigarette proportion
 cigarette <- nyc_drug_used %>% 
   filter(!is.na(cigarette)) %>% 
   group_by(year, borough) %>% 
@@ -79,7 +95,7 @@ cigarette <- nyc_drug_used %>%
             cigarette = sum(cigarette == "Yes")/n) %>% 
   select(-n)
 
-## cigar
+## cigar proportion
 cigar <- nyc_drug_used %>% 
   filter(!is.na(cigar)) %>% 
   group_by(year, borough) %>% 
@@ -87,7 +103,7 @@ cigar <- nyc_drug_used %>%
             cigar = sum(cigar == "Yes")/n) %>% 
   select(-n) 
 
-## alcohol frequency
+## alcohol proportion
 alcohol <- nyc_drug_used %>% 
   filter(!is.na(alcohol)) %>% 
   group_by(year, borough) %>% 
@@ -95,7 +111,16 @@ alcohol <- nyc_drug_used %>%
             alcohol = sum(alcohol == "Yes")/n) %>% 
   select(-n) 
 
-## marijuana frequency
+
+## vaping proportion 
+vaping <- nyc_drug_used %>% 
+  filter(!is.na(vaping)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            vaping = sum(vaping == "Yes")/n) %>% 
+  select(-n) 
+
+## marijuana proportion with all other proportions
 marijuana_full <- nyc_drug_used %>% 
   filter(!is.na(marijuana)) %>% 
   group_by(year, borough) %>% 
@@ -105,16 +130,19 @@ marijuana_full <- nyc_drug_used %>%
   left_join(cigarette, by = c("year", "borough")) %>% 
   left_join(cigar, by = c("year", "borough")) %>% 
   left_join(alcohol, by = c("year", "borough")) %>% 
-  pivot_longer(marijuana:alcohol,
+  left_join(vaping, by = c("year", "borough")) %>% 
+  pivot_longer(marijuana:vaping,
                names_to = "drug_type",
-               values_to = "frequency")
+               values_to = "proportion")
 
 drug_p <- marijuana_full %>%
-  filter(!(is.na(frequency)))%>%ggplot(aes(x = year, y = frequency, color = borough, shape = drug_type, 
-             group = interaction(borough, drug_type))) +
+  filter(!(is.na(proportion)))%>%
+  ggplot(aes(x = year, y = proportion, color = borough, shape = drug_type, 
+             group = interaction(borough, drug_type), frame = drug_type)) +
   geom_point(size = 2.2) + geom_path(size = .8) +
-  labs(x = "Year",
-       y = "Frequency of drug use",
+  labs(title = "{closest_state}",
+       x = "Year",
+       y = "Proportion of drug use",
        color = "Borough",
        shape = "Drug type") +
   theme(plot.title = element_text(size = 30, face = "bold"),
@@ -129,6 +157,8 @@ animate(drug_p)
 
 
 ## Distribution of mental health over time by borough
+
+We plot an animated graph to show the distribution of some mental disorders which are related to the vaping according to the recent reports. each kind of disorder will exist in an order corresponding to the legend.
 
 ```{r distribution_mental_health}
 
@@ -161,21 +191,21 @@ injury_full <- nyc_drug_health %>%
   left_join(suicide, by = c("year", "borough")) %>% 
   pivot_longer(injury:suicide,
                names_to = "mental_disorder",
-               values_to = "frequency")
+               values_to = "proportion")
 
 mental_p <- injury_full %>%
-  filter(!(is.na(frequency))) %>% 
-  ggplot(aes(x = year, y = frequency, color = borough, shape = mental_disorder, 
+  filter(!(is.na(proportion))) %>% 
+  ggplot(aes(x = year, y = proportion, color = borough, shape = mental_disorder, 
              group = interaction(borough, mental_disorder))) +
   geom_point(size = 2.2) + geom_path(size = .8) +
   labs(x = "Year",
-       y = "Frequency of mental disorder",
+       y = "Proportion of mental disorder",
        color = "Borough",
-       shape = "Mental disorder") +
-  theme(plot.title = element_text(size = 30, face = "bold"),
-        axis.text=element_text(size = 15),
-        axis.title=element_text(size = 15,face = "bold")) + 
-  theme(legend.text=element_text(size = 10), legend.title=element_text(size = 15, face = "bold")) +  
+       shape = "Mental disorder") +  
+  scale_shape_discrete(labels = c("injurious attempted suicide", "sad and hopeless", "attempted suicide")) +
+  theme(axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15,face = "bold")) + 
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = "bold"))  +
   transition_states(mental_disorder, transition_length = 1, state_length = 3, wrap = TRUE) +
   enter_fade() + exit_fade()
 
@@ -186,9 +216,9 @@ animate(mental_p)
 
 ## Association between licenses for selling e-cigarettes and e-cigarette usage by borough over year
 
-## Logistic regression model to do prediction of the vaping trend
-
 ## Drugs(vaping) decomposed by experienced violenced and other risky behaviors
+
+## Logistic regression model to do prediction of the vaping trend
 
 
 # Conclusion
