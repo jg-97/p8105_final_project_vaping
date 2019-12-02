@@ -907,9 +907,28 @@ save(df_total, file = "./data/nyc_data.RData")
 
 The following secctions get the percentage of NA and the distribution of all response among all years and all question into the data cleaning rmd, after the undesired column is removed, can get new result by simply rerun the following codes.
 
+```{r response distribution for all column}
+  #### fill in missing values with "unknown" 
+fill_NA = function(vector){
+    as.factor(coalesce(as.character(vector),"unknown"))
+  }
+##This function take the df_total output and shown the amount of different response per column per year per borough
+distrib = function(df=df_total){distribution=map_df(df,fill_NA)%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)))%>%
+  select(-"id")%>%
+  pivot_longer(names_to = "question",values_to = "response",cols = 3:ncol(.))%>%
+  count(borough,year,question,response)%>%group_by(borough,year,question,response)%>%
+  summarise(sum(n))%>%left_join(x = . , y = df%>%group_by(borough,year)%>%summarise(n()))%>%
+  mutate(respons_count = `sum(n)`, total_count =`n()`, perc = `sum(n)`/`n()`)%>%select(-"sum(n)",-"n()")}
+
+distribution = distrib(df=df_total)
+
+distribution
+```
+
 
 ```{r NA Evaluation}
 ##This table shown the percentage of missing value per column per year
+
 
 naperc_df=map_df(df_total,fill_NA)%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)))%>%
   select(-"id")%>%
@@ -920,20 +939,26 @@ naperc_df=map_df(df_total,fill_NA)%>%mutate(id = as.numeric(as.character(id)),ye
   summarise(sum(n))%>%
   left_join(x = . , y = df_total%>%group_by(year)%>%summarise(n()))%>%
   mutate(naperc = `sum(n)`/`n()`,actrsp =-`sum(n)`+`n()` )
-view(naperc_df)
+
+   regression_variable<-c(
+    # binary respone
+    "current_vaping",
+    # possible predictor
+    "texting_and_driving",
+    "carring_weapon",
+    "sad_hopeless",
+    "attempted_suicide",
+    "injurious_suicide_attempt",
+    "safety_concerns_at_school",
+    "threatened_at_school",
+    "physical_fighting",
+    "bullying_at_school",
+    "bullying_electronically",
+    "sex",
+    "age",
+    "race7",
+    "seatbelt_use")
+   
+   naperc_df%>%filter(year %in% c(2015,2017))
 
 ```
-
-```{r response distribution for all column}
-##This table shown the amount of different response per column per year
-distribution 
-
-map_df(df_total,fill_NA)%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)))%>%
-  select(-"id")%>%
-  pivot_longer(names_to = "question",values_to = "response",cols = 3:ncol(.))%>%
-  count(borough,year,question,response)%>%group_by(borough,year,question,response)%>%
-  summarise(sum(n))%>%left_join(x = . , y = df_total%>%group_by(year)%>%summarise(n()))%>%
-  mutate(respons_count = `sum(n)`, total_count =`n()`, perc = `sum(n)`/`n()`)%>%select(-"sum(n)",-"n()")
-
-```
-
