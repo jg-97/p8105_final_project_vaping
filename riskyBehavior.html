@@ -393,7 +393,6 @@ head(df_total,100)</code></pre>
            colnames(df_total)[60:61], 
     ###Danger Sex Behavior
           colnames(df_total)[63:68])
-
 clnames</code></pre>
 <pre><code>##  [1] &quot;id&quot;                            &quot;borough&quot;                      
 ##  [3] &quot;year&quot;                          &quot;age&quot;                          
@@ -415,7 +414,6 @@ clnames</code></pre>
 ## [35] &quot;alcohol_drugs_sex&quot;             &quot;condom_use&quot;                   
 ## [37] &quot;birth_control_use&quot;</code></pre>
 <pre class="r"><code>nyc_risky&lt;-df_total%&gt;%select(clnames)
-
 ####Fill NA
 fill_NA = function(vector){
   #### fill in missing values with &quot;virginica&quot; 
@@ -453,10 +451,7 @@ nyc_risky_non%&gt;%mutate(id = as.numeric(as.character(id)),year = as.numeric(as
 ## #   multiple_sex_partner &lt;fct&gt;, current_sexual_activity &lt;fct&gt;,
 ## #   alcohol_drugs_sex &lt;fct&gt;, condom_use &lt;fct&gt;, birth_control_use &lt;fct&gt;</code></pre>
 <pre class="r"><code>nyc_risky_non_stat&lt;-nyc_risky_non%&gt;%select(-&quot;id&quot;)%&gt;%pivot_longer(names_to = &quot;question&quot;,values_to = &quot;response&quot;,cols = 3:36)%&gt;%count(borough,year,question,response)
-
-
 nyc_risky_non_stat%&gt;%filter(year == 2017, borough == &quot;Bronx&quot;,question == c(&quot;texting_and_driving&quot;,&quot;current_vaping&quot;))%&gt;%
-
 ggplot(aes(x=response,y=n))+geom_col()+facet_grid(~question)</code></pre>
 <p><img src="riskyBehavior_files/figure-html/dp-1.png" width="672" /></p>
 <pre class="r"><code>nyc_risky_non_stat%&gt;%filter(response == &quot;unknown&quot;)%&gt;%group_by(question)%&gt;%summarise(sum(n))</code></pre>
@@ -485,8 +480,6 @@ ggplot(aes(x=response,y=n))+geom_col()+facet_grid(~question)</code></pre>
   mutate(naperc = `sum(n)`/`n()`)</code></pre>
 <pre><code>## Joining, by = &quot;year&quot;</code></pre>
 <pre class="r"><code>view(naperc_df)
-
-
 df_total%&gt;%filter(year == c(2015,2017))%&gt;%group_by(year)%&gt;%summarise(n())</code></pre>
 <pre><code>## Warning in year == c(2015, 2017): longer object length is not a multiple of
 ## shorter object length</code></pre>

@@ -10,9 +10,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Daniela Quigee (dq2147)" />
 
+<meta name="date" content="2019-12-01" />
 
-<title>Logistic-Regression.utf8.md</title>
+<title>Logistic Regression</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,6 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -306,13 +310,13 @@ $(document).ready(function () {
 
 
 
+<h1 class="title toc-ignore">Logistic Regression</h1>
+<h4 class="author">Daniela Quigee (dq2147)</h4>
+<h4 class="date">12/01/2019</h4>
 
 </div>
 
 
-<div id="logistic-regression" class="section level1">
-<h1>Logistic Regression</h1>
-<p>Daniela Quigee (dq2147) 12/01/2019</p>
 <pre class="r"><code># Loading the cleaned data
 load(&quot;./data/nyc_data.RData&quot;)</code></pre>
 <pre class="r"><code># Extracting necessary variables
@@ -336,11 +340,8 @@ df = df_total %&gt;%
     age,
     race7,
     borough)
-
-
 # Fitting a logistic regression model
 fit_logistic = glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())
-
 fit_logistic %&gt;% 
   broom::tidy() %&gt;% 
   mutate(OR = exp(estimate)) %&gt;%
@@ -438,9 +439,7 @@ pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_a
 <pre><code>##  McFadden 
 ## 0.3345769</code></pre>
 <pre class="r"><code># Cross-Validating the model
-
 data_train &lt;- trainControl(method = &quot;cv&quot;, number = 5)
-
 model_caret &lt;- train(
   current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon,
                    data = df,
@@ -460,14 +459,13 @@ model_caret</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
-## Summary of sample sizes: 9596, 8272, 8272, 8272, 8272, 8271, ... 
+## Summary of sample sizes: 9596, 8271, 8273, 8271, 8272, 8272, ... 
 ## Resampling results:
 ## 
 ##   Accuracy   Kappa     
-##   0.8467982  0.08877832</code></pre>
+##   0.8471262  0.09581872</code></pre>
 <pre class="r"><code>AIC(fit_logistic)</code></pre>
 <pre><code>## [1] 5906.472</code></pre>
-</div>
 
 
 

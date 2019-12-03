@@ -39,28 +39,18 @@ df = df_total %>%
     age,
     race7,
     borough)
-
-
 # Fitting a logistic regression model
 fit_logistic = glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())
-
 fit_logistic %>% 
   broom::tidy() %>% 
   mutate(OR = exp(estimate)) %>%
   knitr::kable(digits = 3)
-
 # What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
 caret::varImp(fit_logistic)
-
-
 # Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
 pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())  )["McFadden"]
-
-
 # Cross-Validating the model
-
 data_train <- trainControl(method = "cv", number = 5)
-
 model_caret <- train(
   current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon,
                    data = df,
@@ -71,6 +61,5 @@ model_caret <- train(
   
 # Model predictions using 4 parts of the data for training 
 model_caret
-
 AIC(fit_logistic)
 ```
