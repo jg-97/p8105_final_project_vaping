@@ -26,8 +26,7 @@ Drug Use by Demographics
 Column {.sidebar}
 -----------------------------------------------------------------------
 ```{r Sidebar_11}
-drugs_1 = c("Marijuana", "Alcohol", "Cigarettes", "Vaping", "Smokeless Tobacco",
-          "Cigar")
+drugs_1 = c("Marijuana", "Alcohol", "Cigarettes", "Vaping", "Cigar")
   
 selectInput("drugs_1", label = h3("Choose Substance Abuse"),
             choices = as.list(drugs_1), selected = "Marijuana")
@@ -86,11 +85,6 @@ renderPlotly({
         filter(!(is.na(current_vaping))) %>% 
         count(current_vaping) %>% 
         rename(x = current_vaping)}
-    else if (input$drugs_1 == "Smokeless Tobacco") {
-      df_11 = df_11 %>%
-        filter(!(is.na(current_smokeless_tobacco_use))) %>% 
-        count(current_smokeless_tobacco_use) %>% 
-        rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_1 == "Cigar") {
       df_11 = df_11 %>%
         filter(!(is.na(current_cigar_use))) %>% 
@@ -109,14 +103,14 @@ renderPlotly({
       plot_ly(
           x = ~x, 
           y = ~percent, 
-          marker = list(color = 'rgb(158,202,225)',
-                      line = list(color = 'rgb(8,48,107)',
-                                  width = 1.5)),
+          marker = list(
+            color = 'rgb(158,202,225)',
+            line = list(color = 'rgb(8,48,107)',width = 1.5)),
           type = "bar",
           hovertemplate = "%{y} % <extra></extra>") %>% 
       layout(
         xaxis = list(
-          title = str_c("Use of ",input$drugs_1)),
+          title = str_c(input$drugs_1)),
         yaxis = list(
           title = "Percent",
           dtick = 5,
@@ -166,12 +160,6 @@ renderPlotly({
         group_by(sex) %>% 
         count(current_vaping) %>% 
         rename(x = current_vaping)}
-    else if (input$drugs_1 == "Smokeless Tobacco") {
-      df_11 = df_11 %>%
-        filter((!(is.na(current_smokeless_tobacco_use))) & (!(is.na(sex)))) %>% 
-        group_by(sex) %>% 
-        count(current_smokeless_tobacco_use) %>% 
-        rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_1 == "Cigar") {
       df_11 = df_11 %>%
         filter((!(is.na(current_cigar_use))) & (!(is.na(sex)))) %>% 
@@ -196,7 +184,7 @@ renderPlotly({
           hovertemplate = "%{y} % <extra></extra>") %>% 
       layout(
         xaxis = list(
-          title = ""),
+          title = str_c(input$drugs_1)),
         yaxis = list(
           title = "Percent",
           dtick = 5,
@@ -246,12 +234,6 @@ renderPlotly({
         group_by(age) %>% 
         count(current_vaping) %>% 
         rename(x = current_vaping)}
-    else if (input$drugs_1 == "Smokeless Tobacco") {
-      df_11 = df_11 %>%
-        filter((!(is.na(current_smokeless_tobacco_use))) & (!(is.na(age)))) %>% 
-        group_by(age) %>% 
-        count(current_smokeless_tobacco_use) %>% 
-        rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_1 == "Cigar") {
       df_11 = df_11 %>%
         filter((!(is.na(current_cigar_use))) & (!(is.na(age)))) %>% 
@@ -276,7 +258,7 @@ renderPlotly({
           hovertemplate = "%{y} % <extra></extra>") %>% 
       layout(
         xaxis = list(
-          title = ""),
+          title = str_c(input$drugs_1)),
         yaxis = list(
           title = "Percent",
           dtick = 5,
@@ -326,12 +308,6 @@ renderPlotly({
         group_by(race7) %>% 
         count(current_vaping) %>% 
         rename(x = current_vaping)}
-    else if (input$drugs_1 == "Smokeless Tobacco") {
-      df_11 = df_11 %>%
-        filter((!(is.na(current_smokeless_tobacco_use))) & (!(is.na(race7)))) %>% 
-        group_by(race7) %>% 
-        count(current_smokeless_tobacco_use) %>% 
-        rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_1 == "Cigar") {
       df_11 = df_11 %>%
         filter((!(is.na(current_cigar_use))) & (!(is.na(race7)))) %>% 
@@ -356,7 +332,7 @@ renderPlotly({
           hovertemplate = "%{y} % <extra></extra>") %>% 
       layout(
         xaxis = list(
-          title = ""),
+          title = str_c(input$drugs_1)),
         yaxis = list(
           title = "Percent",
           dtick = 5,
@@ -394,8 +370,7 @@ Drug Use over Time
 Column {.sidebar}
 -----------------------------------------------------------------------
 ```{r Sidebar_12}
-drugs_2 = c("Marijuana", "Alcohol", "Cigarettes", "Vaping", "Smokeless Tobacco",
-          "Cigar")
+drugs_2 = c("Marijuana", "Alcohol", "Cigarettes", "Vaping", "Cigar", "All")
   
 selectInput("drugs_2", label = h3("Choose Substance Abuse"),
             choices = as.list(drugs_2), selected = "Marijuana")
@@ -408,6 +383,7 @@ Column {.tabset}
 
 ```{r data_12}
 renderPlotly({
+  
   if (input$drugs_2 == "Marijuana") {
     df_12 = df_total %>% 
       filter(!(is.na(current_marijuana_use))) %>%
@@ -452,17 +428,6 @@ renderPlotly({
         percent = round(percent, digits = 2)) %>% 
       filter(current_vaping == "Yes")
   }
-  else if (input$drugs_2 == "Smokeless Tobacco") {
-    df_12 = df_total %>% 
-      filter(!(is.na(current_smokeless_tobacco_use))) %>% 
-      group_by(year, borough) %>% 
-      count(current_smokeless_tobacco_use) %>% 
-      mutate(
-        percent = (n / sum(n)),
-        percent = percent * 100,
-        percent = round(percent, digits = 2)) %>% 
-      filter(current_smokeless_tobacco_use == "Yes")
-  }
   else if (input$drugs_2 == "Cigar") {
     df_12 = df_total %>% 
       filter(!(is.na(current_cigar_use))) %>% 
@@ -474,9 +439,40 @@ renderPlotly({
         percent = round(percent, digits = 2)) %>% 
       filter(current_cigar_use == "Yes")
   }
-  
-  
+  else if (input$drugs_2 == "All") {
+    df_12 = df_total %>% 
+      select(
+        year, 
+        borough, 
+        current_marijuana_use, 
+        current_alcohol_use,
+        current_cigarette_use,
+        current_vaping,
+        current_cigar_use) %>% 
+      pivot_longer(
+        current_marijuana_use:current_cigar_use,
+        names_to = "drugs",
+        names_prefix = "current_",
+        values_to = "values"
+      ) %>% 
+      drop_na(values) %>% 
+      mutate(
+      drugs = str_replace(drugs, "_use", "")) %>% 
+      group_by(drugs, year, borough, values) %>% 
+      count(drugs) %>% 
+      ungroup() %>% 
+      group_by(drugs, year, borough) %>% 
+      mutate(
+        summe = sum(n)) %>% 
+      mutate(
+        percent = (n / summe),
+        percent = percent * 100,
+        percent = round(percent, digits = 2)) %>% 
+      filter(values == "Yes") %>% 
+      select(-n, -summe, -values)
+  }
 
+  if (input$drugs_2 != "All") {
   df_12 %>% 
       plot_ly(
         x = ~year,
@@ -484,7 +480,8 @@ renderPlotly({
         color = ~borough,
         alpha = 0.7,
         line = list( width = 3, dash = 'dash'),
-        hovertemplate = "Year: %{x}\n%{y} % ") %>% 
+        text = ~str_c(borough, "\n", input$drugs_2),
+        hovertemplate = paste("<b>%{text}</b>\nYear: %{x}\n%{y} % ","<extra></extra>")) %>% 
       layout( 
           xaxis = list(
             title = "Year",
@@ -499,6 +496,32 @@ renderPlotly({
             tickmode = "linear",
             range = c(0, 50)),
           title = str_c("Percentage currently use ", input$drugs_2, " (past 30 days) over time"))
+  }
+  else {
+    df_12 %>% 
+      plot_ly(
+        x = ~year,
+        y = ~percent,
+        color = ~borough,
+        alpha = 0.6,
+        linetype = ~drugs,
+        text = ~str_c(borough, "\n", drugs),
+        hovertemplate = paste("<b>%{text}</b>\nYear: %{x}\n%{y} % ","<extra></extra>")) %>% 
+      layout( 
+          xaxis = list(
+            title = "Year",
+            dtick = 2,
+            tick0 = 2003,
+            tickmode = "linear",
+            range = c(2001, 2019)),
+          yaxis = list(
+            title = "Percent",
+            dtick = 5,
+            tick0 = 0,
+            tickmode = "linear",
+            range = c(0, 50)),
+          title = str_c("Percentage currently use ", input$drugs_2, " (past 30 days) over time"))
+  }
 })
 ```
 
@@ -512,7 +535,7 @@ Mental Health by Demographics
 Column {.sidebar}
 -----------------------------------------------------------------------
 ```{r Sidebar_21}
-mental_health_1 = c("feel sad or hopeless", "considered suicide", "made suicide plans", "attempted suicide", "injured during attempted suicide")
+mental_health_1 = c("feel sad or hopeless", "considered suicide", "attempted suicide", "injured during attempted suicide")
   
 selectInput("mental_health_1", label = h3("Choose Mental Health"),
             choices = as.list(mental_health_1), selected = "Felt Sad")
@@ -560,11 +583,6 @@ renderPlotly({
         filter(!(is.na(considered_suicide))) %>% 
         count(considered_suicide) %>% 
         rename(x = considered_suicide)}
-    else if (input$mental_health_1 == "made suicide plans") {
-      df_21 = df_21 %>%
-        filter(!(is.na(made_suicide_plan))) %>% 
-        count(made_suicide_plan) %>% 
-        rename(x = made_suicide_plan)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter(!(is.na(attempted_suicide))) %>% 
@@ -635,12 +653,6 @@ renderPlotly({
         group_by(sex) %>% 
         count(considered_suicide) %>% 
         rename(x = considered_suicide)}
-    else if (input$mental_health_1 == "made suicide plans") {
-      df_21 = df_21 %>%
-        filter((!(is.na(made_suicide_plan)))  & (!(is.na(sex)))) %>% 
-        group_by(sex) %>% 
-        count(made_suicide_plan) %>% 
-        rename(x = made_suicide_plan)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(attempted_suicide))) & (!(is.na(sex)))) %>% 
@@ -711,12 +723,6 @@ renderPlotly({
         group_by(age) %>% 
         count(considered_suicide) %>% 
         rename(x = considered_suicide)}
-    else if (input$mental_health_1 == "made suicide plans") {
-      df_21 = df_21 %>%
-        filter((!(is.na(made_suicide_plan)))  & (!(is.na(age)))) %>% 
-        group_by(age) %>% 
-        count(made_suicide_plan) %>% 
-        rename(x = made_suicide_plan)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(attempted_suicide))) & (!(is.na(age)))) %>% 
@@ -787,12 +793,6 @@ renderPlotly({
         group_by(race7) %>%
         count(considered_suicide) %>% 
         rename(x = considered_suicide)}
-    else if (input$mental_health_1 == "made suicide plans") {
-      df_21 = df_21 %>%
-        filter((!(is.na(made_suicide_plan)))  & (!(is.na(race7)))) %>% 
-        group_by(race7) %>%
-        count(made_suicide_plan) %>% 
-        rename(x = made_suicide_plan)}
     else if (input$mental_health_1 == "attempted suicide") {
       df_21 = df_21 %>%
         filter((!(is.na(attempted_suicide))) & (!(is.na(race7)))) %>% 
@@ -861,7 +861,7 @@ Mental Health over Time
 Column {.sidebar}
 -----------------------------------------------------------------------
 ```{r Sidebar_22}
-mental_health_2 = c("feel sad or hopeless", "considered suicide", "made suicide plans", "attempted suicide", "injured during attempted suicide")
+mental_health_2 = c("feel sad or hopeless", "considered suicide", "attempted suicide", "injured during attempted suicide")
   
 selectInput("mental_health_2", label = h3("Choose Mental Health"),
             choices = as.list(mental_health_2), selected = "Felt Sad")
@@ -897,17 +897,6 @@ renderPlotly({
         percent = round(percent, digits = 2)) %>% 
       filter(considered_suicide == "Yes")
   }
-  else if (input$mental_health_2 == "made suicide plans") {
-    df_22 = df_total %>%
-      filter(!(is.na(made_suicide_plan))) %>% 
-      group_by(year, borough) %>% 
-      count(made_suicide_plan) %>% 
-      mutate(
-        percent = (n / sum(n)),
-        percent = percent * 100,
-        percent = round(percent, digits = 2)) %>% 
-      filter(made_suicide_plan == "Yes")
-  }
   else if (input$mental_health_2 == "attempted suicide") {
     df_22 = df_total %>%
       filter(!(is.na(attempted_suicide))) %>% 
@@ -938,7 +927,8 @@ renderPlotly({
         color = ~borough,
         alpha = 0.7,
         line = list( width = 3, dash = 'dash'),
-        hovertemplate = "Year: %{x}\n%{y} % ") %>% 
+        text = ~str_c(borough,"\n",input$mental_health_1),
+        hovertemplate = paste("<b>%{text}</b>\nYear: %{x}\n%{y} % ","<extra></extra>")) %>% 
       layout( 
           xaxis = list(
             title = "Year",
@@ -966,35 +956,34 @@ renderPlotly({
 
 
 
-Drug Use & Risky Behaviors
+Drug Use, Risky Behaviors, & Violence
 ===================================== 
 
 Column {.sidebar}
 -----------------------------------------------------------------------
 ```{r Sidebar_13}
-drugs_3 = c("Marijuana", "Alcohol", "Cigarettes", "Vaping", "Smokeless Tobacco",
-          "Cigar")
+drugs_3 = c("Marijuana", "Alcohol", "Cigarettes", "Vaping", "Cigar")
   
 selectInput("drugs_3", label = h3("Choose Substance Abuse"),
             choices = as.list(drugs_3), selected = "Marijuana")
 
 
 
-years_DR = df_total %>% distinct(year) %>% pull()
+years_RV = df_total %>% distinct(year) %>% pull()
   
-selectInput("years_DR", label = h3("Choose year"),
-            choices = as.list(years_DR), selected = "2017")
+selectInput("years_RV", label = h3("Choose year"),
+            choices = as.list(years_RV), selected = "2017")
 
 
-boroughs_DR = df_total %>% distinct(borough) %>% pull()
+boroughs_RV = df_total %>% distinct(borough) %>% pull()
 
-selectInput("boroughs_DR",label = h3("Select borough"),
-            choices = boroughs_DR, selected = "Manhattan")
+selectInput("boroughs_RV",label = h3("Select borough"),
+            choices = boroughs_RV, selected = "Manhattan")
 
 radioButtons(
-  "grouping_choice_DR", 
+  "grouping_choice_RV", 
   label = h3("Group by"),
-  choices = c("texting and driving", "drinking and driving"))
+  choices = c("texting and driving", "drinking and driving", "carring weapon", "safety concerns at school", "threatened at school", "physical fighting", "bullying at school", "bullying electronically"))
 ```
 
 
@@ -1007,11 +996,11 @@ Column {.tabset}
 renderPlotly({
   df_13 = df_total %>% 
     filter(
-      borough == input$boroughs_DR &
-      year == input$years_DR) 
+      borough == input$boroughs_RV &
+      year == input$years_RV) 
   
   
-  if (input$grouping_choice_DR == "texting and driving")
+  if (input$grouping_choice_RV == "texting and driving")
   {
     if (input$drugs_3 == "Marijuana") {
       df_13 = df_13 %>%
@@ -1041,13 +1030,6 @@ renderPlotly({
         count(texting_and_driving) %>% 
         rename(c = texting_and_driving) %>% 
         rename(x = current_vaping )}
-    else if (input$drugs_3 == "Smokeless Tobacco") {
-      df_13 = df_13 %>%
-        filter((!(is.na(current_smokeless_tobacco_use ))) & (!(is.na(texting_and_driving)))) %>% 
-        group_by(current_smokeless_tobacco_use ) %>% 
-        count(texting_and_driving) %>% 
-        rename(c = texting_and_driving) %>% 
-        rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_3 == "Cigar") {
       df_13 = df_13 %>%
         filter((!(is.na(current_cigar_use))) & (!(is.na(texting_and_driving)))) %>% 
@@ -1056,7 +1038,7 @@ renderPlotly({
         rename(c = texting_and_driving) %>% 
         rename(x = current_cigar_use)}
   } 
-  else if (input$grouping_choice_DR == "drinking and driving")
+  else if (input$grouping_choice_RV == "drinking and driving")
   {
     if (input$drugs_3 == "Marijuana") {
       df_13 = df_13 %>%
@@ -1086,13 +1068,6 @@ renderPlotly({
         count(drinking_and_driving) %>% 
         rename(c = drinking_and_driving) %>% 
         rename(x = current_vaping )}
-    else if (input$drugs_3 == "Smokeless Tobacco") {
-      df_13 = df_13 %>%
-        filter((!(is.na(current_smokeless_tobacco_use ))) & (!(is.na(drinking_and_driving)))) %>% 
-        group_by(current_smokeless_tobacco_use ) %>% 
-        count(drinking_and_driving) %>% 
-        rename(c = drinking_and_driving) %>% 
-        rename(x = current_smokeless_tobacco_use)}
     else if (input$drugs_3 == "Cigar") {
       df_13 = df_13 %>%
         filter((!(is.na(current_cigar_use))) & (!(is.na(drinking_and_driving)))) %>% 
@@ -1101,14 +1076,236 @@ renderPlotly({
         rename(c = drinking_and_driving) %>% 
         rename(x = current_cigar_use)}
   }
+  else if (input$grouping_choice_RV == "carring weapon")
+  {
+    if (input$drugs_3 == "Marijuana") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_marijuana_use))) & (!(is.na(carring_weapon)))) %>% 
+        group_by(current_marijuana_use) %>% 
+        count(carring_weapon) %>% 
+        rename(c = carring_weapon) %>% 
+        rename(x = current_marijuana_use)}
+    else if (input$drugs_3 == "Alcohol") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_alcohol_use))) & (!(is.na(carring_weapon)))) %>% 
+        group_by(current_alcohol_use) %>% 
+        count(carring_weapon) %>% 
+        rename(c = carring_weapon) %>% 
+        rename(x = current_alcohol_use)}
+    else if (input$drugs_3 == "Cigarettes") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigarette_use))) & (!(is.na(carring_weapon)))) %>% 
+        group_by(current_cigarette_use) %>% 
+        count(carring_weapon) %>% 
+        rename(c = carring_weapon) %>% 
+        rename(x = current_cigarette_use)}
+    else if (input$drugs_3 == "Vaping") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_vaping ))) & (!(is.na(carring_weapon)))) %>% 
+        group_by(current_vaping ) %>% 
+        count(carring_weapon) %>% 
+        rename(c = carring_weapon) %>% 
+        rename(x = current_vaping )}
+    else if (input$drugs_3 == "Cigar") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigar_use))) & (!(is.na(carring_weapon)))) %>% 
+        group_by(current_cigar_use) %>% 
+        count(carring_weapon) %>% 
+        rename(c = carring_weapon) %>% 
+        rename(x = current_cigar_use)}
+  }
+  else if (input$grouping_choice_RV == "safety concerns at school")
+  {
+    if (input$drugs_3 == "Marijuana") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_marijuana_use))) & (!(is.na(safety_concerns_at_school)))) %>% 
+        group_by(current_marijuana_use) %>% 
+        count(safety_concerns_at_school) %>% 
+        rename(c = safety_concerns_at_school) %>% 
+        rename(x = current_marijuana_use)}
+    else if (input$drugs_3 == "Alcohol") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_alcohol_use))) & (!(is.na(safety_concerns_at_school)))) %>% 
+        group_by(current_alcohol_use) %>% 
+        count(safety_concerns_at_school) %>% 
+        rename(c = safety_concerns_at_school) %>% 
+        rename(x = current_alcohol_use)}
+    else if (input$drugs_3 == "Cigarettes") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigarette_use))) & (!(is.na(safety_concerns_at_school)))) %>% 
+        group_by(current_cigarette_use) %>% 
+        count(safety_concerns_at_school) %>% 
+        rename(c = safety_concerns_at_school) %>% 
+        rename(x = current_cigarette_use)}
+    else if (input$drugs_3 == "Vaping") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_vaping ))) & (!(is.na(safety_concerns_at_school)))) %>% 
+        group_by(current_vaping ) %>% 
+        count(safety_concerns_at_school) %>% 
+        rename(c = safety_concerns_at_school) %>% 
+        rename(x = current_vaping )}
+    else if (input$drugs_3 == "Cigar") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigar_use))) & (!(is.na(safety_concerns_at_school)))) %>% 
+        group_by(current_cigar_use) %>% 
+        count(safety_concerns_at_school) %>% 
+        rename(c = safety_concerns_at_school) %>% 
+        rename(x = current_cigar_use)}
+  } 
+  else if (input$grouping_choice_RV == "threatened at school")
+  {
+    if (input$drugs_3 == "Marijuana") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_marijuana_use))) & (!(is.na(threatened_at_school)))) %>% 
+        group_by(current_marijuana_use) %>% 
+        count(threatened_at_school) %>% 
+        rename(c = threatened_at_school) %>% 
+        rename(x = current_marijuana_use)}
+    else if (input$drugs_3 == "Alcohol") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_alcohol_use))) & (!(is.na(threatened_at_school)))) %>% 
+        group_by(current_alcohol_use) %>% 
+        count(threatened_at_school) %>% 
+        rename(c = threatened_at_school) %>% 
+        rename(x = current_alcohol_use)}
+    else if (input$drugs_3 == "Cigarettes") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigarette_use))) & (!(is.na(threatened_at_school)))) %>% 
+        group_by(current_cigarette_use) %>% 
+        count(threatened_at_school) %>% 
+        rename(c = threatened_at_school) %>% 
+        rename(x = current_cigarette_use)}
+    else if (input$drugs_3 == "Vaping") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_vaping ))) & (!(is.na(threatened_at_school)))) %>% 
+        group_by(current_vaping ) %>% 
+        count(threatened_at_school) %>% 
+        rename(c = threatened_at_school) %>% 
+        rename(x = current_vaping )}
+    else if (input$drugs_3 == "Cigar") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigar_use))) & (!(is.na(threatened_at_school)))) %>% 
+        group_by(current_cigar_use) %>% 
+        count(threatened_at_school) %>% 
+        rename(c = threatened_at_school) %>% 
+        rename(x = current_cigar_use)}
+  }
+  else if (input$grouping_choice_RV == "physical fighting")
+  {
+    if (input$drugs_3 == "Marijuana") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_marijuana_use))) & (!(is.na(physical_fighting)))) %>% 
+        group_by(current_marijuana_use) %>% 
+        count(physical_fighting) %>% 
+        rename(c = physical_fighting) %>% 
+        rename(x = current_marijuana_use)}
+    else if (input$drugs_3 == "Alcohol") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_alcohol_use))) & (!(is.na(physical_fighting)))) %>% 
+        group_by(current_alcohol_use) %>% 
+        count(physical_fighting) %>% 
+        rename(c = physical_fighting) %>% 
+        rename(x = current_alcohol_use)}
+    else if (input$drugs_3 == "Cigarettes") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigarette_use))) & (!(is.na(physical_fighting)))) %>% 
+        group_by(current_cigarette_use) %>% 
+        count(physical_fighting) %>% 
+        rename(c = physical_fighting) %>% 
+        rename(x = current_cigarette_use)}
+    else if (input$drugs_3 == "Vaping") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_vaping ))) & (!(is.na(physical_fighting)))) %>% 
+        group_by(current_vaping ) %>% 
+        count(physical_fighting) %>% 
+        rename(c = physical_fighting) %>% 
+        rename(x = current_vaping )}
+    else if (input$drugs_3 == "Cigar") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigar_use))) & (!(is.na(physical_fighting)))) %>% 
+        group_by(current_cigar_use) %>% 
+        count(physical_fighting) %>% 
+        rename(c = physical_fighting) %>% 
+        rename(x = current_cigar_use)}
+  }
+  else if (input$grouping_choice_RV == "bullying at school")
+  {
+    if (input$drugs_3 == "Marijuana") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_marijuana_use))) & (!(is.na(bullying_at_school)))) %>% 
+        group_by(current_marijuana_use) %>% 
+        count(bullying_at_school) %>% 
+        rename(c = bullying_at_school) %>% 
+        rename(x = current_marijuana_use)}
+    else if (input$drugs_3 == "Alcohol") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_alcohol_use))) & (!(is.na(bullying_at_school)))) %>% 
+        group_by(current_alcohol_use) %>% 
+        count(bullying_at_school) %>% 
+        rename(c = bullying_at_school) %>% 
+        rename(x = current_alcohol_use)}
+    else if (input$drugs_3 == "Cigarettes") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigarette_use))) & (!(is.na(bullying_at_school)))) %>% 
+        group_by(current_cigarette_use) %>% 
+        count(bullying_at_school) %>% 
+        rename(c = bullying_at_school) %>% 
+        rename(x = current_cigarette_use)}
+    else if (input$drugs_3 == "Vaping") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_vaping ))) & (!(is.na(bullying_at_school)))) %>% 
+        group_by(current_vaping ) %>% 
+        count(bullying_at_school) %>% 
+        rename(c = bullying_at_school) %>% 
+        rename(x = current_vaping )}
+    else if (input$drugs_3 == "Cigar") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigar_use))) & (!(is.na(bullying_at_school)))) %>% 
+        group_by(current_cigar_use) %>% 
+        count(bullying_at_school) %>% 
+        rename(c = bullying_at_school) %>% 
+        rename(x = current_cigar_use)}
+  }
+  else if (input$grouping_choice_RV == "bullying electronically")
+  {
+    if (input$drugs_3 == "Marijuana") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_marijuana_use))) & (!(is.na(bullying_electronically)))) %>% 
+        group_by(current_marijuana_use) %>% 
+        count(bullying_electronically) %>% 
+        rename(c = bullying_electronically) %>% 
+        rename(x = current_marijuana_use)}
+    else if (input$drugs_3 == "Alcohol") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_alcohol_use))) & (!(is.na(bullying_electronically)))) %>% 
+        group_by(current_alcohol_use) %>% 
+        count(bullying_electronically) %>% 
+        rename(c = bullying_electronically) %>% 
+        rename(x = current_alcohol_use)}
+    else if (input$drugs_3 == "Cigarettes") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigarette_use))) & (!(is.na(bullying_electronically)))) %>% 
+        group_by(current_cigarette_use) %>% 
+        count(bullying_electronically) %>% 
+        rename(c = bullying_electronically) %>% 
+        rename(x = current_cigarette_use)}
+    else if (input$drugs_3 == "Vaping") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_vaping ))) & (!(is.na(bullying_electronically)))) %>% 
+        group_by(current_vaping ) %>% 
+        count(bullying_electronically) %>% 
+        rename(c = bullying_electronically) %>% 
+        rename(x = current_vaping )}
+    else if (input$drugs_3 == "Cigar") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigar_use))) & (!(is.na(bullying_electronically)))) %>% 
+        group_by(current_cigar_use) %>% 
+        count(bullying_electronically) %>% 
+        rename(c = bullying_electronically) %>% 
+        rename(x = current_cigar_use)}
+  }
     
-    
-    
-    
-    
-    
-    
-    
+
     df_13 = df_13 %>%
       mutate(
           percent = (n / sum(n)),
@@ -1127,14 +1324,14 @@ renderPlotly({
       layout(
         legend = list(names = "try"),
         xaxis = list(
-          title = str_c("Use of ",input$drugs_3)),
+          title = input$drugs_3),
         yaxis = list(
           title = "Percent",
           dtick = 5,
           tick0 = 0,
           tickmode = "linear",
           range = c(0, 100)),
-        title = str_c("Percentage currently use ", input$drugs_3," (past 30 days)\n ",input$boroughs_DR, " ", input$years_DR, " \ngrouped by ", input$grouping_choice_DR))
+        title = str_c("Percentage currently use ", input$drugs_3," (past 30 days)\n ",input$boroughs_RV, " ", input$years_RV, " \ngrouped by ", input$grouping_choice_RV))
     }
     else{
       text_warning = "No data available"
@@ -1160,328 +1357,3 @@ renderPlotly({
 
 
 
-
-
-Drug Use & Violence
-===================================== 
-
-Column {.sidebar}
------------------------------------------------------------------------
-```{r Sidebar_14}
-drugs_4 = c("Marijuana", "Alcohol", "Cigarettes", "Vaping", "Smokeless Tobacco",
-          "Cigar")
-  
-selectInput("drugs_4", label = h3("Choose Substance Abuse"),
-            choices = as.list(drugs_4), selected = "Marijuana")
-
-
-
-years_DV = df_total %>% distinct(year) %>% pull()
-  
-selectInput("years_DV", label = h3("Choose year"),
-            choices = as.list(years_DV), selected = "2017")
-
-
-boroughs_DV = df_total %>% distinct(borough) %>% pull()
-
-selectInput("boroughs_DV",label = h3("Select borough"),
-            choices = boroughs_DV, selected = "Manhattan")
-
-radioButtons(
-  "grouping_choice_DV", 
-  label = h3("Group by"),
-  choices = c("safety concerns at school", "threatened at school", "physical fighting", "bullying at school", "bullying electronically"))
-```
-
-
-Column {.tabset}
------------------------------------------------------------------------
-
-### <span style="color:#69899f"> **Drug Use** </span>
-
-```{r data_14}
-renderPlotly({
-  df_14 = df_total %>% 
-    filter(
-      borough == input$boroughs_DV &
-      year == input$years_DV) 
-  
-  
-  if (input$grouping_choice_DV == "safety concerns at school")
-  {
-    if (input$drugs_4 == "Marijuana") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_marijuana_use))) & (!(is.na(safety_concerns_at_school)))) %>% 
-        group_by(current_marijuana_use) %>% 
-        count(safety_concerns_at_school) %>% 
-        rename(c = safety_concerns_at_school) %>% 
-        rename(x = current_marijuana_use)}
-    else if (input$drugs_4 == "Alcohol") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_alcohol_use))) & (!(is.na(safety_concerns_at_school)))) %>% 
-        group_by(current_alcohol_use) %>% 
-        count(safety_concerns_at_school) %>% 
-        rename(c = safety_concerns_at_school) %>% 
-        rename(x = current_alcohol_use)}
-    else if (input$drugs_4 == "Cigarettes") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigarette_use))) & (!(is.na(safety_concerns_at_school)))) %>% 
-        group_by(current_cigarette_use) %>% 
-        count(safety_concerns_at_school) %>% 
-        rename(c = safety_concerns_at_school) %>% 
-        rename(x = current_cigarette_use)}
-    else if (input$drugs_4 == "Vaping") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_vaping ))) & (!(is.na(safety_concerns_at_school)))) %>% 
-        group_by(current_vaping ) %>% 
-        count(safety_concerns_at_school) %>% 
-        rename(c = safety_concerns_at_school) %>% 
-        rename(x = current_vaping )}
-    else if (input$drugs_4 == "Smokeless Tobacco") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_smokeless_tobacco_use ))) & (!(is.na(safety_concerns_at_school)))) %>% 
-        group_by(current_smokeless_tobacco_use ) %>% 
-        count(safety_concerns_at_school) %>% 
-        rename(c = safety_concerns_at_school) %>% 
-        rename(x = current_smokeless_tobacco_use)}
-    else if (input$drugs_4 == "Cigar") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigar_use))) & (!(is.na(safety_concerns_at_school)))) %>% 
-        group_by(current_cigar_use) %>% 
-        count(safety_concerns_at_school) %>% 
-        rename(c = safety_concerns_at_school) %>% 
-        rename(x = current_cigar_use)}
-  } 
-  else if (input$grouping_choice_DV == "threatened at school")
-  {
-    if (input$drugs_4 == "Marijuana") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_marijuana_use))) & (!(is.na(threatened_at_school)))) %>% 
-        group_by(current_marijuana_use) %>% 
-        count(threatened_at_school) %>% 
-        rename(c = threatened_at_school) %>% 
-        rename(x = current_marijuana_use)}
-    else if (input$drugs_4 == "Alcohol") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_alcohol_use))) & (!(is.na(threatened_at_school)))) %>% 
-        group_by(current_alcohol_use) %>% 
-        count(threatened_at_school) %>% 
-        rename(c = threatened_at_school) %>% 
-        rename(x = current_alcohol_use)}
-    else if (input$drugs_4 == "Cigarettes") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigarette_use))) & (!(is.na(threatened_at_school)))) %>% 
-        group_by(current_cigarette_use) %>% 
-        count(threatened_at_school) %>% 
-        rename(c = threatened_at_school) %>% 
-        rename(x = current_cigarette_use)}
-    else if (input$drugs_4 == "Vaping") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_vaping ))) & (!(is.na(threatened_at_school)))) %>% 
-        group_by(current_vaping ) %>% 
-        count(threatened_at_school) %>% 
-        rename(c = threatened_at_school) %>% 
-        rename(x = current_vaping )}
-    else if (input$drugs_4 == "Smokeless Tobacco") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_smokeless_tobacco_use ))) & (!(is.na(threatened_at_school)))) %>% 
-        group_by(current_smokeless_tobacco_use ) %>% 
-        count(threatened_at_school) %>% 
-        rename(c = threatened_at_school) %>% 
-        rename(x = current_smokeless_tobacco_use)}
-    else if (input$drugs_4 == "Cigar") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigar_use))) & (!(is.na(threatened_at_school)))) %>% 
-        group_by(current_cigar_use) %>% 
-        count(threatened_at_school) %>% 
-        rename(c = threatened_at_school) %>% 
-        rename(x = current_cigar_use)}
-  }
-  else if (input$grouping_choice_DV == "physical fighting")
-  {
-    if (input$drugs_4 == "Marijuana") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_marijuana_use))) & (!(is.na(physical_fighting)))) %>% 
-        group_by(current_marijuana_use) %>% 
-        count(physical_fighting) %>% 
-        rename(c = physical_fighting) %>% 
-        rename(x = current_marijuana_use)}
-    else if (input$drugs_4 == "Alcohol") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_alcohol_use))) & (!(is.na(physical_fighting)))) %>% 
-        group_by(current_alcohol_use) %>% 
-        count(physical_fighting) %>% 
-        rename(c = physical_fighting) %>% 
-        rename(x = current_alcohol_use)}
-    else if (input$drugs_4 == "Cigarettes") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigarette_use))) & (!(is.na(physical_fighting)))) %>% 
-        group_by(current_cigarette_use) %>% 
-        count(physical_fighting) %>% 
-        rename(c = physical_fighting) %>% 
-        rename(x = current_cigarette_use)}
-    else if (input$drugs_4 == "Vaping") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_vaping ))) & (!(is.na(physical_fighting)))) %>% 
-        group_by(current_vaping ) %>% 
-        count(physical_fighting) %>% 
-        rename(c = physical_fighting) %>% 
-        rename(x = current_vaping )}
-    else if (input$drugs_4 == "Smokeless Tobacco") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_smokeless_tobacco_use ))) & (!(is.na(physical_fighting)))) %>% 
-        group_by(current_smokeless_tobacco_use ) %>% 
-        count(physical_fighting) %>% 
-        rename(c = physical_fighting) %>% 
-        rename(x = current_smokeless_tobacco_use)}
-    else if (input$drugs_4 == "Cigar") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigar_use))) & (!(is.na(physical_fighting)))) %>% 
-        group_by(current_cigar_use) %>% 
-        count(physical_fighting) %>% 
-        rename(c = physical_fighting) %>% 
-        rename(x = current_cigar_use)}
-  }
-  else if (input$grouping_choice_DV == "bullying at school")
-  {
-    if (input$drugs_4 == "Marijuana") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_marijuana_use))) & (!(is.na(bullying_at_school)))) %>% 
-        group_by(current_marijuana_use) %>% 
-        count(bullying_at_school) %>% 
-        rename(c = bullying_at_school) %>% 
-        rename(x = current_marijuana_use)}
-    else if (input$drugs_4 == "Alcohol") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_alcohol_use))) & (!(is.na(bullying_at_school)))) %>% 
-        group_by(current_alcohol_use) %>% 
-        count(bullying_at_school) %>% 
-        rename(c = bullying_at_school) %>% 
-        rename(x = current_alcohol_use)}
-    else if (input$drugs_4 == "Cigarettes") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigarette_use))) & (!(is.na(bullying_at_school)))) %>% 
-        group_by(current_cigarette_use) %>% 
-        count(bullying_at_school) %>% 
-        rename(c = bullying_at_school) %>% 
-        rename(x = current_cigarette_use)}
-    else if (input$drugs_4 == "Vaping") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_vaping ))) & (!(is.na(bullying_at_school)))) %>% 
-        group_by(current_vaping ) %>% 
-        count(bullying_at_school) %>% 
-        rename(c = bullying_at_school) %>% 
-        rename(x = current_vaping )}
-    else if (input$drugs_4 == "Smokeless Tobacco") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_smokeless_tobacco_use ))) & (!(is.na(bullying_at_school)))) %>% 
-        group_by(current_smokeless_tobacco_use ) %>% 
-        count(bullying_at_school) %>% 
-        rename(c = bullying_at_school) %>% 
-        rename(x = current_smokeless_tobacco_use)}
-    else if (input$drugs_4 == "Cigar") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigar_use))) & (!(is.na(bullying_at_school)))) %>% 
-        group_by(current_cigar_use) %>% 
-        count(bullying_at_school) %>% 
-        rename(c = bullying_at_school) %>% 
-        rename(x = current_cigar_use)}
-  }
-  else if (input$grouping_choice_DV == "bullying electronically")
-  {
-    if (input$drugs_4 == "Marijuana") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_marijuana_use))) & (!(is.na(bullying_electronically)))) %>% 
-        group_by(current_marijuana_use) %>% 
-        count(bullying_electronically) %>% 
-        rename(c = bullying_electronically) %>% 
-        rename(x = current_marijuana_use)}
-    else if (input$drugs_4 == "Alcohol") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_alcohol_use))) & (!(is.na(bullying_electronically)))) %>% 
-        group_by(current_alcohol_use) %>% 
-        count(bullying_electronically) %>% 
-        rename(c = bullying_electronically) %>% 
-        rename(x = current_alcohol_use)}
-    else if (input$drugs_4 == "Cigarettes") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigarette_use))) & (!(is.na(bullying_electronically)))) %>% 
-        group_by(current_cigarette_use) %>% 
-        count(bullying_electronically) %>% 
-        rename(c = bullying_electronically) %>% 
-        rename(x = current_cigarette_use)}
-    else if (input$drugs_4 == "Vaping") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_vaping ))) & (!(is.na(bullying_electronically)))) %>% 
-        group_by(current_vaping ) %>% 
-        count(bullying_electronically) %>% 
-        rename(c = bullying_electronically) %>% 
-        rename(x = current_vaping )}
-    else if (input$drugs_4 == "Smokeless Tobacco") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_smokeless_tobacco_use ))) & (!(is.na(bullying_electronically)))) %>% 
-        group_by(current_smokeless_tobacco_use ) %>% 
-        count(bullying_electronically) %>% 
-        rename(c = bullying_electronically) %>% 
-        rename(x = current_smokeless_tobacco_use)}
-    else if (input$drugs_4 == "Cigar") {
-      df_14 = df_14 %>%
-        filter((!(is.na(current_cigar_use))) & (!(is.na(bullying_electronically)))) %>% 
-        group_by(current_cigar_use) %>% 
-        count(bullying_electronically) %>% 
-        rename(c = bullying_electronically) %>% 
-        rename(x = current_cigar_use)}
-  }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    df_14 = df_14 %>%
-      mutate(
-          percent = (n / sum(n)),
-          percent = percent * 100,
-          percent = round(percent, digits = 2))
-    
-    if (nrow(df_14) > 1)
-    {
-      df_14 %>% 
-      plot_ly(
-          x = ~x, 
-          y = ~percent, 
-          type = "bar",
-          color = ~c,
-          hovertemplate = "%{y} % <extra></extra>") %>% 
-      layout(
-        xaxis = list(
-          title = str_c("Use of ",input$drugs_4)),
-        yaxis = list(
-          title = "Percent",
-          dtick = 5,
-          tick0 = 0,
-          tickmode = "linear",
-          range = c(0, 100)),
-        title = str_c("Percentage currently use ", input$drugs_4," (past 30 days)\n ",input$boroughs_DV, " ", input$years_DV, " \ngrouped by ", input$grouping_choice_DV))
-    }
-    else{
-      text_warning = "No data available"
-      x = 1 
-      y = 1
-      
-      plot_ly(x = ~x, y = ~y, mode = 'text', text = ~text_warning, textposition = 'middle',
-        textfont = list(size = 16)) %>% 
-        layout(
-          xaxis = list(
-            title = ""),
-          yaxis = list(
-            title = ""))
-    }
-  
-})
-```
-
-### <span style="color:#69899f"> **Decription** </span>

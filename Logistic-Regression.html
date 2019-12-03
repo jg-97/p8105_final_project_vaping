@@ -485,6 +485,7 @@ fit_logistic %&gt;%
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
+<<<<<<< HEAD
 <td align="right">-1.114</td>
 <td align="right">0.129</td>
 <td align="right">-8.605</td>
@@ -496,19 +497,39 @@ fit_logistic %&gt;%
 <td align="right">0.351</td>
 <td align="right">0.053</td>
 <td align="right">6.624</td>
+=======
+<td align="right">-1.192</td>
+<td align="right">0.172</td>
+<td align="right">-6.915</td>
+<td align="right">0.000</td>
+<td align="right">0.304</td>
+</tr>
+<tr class="even">
+<td align="left">sad_hopelessNo</td>
+<td align="right">0.278</td>
+<td align="right">0.073</td>
+<td align="right">3.823</td>
+>>>>>>> 09bcabc80bef9299435b610ee93bd6c51218a493
 <td align="right">0.000</td>
 <td align="right">1.420</td>
 </tr>
 <tr class="odd">
 <td align="left">attempted_suicideNo</td>
+<<<<<<< HEAD
 <td align="right">0.630</td>
 <td align="right">0.077</td>
 <td align="right">8.175</td>
+=======
+<td align="right">0.526</td>
+<td align="right">0.104</td>
+<td align="right">5.036</td>
+>>>>>>> 09bcabc80bef9299435b610ee93bd6c51218a493
 <td align="right">0.000</td>
 <td align="right">1.878</td>
 </tr>
 <tr class="even">
 <td align="left">safety_concerns_at_schoolNo</td>
+<<<<<<< HEAD
 <td align="right">0.273</td>
 <td align="right">0.093</td>
 <td align="right">2.925</td>
@@ -528,22 +549,55 @@ fit_logistic %&gt;%
 <td align="right">0.794</td>
 <td align="right">0.055</td>
 <td align="right">14.381</td>
+=======
+<td align="right">0.287</td>
+<td align="right">0.121</td>
+<td align="right">2.369</td>
+<td align="right">0.018</td>
+<td align="right">1.333</td>
+</tr>
+<tr class="odd">
+<td align="left">threatened_at_schoolNo</td>
+<td align="right">0.296</td>
+<td align="right">0.135</td>
+<td align="right">2.193</td>
+<td align="right">0.028</td>
+<td align="right">1.345</td>
+</tr>
+<tr class="even">
+<td align="left">physical_fightingNo</td>
+<td align="right">0.773</td>
+<td align="right">0.075</td>
+<td align="right">10.347</td>
+>>>>>>> 09bcabc80bef9299435b610ee93bd6c51218a493
 <td align="right">0.000</td>
 <td align="right">2.213</td>
 </tr>
 <tr class="odd">
 <td align="left">bullying_electronicallyNo</td>
+<<<<<<< HEAD
 <td align="right">0.237</td>
 <td align="right">0.069</td>
 <td align="right">3.409</td>
+=======
+<td align="right">0.302</td>
+<td align="right">0.094</td>
+<td align="right">3.228</td>
+>>>>>>> 09bcabc80bef9299435b610ee93bd6c51218a493
 <td align="right">0.001</td>
 <td align="right">1.267</td>
 </tr>
 <tr class="even">
 <td align="left">carring_weaponNo</td>
+<<<<<<< HEAD
 <td align="right">0.863</td>
 <td align="right">0.080</td>
 <td align="right">10.776</td>
+=======
+<td align="right">0.983</td>
+<td align="right">0.110</td>
+<td align="right">8.920</td>
+>>>>>>> 09bcabc80bef9299435b610ee93bd6c51218a493
 <td align="right">0.000</td>
 <td align="right">2.370</td>
 </tr>
@@ -552,6 +606,7 @@ fit_logistic %&gt;%
 <pre class="r"><code># What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
 caret::varImp(fit_logistic)</code></pre>
 <pre><code>##                               Overall
+<<<<<<< HEAD
 ## sad_hopelessNo               6.623524
 ## attempted_suicideNo          8.174587
 ## safety_concerns_at_schoolNo  2.924818
@@ -559,6 +614,15 @@ caret::varImp(fit_logistic)</code></pre>
 ## physical_fightingNo         14.380931
 ## bullying_electronicallyNo    3.409308
 ## carring_weaponNo            10.775690</code></pre>
+=======
+## sad_hopelessNo               3.822561
+## attempted_suicideNo          5.036263
+## safety_concerns_at_schoolNo  2.368532
+## threatened_at_schoolNo       2.193178
+## physical_fightingNo         10.347481
+## bullying_electronicallyNo    3.227808
+## carring_weaponNo             8.920078</code></pre>
+>>>>>>> 09bcabc80bef9299435b610ee93bd6c51218a493
 <pre class="r"><code># Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
 
 
@@ -597,11 +661,19 @@ model_caret</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
+<<<<<<< HEAD
 ## Summary of sample sizes: 17704, 72679, 72679, 72677, 72677, 72679, ... 
 ## Resampling results:
 ## 
 ##   Accuracy   Kappa     
 ##   0.8484521  0.07992005</code></pre>
+=======
+## Summary of sample sizes: 9596, 8272, 8272, 8272, 8272, 8271, ... 
+## Resampling results:
+## 
+##   Accuracy   Kappa     
+##   0.8467982  0.08877832</code></pre>
+>>>>>>> 09bcabc80bef9299435b610ee93bd6c51218a493
 <pre class="r"><code>AIC(fit_logistic)</code></pre>
 <pre><code>## [1] 11034.67</code></pre>
 

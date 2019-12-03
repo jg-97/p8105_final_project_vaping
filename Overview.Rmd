@@ -16,7 +16,7 @@ Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was
 
 # Dataset
 
-Below are some datasets that dive into these topics and we intend on using
+Our final dataset came from the follwoing sources: 
 
 1.    National Survey on Drug Use and Health ([NSDUH](<https://www.samhsa.gov/data/all-reports?f[]=field_report_and_document_type:6461&f[]=field_samhsa_survey:6511&f%5B%5D[]=field_report_and_document_type:6461&f%5B%5D[]=field_samhsa_survey:6511&order=desc&sort=field_date_printed_on_report&items_per_page=15&page=0>)) offers the information of multiple drugs.
 
@@ -28,6 +28,20 @@ Below are some datasets that dive into these topics and we intend on using
 
 
 # Methods
+
+1.    Data cleaning procedures: 
+
+      * The Github repository for this project can be found here.
+      * The final report is housed in a repository here.
+
+2.    We used shiny for interactive plots
+
+3.    We used use LASSO to automatically choose important predictors in the logistic regression model based on cross-validation error
+
+4.    80/20 was used for cross-validation
+
+5.    We first used listwise exclusion for missing data. We than used imputation to replace missingness and run the same models. Since the results did not differ significantly, we used data without any missing replacement. 
+
 
 # Findings
 

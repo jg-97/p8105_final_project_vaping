@@ -1,5 +1,4 @@
 ---
-title: "Report"
 output: 
   html_document:
     code_folding: hide
@@ -7,7 +6,6 @@ output:
     toc_float: true
     theme: journal
 ---
-Author: Jin Ge
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,

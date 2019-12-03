@@ -41,30 +41,30 @@ fit_logistic %>%
   knitr::kable(digits = 3)
 ```
 
-| term                            | estimate | std.error | statistic | p.value |    OR |
-| :------------------------------ | -------: | --------: | --------: | ------: | ----: |
-| (Intercept)                     |  \-2.253 |     0.049 |  \-45.556 |   0.000 | 0.105 |
-| sad\_hopelessYes                |    0.278 |     0.073 |     3.823 |   0.000 | 1.321 |
-| attempted\_suicideYes           |    0.526 |     0.104 |     5.036 |   0.000 | 1.692 |
-| safety\_concerns\_at\_schoolYes |    0.287 |     0.121 |     2.369 |   0.018 | 1.333 |
-| threatened\_at\_schoolYes       |    0.296 |     0.135 |     2.193 |   0.028 | 1.345 |
-| physical\_fightingYes           |    0.773 |     0.075 |    10.347 |   0.000 | 2.165 |
-| bullying\_electronicallyYes     |    0.302 |     0.094 |     3.228 |   0.001 | 1.353 |
-| carring\_weaponYes              |    0.983 |     0.110 |     8.920 |   0.000 | 2.672 |
+| term                           | estimate | std.error | statistic | p.value |    OR |
+| :----------------------------- | -------: | --------: | --------: | ------: | ----: |
+| (Intercept)                    |  \-1.192 |     0.172 |   \-6.915 |   0.000 | 0.304 |
+| sad\_hopelessNo                |    0.278 |     0.073 |     3.823 |   0.000 | 1.321 |
+| attempted\_suicideNo           |    0.526 |     0.104 |     5.036 |   0.000 | 1.692 |
+| safety\_concerns\_at\_schoolNo |    0.287 |     0.121 |     2.369 |   0.018 | 1.333 |
+| threatened\_at\_schoolNo       |    0.296 |     0.135 |     2.193 |   0.028 | 1.345 |
+| physical\_fightingNo           |    0.773 |     0.075 |    10.347 |   0.000 | 2.165 |
+| bullying\_electronicallyNo     |    0.302 |     0.094 |     3.228 |   0.001 | 1.353 |
+| carring\_weaponNo              |    0.983 |     0.110 |     8.920 |   0.000 | 2.672 |
 
 ``` r
 # What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
 caret::varImp(fit_logistic)
 ```
 
-    ##                                Overall
-    ## sad_hopelessYes               3.822561
-    ## attempted_suicideYes          5.036263
-    ## safety_concerns_at_schoolYes  2.368532
-    ## threatened_at_schoolYes       2.193178
-    ## physical_fightingYes         10.347481
-    ## bullying_electronicallyYes    3.227808
-    ## carring_weaponYes             8.920078
+    ##                               Overall
+    ## sad_hopelessNo               3.822561
+    ## attempted_suicideNo          5.036263
+    ## safety_concerns_at_schoolNo  2.368532
+    ## threatened_at_schoolNo       2.193178
+    ## physical_fightingNo         10.347481
+    ## bullying_electronicallyNo    3.227808
+    ## carring_weaponNo             8.920078
 
 ``` r
 # Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
@@ -100,15 +100,15 @@ model_caret
     ## 
     ## 10191 samples
     ##     7 predictor
-    ##     2 classes: 'No', 'Yes' 
+    ##     2 classes: 'Yes', 'No' 
     ## 
     ## No pre-processing
     ## Resampling: Cross-Validated (5 fold) 
-    ## Summary of sample sizes: 9596, 8271, 8272, 8272, 8271, 8273, ... 
+    ## Summary of sample sizes: 9596, 8272, 8272, 8272, 8272, 8271, ... 
     ## Resampling results:
     ## 
     ##   Accuracy   Kappa     
-    ##   0.8475638  0.09310674
+    ##   0.8467982  0.08877832
 
 ``` r
 AIC(fit_logistic)
