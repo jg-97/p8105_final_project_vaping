@@ -30,11 +30,8 @@ df = df_total %>%
     age,
     race7,
     borough)
-
-
 # Fitting a logistic regression model
 fit_logistic = glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())
-
 fit_logistic %>% 
   broom::tidy() %>% 
   mutate(OR = exp(estimate)) %>%
@@ -76,9 +73,7 @@ pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_a
 
 ``` r
 # Cross-Validating the model
-
 data_train <- trainControl(method = "cv", number = 5)
-
 model_caret <- train(
   current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon,
                    data = df,
@@ -104,11 +99,11 @@ model_caret
     ## 
     ## No pre-processing
     ## Resampling: Cross-Validated (5 fold) 
-    ## Summary of sample sizes: 9596, 8272, 8272, 8272, 8272, 8271, ... 
+    ## Summary of sample sizes: 9596, 8271, 8272, 8272, 8272, 8272, ... 
     ## Resampling results:
     ## 
-    ##   Accuracy   Kappa     
-    ##   0.8467982  0.08877832
+    ##   Accuracy   Kappa    
+    ##   0.8465225  0.0927109
 
 ``` r
 AIC(fit_logistic)

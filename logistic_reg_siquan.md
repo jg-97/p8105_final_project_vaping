@@ -49,7 +49,7 @@ summary(df)
     ##                                                                        
     ##  sad_hopeless attempted_suicide              injurious_suicide_attempt
     ##  Yes : 5547   Yes : 1496        Yes                       :  516      
-    ##  No  :12316   No  :13678        did not attempt suicide/No:14343      
+    ##  No  :12316   No  :13678        No/did not attempt suicide:14343      
     ##  NA's:  850   NA's: 3539        NA's                      : 3854      
     ##                                                                       
     ##                                                                       
@@ -99,7 +99,7 @@ str(df)
     ##  $ carring_weapon           : Factor w/ 2 levels "Yes","No": NA NA 2 2 1 2 2 2 2 NA ...
     ##  $ sad_hopeless             : Factor w/ 2 levels "Yes","No": NA 1 2 2 NA 2 1 1 1 NA ...
     ##  $ attempted_suicide        : Factor w/ 2 levels "Yes","No": NA 1 2 2 NA 2 NA 2 2 1 ...
-    ##  $ injurious_suicide_attempt: Factor w/ 2 levels "Yes","did not attempt suicide/No": NA 2 2 2 NA 2 NA 2 2 2 ...
+    ##  $ injurious_suicide_attempt: Factor w/ 2 levels "Yes","No/did not attempt suicide": NA 2 2 2 NA 2 NA 2 2 2 ...
     ##  $ safety_concerns_at_school: Factor w/ 2 levels "Yes","No": 1 1 2 2 1 2 2 2 2 1 ...
     ##  $ threatened_at_school     : Factor w/ 2 levels "Yes","No": NA NA 2 2 1 2 2 2 2 1 ...
     ##  $ physical_fighting        : Factor w/ 2 levels "Yes","No": NA NA 2 2 1 2 1 1 2 1 ...
@@ -156,7 +156,7 @@ coef(model_lasso)
     ## texting_and_drivingNo/did not drive                  7.694352e-01
     ## sad_hopelessNo                                       2.967696e-01
     ## attempted_suicideNo                                  6.810848e-01
-    ## injurious_suicide_attemptdid not attempt suicide/No  .           
+    ## injurious_suicide_attemptNo/did not attempt suicide  .           
     ## safety_concerns_at_schoolNo                          3.235722e-01
     ## threatened_at_schoolNo                               7.252697e-02
     ## physical_fightingNo                                  8.646754e-01

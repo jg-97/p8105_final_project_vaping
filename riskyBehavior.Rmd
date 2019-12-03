@@ -16,7 +16,6 @@ This section collaped the survey data into stat
 ```{r dp}
 load("./data/nyc_data.RData")
 head(df_total,100)
-
 clnames<-c(
   ##Basic demographic
     colnames(df_total)[1:6],colnames(df_total)[8],
@@ -28,11 +27,8 @@ clnames<-c(
            colnames(df_total)[60:61], 
     ###Danger Sex Behavior
           colnames(df_total)[63:68])
-
 clnames
-
 nyc_risky<-df_total%>%select(clnames)
-
 ####Fill NA
 fill_NA = function(vector){
   #### fill in missing values with "virginica" 
@@ -42,14 +38,9 @@ fill_NA = function(vector){
 ##Do everything across column and merge the output into dataset.
 nyc_risky_non<-map_df(nyc_risky,fill_NA)
 nyc_risky_non%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)))
-
 nyc_risky_non_stat<-nyc_risky_non%>%select(-"id")%>%pivot_longer(names_to = "question",values_to = "response",cols = 3:36)%>%count(borough,year,question,response)
-
-
 nyc_risky_non_stat%>%filter(year == 2017, borough == "Bronx",question == c("texting_and_driving","current_vaping"))%>%
-
 ggplot(aes(x=response,y=n))+geom_col()+facet_grid(~question)
-
 nyc_risky_non_stat%>%filter(response == "unknown")%>%group_by(question)%>%summarise(sum(n))
 ```
 
@@ -64,8 +55,5 @@ naperc_df=map_df(df_total,fill_NA)%>%mutate(id = as.numeric(as.character(id)),ye
   left_join(x = . , y = df_total%>%group_by(year)%>%summarise(n()))%>%
   mutate(naperc = `sum(n)`/`n()`)
 view(naperc_df)
-
-
 df_total%>%filter(year == c(2015,2017))%>%group_by(year)%>%summarise(n())
 ```
-

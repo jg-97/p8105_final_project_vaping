@@ -373,6 +373,7 @@ df = df_total%&gt;%
     sex,
     age,
     race7,
+<<<<<<< HEAD:Logistic-Regression.html
     borough,
     illegal_injected_drug_use,
 sex_before_13,
@@ -550,6 +551,135 @@ final_modle_formula</code></pre>
 </div>
 </div>
 </div>
+=======
+    borough)
+# Fitting a logistic regression model
+fit_logistic = glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())
+fit_logistic %&gt;% 
+  broom::tidy() %&gt;% 
+  mutate(OR = exp(estimate)) %&gt;%
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">OR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-1.192</td>
+<td align="right">0.172</td>
+<td align="right">-6.915</td>
+<td align="right">0.000</td>
+<td align="right">0.304</td>
+</tr>
+<tr class="even">
+<td align="left">sad_hopelessNo</td>
+<td align="right">0.278</td>
+<td align="right">0.073</td>
+<td align="right">3.823</td>
+<td align="right">0.000</td>
+<td align="right">1.321</td>
+</tr>
+<tr class="odd">
+<td align="left">attempted_suicideNo</td>
+<td align="right">0.526</td>
+<td align="right">0.104</td>
+<td align="right">5.036</td>
+<td align="right">0.000</td>
+<td align="right">1.692</td>
+</tr>
+<tr class="even">
+<td align="left">safety_concerns_at_schoolNo</td>
+<td align="right">0.287</td>
+<td align="right">0.121</td>
+<td align="right">2.369</td>
+<td align="right">0.018</td>
+<td align="right">1.333</td>
+</tr>
+<tr class="odd">
+<td align="left">threatened_at_schoolNo</td>
+<td align="right">0.296</td>
+<td align="right">0.135</td>
+<td align="right">2.193</td>
+<td align="right">0.028</td>
+<td align="right">1.345</td>
+</tr>
+<tr class="even">
+<td align="left">physical_fightingNo</td>
+<td align="right">0.773</td>
+<td align="right">0.075</td>
+<td align="right">10.347</td>
+<td align="right">0.000</td>
+<td align="right">2.165</td>
+</tr>
+<tr class="odd">
+<td align="left">bullying_electronicallyNo</td>
+<td align="right">0.302</td>
+<td align="right">0.094</td>
+<td align="right">3.228</td>
+<td align="right">0.001</td>
+<td align="right">1.353</td>
+</tr>
+<tr class="even">
+<td align="left">carring_weaponNo</td>
+<td align="right">0.983</td>
+<td align="right">0.110</td>
+<td align="right">8.920</td>
+<td align="right">0.000</td>
+<td align="right">2.672</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
+caret::varImp(fit_logistic)</code></pre>
+<pre><code>##                               Overall
+## sad_hopelessNo               3.822561
+## attempted_suicideNo          5.036263
+## safety_concerns_at_schoolNo  2.368532
+## threatened_at_schoolNo       2.193178
+## physical_fightingNo         10.347481
+## bullying_electronicallyNo    3.227808
+## carring_weaponNo             8.920078</code></pre>
+<pre class="r"><code># Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
+pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())  )[&quot;McFadden&quot;]</code></pre>
+<pre><code>##  McFadden 
+## 0.3345769</code></pre>
+<pre class="r"><code># Cross-Validating the model
+data_train &lt;- trainControl(method = &quot;cv&quot;, number = 5)
+model_caret &lt;- train(
+  current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon,
+                   data = df,
+                   trControl = data_train,
+                   method = &#39;glm&#39;,
+                   family = binomial(),
+                   na.action = na.pass)</code></pre>
+<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts = weights, info =
+## trainInfo, : There were missing values in resampled performance measures.</code></pre>
+<pre class="r"><code># Model predictions using 4 parts of the data for training 
+model_caret</code></pre>
+<pre><code>## Generalized Linear Model 
+## 
+## 10191 samples
+##     7 predictor
+##     2 classes: &#39;Yes&#39;, &#39;No&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 9596, 8271, 8273, 8271, 8272, 8272, ... 
+## Resampling results:
+## 
+##   Accuracy   Kappa     
+##   0.8471262  0.09581872</code></pre>
+<pre class="r"><code>AIC(fit_logistic)</code></pre>
+<pre><code>## [1] 5906.472</code></pre>
+>>>>>>> 172ccea276d1a5737171c12a09e7fab4f69b27be:Logistic_Regression.html
 
 
 
