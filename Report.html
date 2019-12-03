@@ -12,7 +12,7 @@
 
 
 
-<title>Report</title>
+<title>Report.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -390,12 +390,10 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Report</h1>
 
 </div>
 
 
-<p>Author: Jin Ge</p>
 <div id="motivation" class="section level1">
 <h1>Motivation</h1>
 <div id="facts-about-vaping" class="section level3">
@@ -579,178 +577,6 @@ animate(mental_p)</code></pre>
 </div>
 <div id="drugsvaping-decomposed-by-experienced-violenced-and-other-risky-behaviors" class="section level2">
 <h2>Drugs(vaping) decomposed by experienced violenced and other risky behaviors</h2>
-<p>We are interested in whether there will be something worth being examined if we decompose the drug by the experienced violenced behaviors</p>
-<pre class="r"><code>## drugs with violence
-nyc_drug_violence &lt;- nyc_drug %&gt;% 
-  select(id, borough, year, 
-         cigarette = current_cigarette_use, cigar = current_cigar_use,
-         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
-         vaping = current_vaping, safety_concerns_at_school, threatened_at_school,
-         physical_fighting, bullying_at_school, bullying_electronically) %&gt;% 
-  mutate(year = factor(year))
-
-## cigaretteYes
-cigarette_yes &lt;- nyc_drug_violence %&gt;% 
-  filter(cigarette == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            cigarette = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## cigarYes
-cigar_yes &lt;- nyc_drug_violence %&gt;% 
-  filter(cigar == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            cigar = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## alcoholYes
-alcohol_yes &lt;- nyc_drug_violence %&gt;% 
-  filter(alcohol == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            alcohol = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## vapingYes
-vaping_yes &lt;- nyc_drug_violence %&gt;% 
-  filter(vaping == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            vaping = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## marijuanaYes with all other drugs
-marijuana_yes_full &lt;- nyc_drug_violence %&gt;% 
-  filter(marijuana == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            marijuana = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n) %&gt;% 
-  left_join(cigarette_yes, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  left_join(cigar_yes, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  left_join(alcohol_yes, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  left_join(vaping_yes, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  gather(key = &quot;drug&quot;, value = &quot;proportion&quot;, 
-         marijuana, cigarette, cigar, alcohol, vaping)
-
-## animated plot
-violence_p &lt;- marijuana_yes_full %&gt;%
-  ggplot(aes(x = drug, y = proportion, fill = violence, group = violence)) +
-  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
-  labs(title = &quot;Year: {closest_state}&quot;,
-       x = &quot;Drug Type&quot;,
-       y = &quot;Proportion of happening violence&quot;,
-       fill = &quot;Violence Type&quot;) +
-  scale_fill_discrete(labels = c(&quot;Bullying in school&quot;, &quot;Bullying electronically&quot;,
-                                 &quot;Physical fighting&quot;, &quot;Safely concerns at school&quot;,
-                                 &quot;Threatened at school&quot;)) +
-  theme(axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15,face = &quot;bold&quot;)) + 
-  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = &quot;bold&quot;)) +
-  transition_states(year, transition_length = 2, state_length = 3) +
-  enter_fade() + exit_shrink()
-  
-animate(violence_p)</code></pre>
-<p><img src="Report_files/figure-html/drug_with_violence-1.gif" /><!-- --></p>
-<p>We are also interested in whether there will be something worth being examined if we decompose the drug by risky behaviors</p>
-<pre class="r"><code>## drugs with risky behavior
-nyc_drug_risk &lt;- nyc_drug %&gt;% 
-  select(id, borough, year, 
-         cigarette = current_cigarette_use, cigar = current_cigar_use,
-         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
-         vaping = current_vaping, texting_and_driving, drinking_and_driving) %&gt;% 
-  mutate(year = factor(year))
-
-## cigaretteYes
-cigarette_yes_risk &lt;- nyc_drug_risk %&gt;% 
-  filter(cigarette == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;risk&quot;, value = &quot;reply&quot;, 
-         texting_and_driving, drinking_and_driving, na.rm = TRUE) %&gt;% 
-  group_by(year, risk) %&gt;% 
-  summarize(n = n(),
-            cigarette = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## cigarYes
-cigar_yes_risk &lt;- nyc_drug_risk %&gt;% 
-  filter(cigar == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;risk&quot;, value = &quot;reply&quot;, 
-         texting_and_driving, drinking_and_driving, na.rm = TRUE) %&gt;% 
-  group_by(year, risk) %&gt;% 
-  summarize(n = n(),
-            cigar = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## alcoholYes
-alcohol_yes_risk &lt;- nyc_drug_risk %&gt;% 
-  filter(alcohol == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;risk&quot;, value = &quot;reply&quot;, 
-         texting_and_driving, drinking_and_driving, na.rm = TRUE) %&gt;% 
-  group_by(year, risk) %&gt;% 
-  summarize(n = n(),
-            alcohol = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## vapingYes
-vaping_yes_risk &lt;- nyc_drug_risk %&gt;% 
-  filter(vaping == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;risk&quot;, value = &quot;reply&quot;, 
-         texting_and_driving, drinking_and_driving, na.rm = TRUE) %&gt;% 
-  group_by(year, risk) %&gt;% 
-  summarize(n = n(),
-            vaping = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## marijuanaYes with all other drugs
-marijuana_yes_risk_full &lt;- nyc_drug_risk %&gt;% 
-  filter(marijuana == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;risk&quot;, value = &quot;reply&quot;, 
-         texting_and_driving, drinking_and_driving, na.rm = TRUE) %&gt;% 
-  group_by(year, risk) %&gt;% 
-  summarize(n = n(),
-            marijuana = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n) %&gt;% 
-  left_join(cigarette_yes_risk, by = c(&quot;year&quot;, &quot;risk&quot;)) %&gt;% 
-  left_join(cigar_yes_risk, by = c(&quot;year&quot;, &quot;risk&quot;)) %&gt;% 
-  left_join(alcohol_yes_risk, by = c(&quot;year&quot;, &quot;risk&quot;)) %&gt;% 
-  left_join(vaping_yes_risk, by = c(&quot;year&quot;, &quot;risk&quot;)) %&gt;% 
-  gather(key = &quot;drug&quot;, value = &quot;proportion&quot;, 
-         marijuana, cigarette, cigar, alcohol, vaping)
-
-## animated plot
-risk_p &lt;- marijuana_yes_risk_full %&gt;%
-  ggplot(aes(x = drug, y = proportion, fill = risk, group = risk)) +
-  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
-  labs(title = &quot;Year: {closest_state}&quot;,
-       x = &quot;Drug Type&quot;,
-       y = &quot;Proportion of happening risky behaviors&quot;,
-       fill = &quot;Risky behavior Type&quot;) +
-  scale_fill_discrete(labels = c(&quot;Drinking and Driving&quot;, &quot;Texting and Driving&quot;)) +
-  theme(axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15,face = &quot;bold&quot;)) + 
-  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = &quot;bold&quot;)) +
-  transition_states(year, transition_length = 2, state_length = 3) +
-  enter_fade() + exit_shrink()
-  
-animate(risk_p)</code></pre>
-<p><img src="Report_files/figure-html/drug_with_risky_behavior-1.gif" /><!-- --></p>
 </div>
 <div id="logistic-regression-model-to-do-prediction-of-the-vaping-trend" class="section level2">
 <h2>Logistic regression model to do prediction of the vaping trend</h2>

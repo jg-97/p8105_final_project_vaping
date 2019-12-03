@@ -271,13 +271,12 @@ $(document).ready(function () {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        
+        <li>
+  <a href="Overview.html">Project Overview</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="Overview.html">Overview</a>
-</li>
-<li>
   <a href="https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use">Explore the Data</a>
 </li>
 <li>
@@ -287,8 +286,8 @@ $(document).ready(function () {
   <a href="Report.html">Report</a>
 </li>
 <li>
-  <a href="mailto:&lt;jg4197@cumc.columbia.edu&gt;">
-    <span class="fa fa-envelope fa-lg"></span>
+  <a href="Screencast.html">
+    <span class="fa fa-video fa-lg"></span>
      
   </a>
 </li>
@@ -360,14 +359,14 @@ fit_logistic %&gt;%
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">-2.253</td>
-<td align="right">0.049</td>
-<td align="right">-45.556</td>
+<td align="right">-1.192</td>
+<td align="right">0.172</td>
+<td align="right">-6.915</td>
 <td align="right">0.000</td>
-<td align="right">0.105</td>
+<td align="right">0.304</td>
 </tr>
 <tr class="even">
-<td align="left">sad_hopelessYes</td>
+<td align="left">sad_hopelessNo</td>
 <td align="right">0.278</td>
 <td align="right">0.073</td>
 <td align="right">3.823</td>
@@ -375,7 +374,7 @@ fit_logistic %&gt;%
 <td align="right">1.321</td>
 </tr>
 <tr class="odd">
-<td align="left">attempted_suicideYes</td>
+<td align="left">attempted_suicideNo</td>
 <td align="right">0.526</td>
 <td align="right">0.104</td>
 <td align="right">5.036</td>
@@ -383,7 +382,7 @@ fit_logistic %&gt;%
 <td align="right">1.692</td>
 </tr>
 <tr class="even">
-<td align="left">safety_concerns_at_schoolYes</td>
+<td align="left">safety_concerns_at_schoolNo</td>
 <td align="right">0.287</td>
 <td align="right">0.121</td>
 <td align="right">2.369</td>
@@ -391,7 +390,7 @@ fit_logistic %&gt;%
 <td align="right">1.333</td>
 </tr>
 <tr class="odd">
-<td align="left">threatened_at_schoolYes</td>
+<td align="left">threatened_at_schoolNo</td>
 <td align="right">0.296</td>
 <td align="right">0.135</td>
 <td align="right">2.193</td>
@@ -399,7 +398,7 @@ fit_logistic %&gt;%
 <td align="right">1.345</td>
 </tr>
 <tr class="even">
-<td align="left">physical_fightingYes</td>
+<td align="left">physical_fightingNo</td>
 <td align="right">0.773</td>
 <td align="right">0.075</td>
 <td align="right">10.347</td>
@@ -407,7 +406,7 @@ fit_logistic %&gt;%
 <td align="right">2.165</td>
 </tr>
 <tr class="odd">
-<td align="left">bullying_electronicallyYes</td>
+<td align="left">bullying_electronicallyNo</td>
 <td align="right">0.302</td>
 <td align="right">0.094</td>
 <td align="right">3.228</td>
@@ -415,7 +414,7 @@ fit_logistic %&gt;%
 <td align="right">1.353</td>
 </tr>
 <tr class="even">
-<td align="left">carring_weaponYes</td>
+<td align="left">carring_weaponNo</td>
 <td align="right">0.983</td>
 <td align="right">0.110</td>
 <td align="right">8.920</td>
@@ -426,14 +425,14 @@ fit_logistic %&gt;%
 </table>
 <pre class="r"><code># What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
 caret::varImp(fit_logistic)</code></pre>
-<pre><code>##                                Overall
-## sad_hopelessYes               3.822561
-## attempted_suicideYes          5.036263
-## safety_concerns_at_schoolYes  2.368532
-## threatened_at_schoolYes       2.193178
-## physical_fightingYes         10.347481
-## bullying_electronicallyYes    3.227808
-## carring_weaponYes             8.920078</code></pre>
+<pre><code>##                               Overall
+## sad_hopelessNo               3.822561
+## attempted_suicideNo          5.036263
+## safety_concerns_at_schoolNo  2.368532
+## threatened_at_schoolNo       2.193178
+## physical_fightingNo         10.347481
+## bullying_electronicallyNo    3.227808
+## carring_weaponNo             8.920078</code></pre>
 <pre class="r"><code># Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
 pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())  )[&quot;McFadden&quot;]</code></pre>
 <pre><code>##  McFadden 
@@ -457,15 +456,15 @@ model_caret</code></pre>
 ## 
 ## 10191 samples
 ##     7 predictor
-##     2 classes: &#39;No&#39;, &#39;Yes&#39; 
+##     2 classes: &#39;Yes&#39;, &#39;No&#39; 
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
-## Summary of sample sizes: 9596, 8271, 8272, 8272, 8271, 8273, ... 
+## Summary of sample sizes: 9596, 8272, 8272, 8272, 8272, 8271, ... 
 ## Resampling results:
 ## 
 ##   Accuracy   Kappa     
-##   0.8475638  0.09310674</code></pre>
+##   0.8467982  0.08877832</code></pre>
 <pre class="r"><code>AIC(fit_logistic)</code></pre>
 <pre><code>## [1] 5906.472</code></pre>
 </div>

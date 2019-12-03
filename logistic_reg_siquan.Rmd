@@ -76,7 +76,7 @@ Testing_x <-  model.matrix( ~ year + carring_weapon +texting_and_driving +carrin
 model_lasso_test<- round(predict(model_lasso, Testing_x, type = "response"))
 CrossTable(x = as.numeric(unlist(y_te))-1,y = model_lasso_test, prop.r = F, prop.c = F, prop.chisq = F)
 mean(as.numeric(unlist(y_te))-1 ==model_lasso_test)
-#Use prediction accuracy as the evaluation matrix in binary classification task, train set prediction accuracy  0.7879127 and test set prediction accuracy 0.7785235. SInce the training set and test set accuracy are pretty close, there is no overfitting.
+#Use prediction accuracy as the evaluation matrix in binary classification task, train set prediction accuracy  0.7879127 and test set prediction accuracy 0.7785235. Since the training set and test set accuracy are pretty close, there is no overfitting.
 
 ```
 #Note that we could do the same procedure with the imputed data and see whether the prediction accuracy has been imporved.
