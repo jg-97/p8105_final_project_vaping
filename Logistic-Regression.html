@@ -10,9 +10,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Daniela Quigee (dq2147)" />
 
+<meta name="date" content="2019-12-01" />
 
-<title>Logistic-Regression.utf8.md</title>
+<title>Logistic Regression</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,6 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -271,13 +275,12 @@ $(document).ready(function () {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        
+        <li>
+  <a href="Overview.html">Project Overview</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="Overview.html">Overview</a>
-</li>
-<li>
   <a href="https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use">Explore the Data</a>
 </li>
 <li>
@@ -287,8 +290,8 @@ $(document).ready(function () {
   <a href="Report.html">Report</a>
 </li>
 <li>
-  <a href="mailto:&lt;jg4197@cumc.columbia.edu&gt;">
-    <span class="fa fa-envelope fa-lg"></span>
+  <a href="Screencast.html">
+    <span class="fa fa-video fa-lg"></span>
      
   </a>
 </li>
@@ -307,23 +310,80 @@ $(document).ready(function () {
 
 
 
+<h1 class="title toc-ignore">Logistic Regression</h1>
+<h4 class="author">Daniela Quigee (dq2147)</h4>
+<h4 class="date">12/01/2019</h4>
 
 </div>
 
 
-<div id="logistic-regression" class="section level1">
-<h1>Logistic Regression</h1>
-<p>Daniela Quigee (dq2147) 12/01/2019</p>
 <pre class="r"><code># Loading the cleaned data
-load(&quot;./data/nyc_data.RData&quot;)</code></pre>
+load(&quot;./data/nyc_data.RData&quot;)
+fill_NA = function(vector){
+    as.factor(coalesce(as.character(vector),&quot;unknown&quot;))
+}
+set.seed(8105)</code></pre>
+<pre class="r"><code>log_reg_auto = function(df ,n=100,formular = manual_formular){
+  ###Remove all the columns with only one variable
+  ### 8:2 the df for cv
+  cv_df = crossv_mc(df,n)
+### do the cv
+  cv_df = 
+  cv_df %&gt;%mutate(
+###Automodel selection with AIC as criterial
+         automodel  = map(train, ~glm(current_vaping ~., data = .x, family = binomial(),na.action = na.exclude)%&gt;%MASS::stepAIC(trace = FALSE))
+ ) }
+
+psr2glm=function(glmobj,family = binomial){
+  L.base=
+    logLik(
+      glm(formula = reformulate(&#39;1&#39;,gsub( &quot; .*$&quot;, &quot;&quot;, deparse(glmobj$formula) )),
+          data=glmobj$data,
+          family = family))
+
+  n=length(glmobj$residuals)
+
+  L.full=logLik(glmobj)
+  D.full &lt;- -2 * L.full
+  D.base &lt;- -2 * L.base
+  G2 &lt;- -2 * (L.base - L.full)
+
+  return(data.frame(McFadden = 1-L.full/L.base, 
+                    CoxSnell = 1 - exp(-G2/n),
+                    Nagelkerke = (1 - exp((D.full - D.base)/n))/(1 - exp(-D.base/n))))
+
+}
+
+
+cv_graph = function(cv_df,parameter = &quot;McFadden_pr2&quot;){
+cv_df %&gt;% 
+  select(starts_with(parameter)) %&gt;% 
+  pivot_longer(
+    everything(),
+    names_to = &quot;model&quot;, 
+    values_to = parameter,
+    names_prefix = parameter) %&gt;% 
+  mutate(model = fct_inorder(model)) %&gt;% 
+  ggplot(aes(x = model, y = rmse)) + geom_violin()
+
+
+}
+
+
+
+
+lasso = function(cv_df = cv_df){}</code></pre>
 <pre class="r"><code># Extracting necessary variables
-df = df_total %&gt;% 
-  filter(year == 2017) %&gt;% # Basing model on data from 2017
+df = df_total%&gt;%
+  
+  
+  ##map_df(df_total%&gt;%select(-current_vaping),fill_NA)%&gt;%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)),current_vaping = df_total%&gt;%pull(current_vaping))%&gt;%
+# Basing model on data from 2017
   select(
     # binary respone
     current_vaping,
     # possible predictor
-    texting_and_driving,
+    #texting_and_driving,
     carring_weapon,
     sad_hopeless,
     attempted_suicide,
@@ -336,10 +396,75 @@ df = df_total %&gt;%
     sex,
     age,
     race7,
-    borough)
+    borough,
+    illegal_injected_drug_use,
+sex_before_13,
+multiple_sex_partner,
+sexual_contact_2
+,year)
 
 
-# Fitting a logistic regression model
+df15 = df%&gt;%filter(year == 2015)%&gt;%select(-year)%&gt;%na.omit()
+df17 = df%&gt;%filter(year == 2017)%&gt;%select(-year)%&gt;%na.omit()
+df_ftred15 = Filter(function(x) length(unique(x))!=1, df15)
+df_ftred17 = Filter(function(x) length(unique(x))!=1, df17)</code></pre>
+<pre class="r"><code>formular = current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon
+
+###Fit the model with auto and manual chosed distribution
+regtb_17 = log_reg_auto(df17,n=5)
+regtb_15 = log_reg_auto(df15,n=5)
+
+
+
+regtb_15=regtb_15%&gt;%mutate(manualmodel = map(train, ~glm(formular, data = .x, family = binomial,na.action = na.exclude)))
+regtb_17=regtb_17%&gt;%mutate(manualmodel = map(train, ~glm(formular, data = .x, family = binomial,na.action = na.exclude)))
+
+
+
+regtb_17=regtb_17%&gt;%mutate(
+               ###Psudo R2 analysis
+               McFadden_pr2_automodel= map_dbl(.x = automodel, ~psr2glm(.)[[&quot;McFadden&quot;]]),
+                McFadden_pr2_manualmodel = map_dbl(.x = manualmodel, ~psr2glm(.)[[&quot;McFadden&quot;]]),
+               AIC_automodel= map_dbl(.x = automodel, ~AIC(.)),
+               AIC_manualmodel= map_dbl(.x = manualmodel, ~AIC(.)))
+
+regtb_17</code></pre>
+<pre><code>## # A tibble: 5 x 9
+##   train test  .id   automodel manualmodel McFadden_pr2_au… McFadden_pr2_ma…
+##   &lt;lis&gt; &lt;lis&gt; &lt;chr&gt; &lt;list&gt;    &lt;list&gt;                 &lt;dbl&gt;            &lt;dbl&gt;
+## 1 &lt;res… &lt;res… 1     &lt;glm&gt;     &lt;glm&gt;                  0.151           0.0640
+## 2 &lt;res… &lt;res… 2     &lt;glm&gt;     &lt;glm&gt;                  0.153           0.0624
+## 3 &lt;res… &lt;res… 3     &lt;glm&gt;     &lt;glm&gt;                  0.159           0.0620
+## 4 &lt;res… &lt;res… 4     &lt;glm&gt;     &lt;glm&gt;                  0.162           0.0671
+## 5 &lt;res… &lt;res… 5     &lt;glm&gt;     &lt;glm&gt;                  0.160           0.0641
+## # … with 2 more variables: AIC_automodel &lt;dbl&gt;, AIC_manualmodel &lt;dbl&gt;</code></pre>
+<pre class="r"><code> glm(formula = current_vaping ~ carring_weapon + sad_hopeless + 
+    attempted_suicide + safety_concerns_at_school + physical_fighting + 
+    bullying_at_school + bullying_electronically + age + race7 + 
+    illegal_injected_drug_use + multiple_sex_partner, family = binomial, 
+    data = df17)%&gt;%psr2glm()</code></pre>
+<pre><code>##    McFadden   CoxSnell Nagelkerke
+## 1 0.1243958 0.09932713  0.1746539</code></pre>
+<pre class="r"><code> glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school  + physical_fighting + bullying_electronically + carring_weapon  , data = df17, family = binomial())%&gt;%psr2glm()</code></pre>
+<pre><code>##     McFadden   CoxSnell Nagelkerke
+## 1 0.06542924 0.05353762   0.094139</code></pre>
+<pre class="r"><code> formula_1 =c( &quot;carring_weapon&quot; , &quot;sad_hopeless&quot; ,
+    &quot;attempted_suicide&quot; , &quot;safety_concerns_at_school&quot; , &quot;physical_fighting&quot; ,
+    &quot;bullying_at_school&quot; ,&quot;bullying_electronically&quot; , &quot;age&quot;,&quot;race7&quot; , 
+    &quot;illegal_injected_drug_use&quot; ,&quot;multiple_sex_partner&quot;)
+ 
+formula_2=  c(&quot;sad_hopeless&quot;,
+&quot;attempted_suicide&quot;,
+&quot;safety_concerns_at_school&quot;,
+&quot;threatened_at_school&quot; ,
+&quot;physical_fighting &quot;,
+&quot;bullying_electronically&quot;,
+&quot;carring_weapon&quot;)
+
+
+ formula_1 %in% formula_2</code></pre>
+<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code># Fitting a logistic regression model
 fit_logistic = glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())
 
 fit_logistic %&gt;% 
@@ -360,84 +485,86 @@ fit_logistic %&gt;%
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">-2.253</td>
-<td align="right">0.049</td>
-<td align="right">-45.556</td>
+<td align="right">-1.114</td>
+<td align="right">0.129</td>
+<td align="right">-8.605</td>
 <td align="right">0.000</td>
-<td align="right">0.105</td>
+<td align="right">0.328</td>
 </tr>
 <tr class="even">
-<td align="left">sad_hopelessYes</td>
-<td align="right">0.278</td>
-<td align="right">0.073</td>
-<td align="right">3.823</td>
+<td align="left">sad_hopelessNo</td>
+<td align="right">0.351</td>
+<td align="right">0.053</td>
+<td align="right">6.624</td>
 <td align="right">0.000</td>
-<td align="right">1.321</td>
+<td align="right">1.420</td>
 </tr>
 <tr class="odd">
-<td align="left">attempted_suicideYes</td>
-<td align="right">0.526</td>
-<td align="right">0.104</td>
-<td align="right">5.036</td>
+<td align="left">attempted_suicideNo</td>
+<td align="right">0.630</td>
+<td align="right">0.077</td>
+<td align="right">8.175</td>
 <td align="right">0.000</td>
-<td align="right">1.692</td>
+<td align="right">1.878</td>
 </tr>
 <tr class="even">
-<td align="left">safety_concerns_at_schoolYes</td>
-<td align="right">0.287</td>
-<td align="right">0.121</td>
-<td align="right">2.369</td>
-<td align="right">0.018</td>
-<td align="right">1.333</td>
+<td align="left">safety_concerns_at_schoolNo</td>
+<td align="right">0.273</td>
+<td align="right">0.093</td>
+<td align="right">2.925</td>
+<td align="right">0.003</td>
+<td align="right">1.314</td>
 </tr>
 <tr class="odd">
-<td align="left">threatened_at_schoolYes</td>
-<td align="right">0.296</td>
-<td align="right">0.135</td>
-<td align="right">2.193</td>
-<td align="right">0.028</td>
-<td align="right">1.345</td>
+<td align="left">threatened_at_schoolNo</td>
+<td align="right">0.219</td>
+<td align="right">0.102</td>
+<td align="right">2.142</td>
+<td align="right">0.032</td>
+<td align="right">1.244</td>
 </tr>
 <tr class="even">
-<td align="left">physical_fightingYes</td>
-<td align="right">0.773</td>
-<td align="right">0.075</td>
-<td align="right">10.347</td>
+<td align="left">physical_fightingNo</td>
+<td align="right">0.794</td>
+<td align="right">0.055</td>
+<td align="right">14.381</td>
 <td align="right">0.000</td>
-<td align="right">2.165</td>
+<td align="right">2.213</td>
 </tr>
 <tr class="odd">
-<td align="left">bullying_electronicallyYes</td>
-<td align="right">0.302</td>
-<td align="right">0.094</td>
-<td align="right">3.228</td>
+<td align="left">bullying_electronicallyNo</td>
+<td align="right">0.237</td>
+<td align="right">0.069</td>
+<td align="right">3.409</td>
 <td align="right">0.001</td>
-<td align="right">1.353</td>
+<td align="right">1.267</td>
 </tr>
 <tr class="even">
-<td align="left">carring_weaponYes</td>
-<td align="right">0.983</td>
-<td align="right">0.110</td>
-<td align="right">8.920</td>
+<td align="left">carring_weaponNo</td>
+<td align="right">0.863</td>
+<td align="right">0.080</td>
+<td align="right">10.776</td>
 <td align="right">0.000</td>
-<td align="right">2.672</td>
+<td align="right">2.370</td>
 </tr>
 </tbody>
 </table>
 <pre class="r"><code># What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
 caret::varImp(fit_logistic)</code></pre>
-<pre><code>##                                Overall
-## sad_hopelessYes               3.822561
-## attempted_suicideYes          5.036263
-## safety_concerns_at_schoolYes  2.368532
-## threatened_at_schoolYes       2.193178
-## physical_fightingYes         10.347481
-## bullying_electronicallyYes    3.227808
-## carring_weaponYes             8.920078</code></pre>
+<pre><code>##                               Overall
+## sad_hopelessNo               6.623524
+## attempted_suicideNo          8.174587
+## safety_concerns_at_schoolNo  2.924818
+## threatened_at_schoolNo       2.141640
+## physical_fightingNo         14.380931
+## bullying_electronicallyNo    3.409308
+## carring_weaponNo            10.775690</code></pre>
 <pre class="r"><code># Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
-pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())  )[&quot;McFadden&quot;]</code></pre>
+
+
+pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df17, family = binomial())  )[&quot;McFadden&quot;]</code></pre>
 <pre><code>##  McFadden 
-## 0.3345769</code></pre>
+## 0.0656795</code></pre>
 <pre class="r"><code># Cross-Validating the model
 
 data_train &lt;- trainControl(method = &quot;cv&quot;, number = 5)
@@ -451,24 +578,32 @@ model_caret &lt;- train(
                    na.action = na.pass)</code></pre>
 <pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts = weights, info =
 ## trainInfo, : There were missing values in resampled performance measures.</code></pre>
+<pre class="r"><code>?train()</code></pre>
+<pre><code>## Help on topic &#39;train&#39; was found in the following packages:
+## 
+##   Package               Library
+##   caret                 /Users/haosun/Library/R/3.6/library
+##   generics              /Library/Frameworks/R.framework/Versions/3.6/Resources/library
+## 
+## 
+## Using the first match ...</code></pre>
 <pre class="r"><code># Model predictions using 4 parts of the data for training 
 model_caret</code></pre>
 <pre><code>## Generalized Linear Model 
 ## 
-## 10191 samples
+## 76219 samples
 ##     7 predictor
-##     2 classes: &#39;No&#39;, &#39;Yes&#39; 
+##     2 classes: &#39;Yes&#39;, &#39;No&#39; 
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
-## Summary of sample sizes: 9596, 8271, 8272, 8272, 8271, 8273, ... 
+## Summary of sample sizes: 17704, 72679, 72679, 72677, 72677, 72679, ... 
 ## Resampling results:
 ## 
 ##   Accuracy   Kappa     
-##   0.8475638  0.09310674</code></pre>
+##   0.8484521  0.07992005</code></pre>
 <pre class="r"><code>AIC(fit_logistic)</code></pre>
-<pre><code>## [1] 5906.472</code></pre>
-</div>
+<pre><code>## [1] 11034.67</code></pre>
 
 
 
