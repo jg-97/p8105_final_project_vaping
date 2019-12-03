@@ -1,0 +1,76 @@
+---
+title: "Logistic Regression"
+author: "Daniela Quigee (dq2147)"
+date: "12/01/2019"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(modelr)
+library(caret)
+library(pscl)
+```
+
+```{r Data Import}
+# Loading the cleaned data
+load("./data/nyc_data.RData")
+```
+
+```{r}
+# Extracting necessary variables
+df = df_total %>% 
+  filter(year == 2017) %>% # Basing model on data from 2017
+  select(
+    # binary respone
+    current_vaping,
+    # possible predictor
+    texting_and_driving,
+    carring_weapon,
+    sad_hopeless,
+    attempted_suicide,
+    injurious_suicide_attempt,
+    safety_concerns_at_school,
+    threatened_at_school,
+    physical_fighting,
+    bullying_at_school,
+    bullying_electronically,
+    sex,
+    age,
+    race7,
+    borough)
+
+
+# Fitting a logistic regression model
+fit_logistic = glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())
+
+fit_logistic %>% 
+  broom::tidy() %>% 
+  mutate(OR = exp(estimate)) %>%
+  knitr::kable(digits = 3)
+
+# What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
+caret::varImp(fit_logistic)
+
+
+# Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
+pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())  )["McFadden"]
+
+
+# Cross-Validating the model
+
+data_train <- trainControl(method = "cv", number = 5)
+
+model_caret <- train(
+  current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon,
+                   data = df,
+                   trControl = data_train,
+                   method = 'glm',
+                   family = binomial(),
+                   na.action = na.pass)
+  
+# Model predictions using 4 parts of the data for training 
+model_caret
+
+AIC(fit_logistic)
+```
