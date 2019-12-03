@@ -8,8 +8,8 @@ output: github_document
 ```{r setup, include = FALSE}
 library(tidyverse)
 library(modelr)
-library(caret)
 library(pscl)
+library(caret)
 ```
 
 ```{r Data Import}
@@ -17,12 +17,70 @@ library(pscl)
 load("./data/nyc_data.RData")
 fill_NA = function(vector){
     as.factor(coalesce(as.character(vector),"unknown"))
-  }
+}
+set.seed(8105)
+```
+
+```{r Function definition}
+log_reg_auto = function(df ,n=100,formular = manual_formular){
+  ###Remove all the columns with only one variable
+  ### 8:2 the df for cv
+  cv_df = crossv_mc(df,n)
+### do the cv
+  cv_df = 
+  cv_df %>%mutate(
+###Automodel selection with AIC as criterial
+         automodel  = map(train, ~glm(current_vaping ~., data = .x, family = binomial(),na.action = na.exclude)%>%MASS::stepAIC(trace = FALSE))
+ ) }
+
+psr2glm=function(glmobj,family = binomial){
+  L.base=
+    logLik(
+      glm(formula = reformulate('1',gsub( " .*$", "", deparse(glmobj$formula) )),
+          data=glmobj$data,
+          family = family))
+
+  n=length(glmobj$residuals)
+
+  L.full=logLik(glmobj)
+  D.full <- -2 * L.full
+  D.base <- -2 * L.base
+  G2 <- -2 * (L.base - L.full)
+
+  return(data.frame(McFadden = 1-L.full/L.base, 
+                    CoxSnell = 1 - exp(-G2/n),
+                    Nagelkerke = (1 - exp((D.full - D.base)/n))/(1 - exp(-D.base/n))))
+
+}
+
+
+cv_graph = function(cv_df,parameter = "McFadden_pr2"){
+cv_df %>% 
+  select(starts_with(parameter)) %>% 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = parameter,
+    names_prefix = parameter) %>% 
+  mutate(model = fct_inorder(model)) %>% 
+  ggplot(aes(x = model, y = rmse)) + geom_violin()
+
+
+}
+
+
+
+
+lasso = function(cv_df = cv_df){}
+
 ```
 
 ```{r Data retrieving}
 # Extracting necessary variables
-df = map_df(df_total%>%select(-current_vaping),fill_NA)%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)),current_vaping = df_total%>%pull(current_vaping))%>%
+df = df_total%>%
+  
+  
+  ##map_df(df_total%>%select(-current_vaping),fill_NA)%>%mutate(id = as.numeric(as.character(id)),year = as.numeric(as.character(year)),current_vaping = df_total%>%pull(current_vaping))%>%
 # Basing model on data from 2017
   select(
     # binary respone
@@ -43,32 +101,85 @@ df = map_df(df_total%>%select(-current_vaping),fill_NA)%>%mutate(id = as.numeric
     race7,
     borough,
     illegal_injected_drug_use,
-sexual_contact_scope,
 sex_before_13,
-multiple_sex_partner,year)
+multiple_sex_partner,
+sexual_contact_2
+,year)
 
 
-df15 = df%>%filter(year == 2015)%>%select(-year)
-df17 = df%>%filter(year == 2017)%>%select(-year)
+df15 = df%>%filter(year == 2015)%>%select(-year)%>%na.omit()
+df17 = df%>%filter(year == 2017)%>%select(-year)%>%na.omit()
 df_ftred15 = Filter(function(x) length(unique(x))!=1, df15)
 df_ftred17 = Filter(function(x) length(unique(x))!=1, df17)
 
 ```
 
-```{r a function to verify logistct regression}
-
-
+```{r finalize}
 formular = current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon
 
+###Fit the model with auto and manual chosed distribution
+regtb_17 = log_reg_auto(df17,n=5)
+regtb_15 = log_reg_auto(df15,n=5)
 
 
 
-?train()
+regtb_15=regtb_15%>%mutate(manualmodel = map(train, ~glm(formular, data = .x, family = binomial,na.action = na.exclude)))
+regtb_17=regtb_17%>%mutate(manualmodel = map(train, ~glm(formular, data = .x, family = binomial,na.action = na.exclude)))
 
 
-logist_reg(fit_logistic = fit_logistic)
+
+regtb_17=regtb_17%>%mutate(
+               ###Psudo R2 analysis
+               McFadden_pr2_automodel= map_dbl(.x = automodel, ~psr2glm(.)[["McFadden"]]),
+                McFadden_pr2_manualmodel = map_dbl(.x = manualmodel, ~psr2glm(.)[["McFadden"]]),
+               AIC_automodel= map_dbl(.x = automodel, ~AIC(.)),
+               AIC_manualmodel= map_dbl(.x = manualmodel, ~AIC(.)))
+
+regtb_17
+
 
 ```
+
+
+
+
+
+
+
+```{r QA}
+
+
+ glm(formula = current_vaping ~ carring_weapon + sad_hopeless + 
+    attempted_suicide + safety_concerns_at_school + physical_fighting + 
+    bullying_at_school + bullying_electronically + age + race7 + 
+    illegal_injected_drug_use + multiple_sex_partner, family = binomial, 
+    data = df17)%>%psr2glm()
+ 
+ glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school  + physical_fighting + bullying_electronically + carring_weapon  , data = df17, family = binomial())%>%psr2glm()
+
+
+
+ formula_1 =c( "carring_weapon" , "sad_hopeless" ,
+    "attempted_suicide" , "safety_concerns_at_school" , "physical_fighting" ,
+    "bullying_at_school" ,"bullying_electronically" , "age","race7" , 
+    "illegal_injected_drug_use" ,"multiple_sex_partner")
+ 
+formula_2=  c("sad_hopeless",
+"attempted_suicide",
+"safety_concerns_at_school",
+"threatened_at_school" ,
+"physical_fighting ",
+"bullying_electronically",
+"carring_weapon")
+
+
+ formula_1 %in% formula_2
+  
+```
+
+
+
+
 
 
 ```{r Fitting the first logistic regression model}
@@ -85,7 +196,9 @@ caret::varImp(fit_logistic)
 
 
 # Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
-pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())  )["McFadden"]
+
+
+pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df17, family = binomial())  )["McFadden"]
 
 
 # Cross-Validating the model
@@ -100,146 +213,17 @@ model_caret <- train(
                    family = binomial(),
                    na.action = na.pass)
   
+
+?train()
+
 # Model predictions using 4 parts of the data for training 
 model_caret
 
 AIC(fit_logistic)
 ```
 
-A model with added parameter, done by stepwise regression is done as followed:
-
-```{r fitting a second logistcit model}
-
-
-
-full_model <- glm(current_vaping ~., data = df_ftred15, family = binomial)
-final_model<-full_model%>%MASS::stepAIC(trace = FALSE)
-  
-  final_model%>%broom::tidy() %>%  
-  mutate(OR = exp(estimate)) %>%View()
-  knitr::kable(digits = 3)
-
-
-# What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
-caret::varImp(full_model)
-
-
-# Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
-pR2(  glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())  )["McFadden"]
-
-
-# Cross-Validating the model
-
-data_train <- trainControl(method = "cv", number = 5)
-
-model_caret <- train(
-  current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon,
-                   data = df,
-                   trControl = data_train,
-                   method = 'glm',
-                   family = binomial(),
-                   na.action = na.pass)
-  
-# Model predictions using 4 parts of the data for training 
-model_caret
-
-
-
-AIC(fit_logistic)
-```
-
-
-```{r}
-###Remove everything that have only one observation
-test = Filter(function(x) length(unique(x)[!is.na(x)])>1, df_total%>%filter(year == 2017))
-
-df_ftred15 = Filter(function(x) length(unique(x))!=1, df15)
-df_ftred17 = Filter(function(x) length(unique(x))!=1, df17)
-
-
-cv_df_2015 = crossv_mc(df_ftred15, 100)
-cv_df_2015%>%
- mutate(fullmodel  = map(train, .%>%glm(current_vaping ~., data = ., family = binomial)))%>%
-  mutate(show = map(fullmodel,.%>%()))
-  mutate(Autogenmodel = map(fullmodel,.%>%MASS::stepAIC(trace = FALSE)))
-
-
-cv_df = 
-  cv_df %>% 
-  mutate(reg_bwt  = map(train, ~lm(bwt~blength+fincome+gaweeks+wtgain+bhead*babysex+mrace+frace,data = .)),
-         model_ref1  = map(train, ~lm(bwt~gaweeks+blength ,data = .)),
-         model_ref2  = map(train, ~lm(bwt~blength+bhead+babysex+blength*bhead+babysex*blength+bhead*babysex+blength*bhead*babysex,data = .)))%>% 
-  mutate(rmse_reg_bwt = map2_dbl(reg_bwt, test, ~rmse(model = .x, data = .y)),
-         rmse_model_ref1 = map2_dbl(model_ref1, test, ~rmse(model = .x, data = .y)),
-         rmse_model_ref2 = map2_dbl(model_ref2, test, ~rmse(model = .x, data = .y)))
-
-
-cv_df %>% 
-  select(starts_with("rmse")) %>% 
-  pivot_longer(
-    everything(),
-    names_to = "model", 
-    values_to = "rmse",
-    names_prefix = "rmse_") %>% 
-  mutate(model = fct_inorder(model)) %>% 
-  ggplot(aes(x = model, y = rmse)) + geom_violin()
-```
-
-
-```{r}
-log_reg_auto = function(df,variable,n=100,yr){
-  ###Remove all the columns with only one variable
-  df = Filter(function(x) length(unique(x)[!is.na(x)])>1, df%>%filter(year = yr))
-  ### 8:2 the df for cv
-  cv_df = crossv_mc(df,n)
-### do the cv
-  cv_df = 
-  cv_df %>% 
-  mutate(fullmodel  = map(train, ~lm(variable~.,data = .)),
-         Autogenmodel  = fullmodel%>%MASS::stepAIC(trace = FALSE))
-         
-  )))%>% 
-  mutate(rmse_reg_bwt = map2_dbl(reg_bwt, test, ~rmse(model = .x, data = .y)),
-         rmse_model_ref1 = map2_dbl(model_ref1, test, ~rmse(model = .x, data = .y)),
-         rmse_model_ref2 = map2_dbl(model_ref2, test, ~rmse(model = .x, data = .y)))
-  
-  
-  
-  
-  
-  
-  full_model <- df_ftred15%>%glm(current_vaping ~., data = ., family = binomial)
-  final_model<-full_model%>%MASS::stepAIC(trace = FALSE)
-  
-  
-  
-}
 
 
 
 
-full_model <- glm(current_vaping ~., data = df_ftred15, family = binomial)
-  final_model<-full_model%>%MASS::stepAIC(trace = FALSE)
-# Summarize the final selected model
-summary(final_model)
-# Make predictions
-probabilities <- final_model %>% predict(df_ftred17, type = "response")
-predicted.classes <- ifelse(probabilities > 0.5, "pos", "neg")
-# Model accuracy
-mean(predicted.classes==df_ftred17$current_vaping,na.rm = TRUE)
-
-mean(probabilities)
-
-predicted.classes
-
-cv_df = 
-  crossv_mc(nonlin_df, 100)
-
-
-
-
-full_model%>%broom::tidy()
-final_model%>%broom::tidy()%>%View()
-
-```
 
