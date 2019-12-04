@@ -5,11 +5,9 @@ output:
 ---
 
 &nbsp;
-&nbsp;
 
-<center><img src = "images/vaping2kids.jpg" style = "width:100%"> </center>
+<center><img src = "images/vaping2kids.jpg" style = "width:90%"> </center>
 
-&nbsp;
 &nbsp;
 
 <span style="color:#2C85C2; font-family: Babas; font-size: 1em;">Final Project for Dr. Jeff Goldsmith's Course - [P8105 Data Science I](https://p8105.com)</span><right><img src = "images/sticker.jpg" style = "width:5%"> </right></br>
