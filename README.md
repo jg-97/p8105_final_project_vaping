@@ -13,7 +13,9 @@ This is the repo for p8105 final group project!
 1. for fontawsome package
 devtools::install_github("rstudio/fontawesome")
 
-2. 
+2. for creating animated plots
+devtools::install_github('thomasp85/gganimate')
+install.packages(c("gifski", "magick", "transformr")) to animate the line plot
 
 3.
 
