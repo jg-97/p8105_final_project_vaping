@@ -27,11 +27,11 @@ theme_set(theme_bw())
 
 ### Facts about vaping
 
-* 2,051 reported lung illness cases and 39 lung illness deaths due to vaping.
+* 2,051 reported lung illness cases and 39 lung illness deaths due to vaping.[[1](https://www.engadget.com/2019/11/07/cdc-confirms-vaping-lung-injury/)]
 
-* 81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes
+* 81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes.[[2](https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/)]
 
-* Most popular e-cigarette product introduces with a 5% nicotine up to 2.7 times delievering nicotine than others
+* Most popular e-cigarette product introduces with a 5% nicotine up to 2.7 times delievering nicotine than others.[[3](https://truthinitiative.org/research-resources/emerging-tobacco-products/how-much-nicotine-juul)]
 
 According to reports in recent years, we can see an underlying trend of vaping is increasing, especially in the teenager group.
 
