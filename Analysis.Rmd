@@ -7,36 +7,367 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.height = 5,
+                      fig.width = 10)
+library(tidyverse)
+library(gganimate)
 library(flexdashboard)
+library(transformr)
+library(readxl)
+library(gifski)
+library(magick)
+library(reprex)
+theme_set(theme_bw())
+```
+
+
+```{r data_importing}
+load("./data/nyc_data.RData")
+nyc_drug <- df_total
 ```
 
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Chart A
+### Animated line chart of distribution of drugs and vaping across years by borough
 
-```{r}
+```{r distribution_vaping_other_drugs}
+## filter the data used in this part
+nyc_drug_used <- nyc_drug %>% 
+  select(id, borough, year, 
+         cigarette = current_cigarette_use, cigar = current_cigar_use,
+         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
+         vaping = current_vaping) %>% 
+  mutate(year = factor(year))
+
+## cigarette proportion
+cigarette <- nyc_drug_used %>% 
+  filter(!is.na(cigarette)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            cigarette = sum(cigarette == "Yes")/n) %>% 
+  select(-n)
+
+## cigar proportion
+cigar <- nyc_drug_used %>% 
+  filter(!is.na(cigar)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            cigar = sum(cigar == "Yes")/n) %>% 
+  select(-n) 
+
+## alcohol proportion
+alcohol <- nyc_drug_used %>% 
+  filter(!is.na(alcohol)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            alcohol = sum(alcohol == "Yes")/n) %>% 
+  select(-n) 
+
+
+## vaping proportion 
+vaping <- nyc_drug_used %>% 
+  filter(!is.na(vaping)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            vaping = sum(vaping == "Yes")/n) %>% 
+  select(-n) 
+
+## marijuana proportion with all other proportions
+marijuana_full <- nyc_drug_used %>% 
+  filter(!is.na(marijuana)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            marijuana = sum(marijuana == "Yes")/n) %>% 
+  select(-n) %>% 
+  left_join(cigarette, by = c("year", "borough")) %>% 
+  left_join(cigar, by = c("year", "borough")) %>% 
+  left_join(alcohol, by = c("year", "borough")) %>% 
+  left_join(vaping, by = c("year", "borough")) %>% 
+  pivot_longer(marijuana:vaping,
+               names_to = "drug_type",
+               values_to = "proportion")
+
+drug_p <- marijuana_full %>%
+  filter(!(is.na(proportion)))%>%
+  ggplot(aes(x = year, y = proportion, color = borough, shape = drug_type, 
+             group = interaction(borough, drug_type), frame = drug_type)) +
+  geom_point(size = 2.2) + geom_path(size = .8) +
+  labs(title = "{closest_state}",
+       x = "Year",
+       y = "Proportion of drug use",
+       color = "Borough",
+       shape = "Drug type") +
+  theme(plot.title = element_text(size = 30, face = "bold"),
+        axis.text=element_text(size = 15),
+        axis.title=element_text(size = 15,face = "bold")) + 
+  theme(legend.text=element_text(size = 10), legend.title=element_text(size = 15, face = "bold")) +  
+  transition_states(drug_type, transition_length = 1, state_length = 3, wrap = TRUE) +
+  enter_fade() + exit_fade()
+
+animate(drug_p)
 
 ```
 
-### Chart D
+### Animated bar plot of violence&risky behaviors across drugs and vaping users
 
-```{r}
+```{r yes_drug_with_violence_risky_behaviors}
+## drugs with violence
+nyc_drug_violence <- nyc_drug %>% 
+  select(id, borough, year, 
+         cigarette = current_cigarette_use, cigar = current_cigar_use,
+         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
+         vaping = current_vaping, safety_concerns_at_school, threatened_at_school,  
+         physical_fighting, bullying_at_school, bullying_electronically,
+         texting_and_driving, drinking_and_driving, carring_weapon) %>% 
+  mutate(year = factor(year))
+
+## cigaretteYes
+cigarette_yes <- nyc_drug_violence %>% 
+  filter(cigarette == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            cigarette = sum(reply == "Yes")/n) %>% 
+ select(-n)
+
+## cigarYes
+cigar_yes <- nyc_drug_violence %>% 
+  filter(cigar == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            cigar = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## alcoholYes
+alcohol_yes <- nyc_drug_violence %>% 
+  filter(alcohol == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            alcohol = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## vapingYes
+vaping_yes <- nyc_drug_violence %>% 
+  filter(vaping == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            vaping = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## marijuanaYes with all other drugs
+marijuana_yes_full <- nyc_drug_violence %>% 
+  filter(marijuana == "Yes") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            marijuana = sum(reply == "Yes")/n) %>% 
+  select(-n) %>% 
+  left_join(cigarette_yes, by = c("year", "violence")) %>% 
+  left_join(cigar_yes, by = c("year", "violence")) %>% 
+  left_join(alcohol_yes, by = c("year", "violence")) %>% 
+  left_join(vaping_yes, by = c("year", "violence")) %>% 
+  gather(key = "drug", value = "proportion", 
+         marijuana, cigarette, cigar, alcohol, vaping)
+
+
+## animated plot
+violence_p <- marijuana_yes_full %>%
+  ggplot(aes(x = drug, y = proportion, fill = violence, group = violence)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Bar plot of teenagers using the drug in {closest_state}",
+       x = "Drug Type",
+       y = "Proportion of happening violence",
+       fill = "Violence Type") +
+  scale_fill_discrete(labels = c("Bullying at school", "Bullying electronically",
+                                 "Carrying weapons", "Drinking and driving",
+                                 "Physical fighting", "Safely concerns at school",
+                                 "Texting and driving", "Threatened at school")) +
+  theme(plot.title = element_text(size = 30, face = "bold"),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 18,face = "bold")) + 
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = "bold")) +
+  transition_states(year, transition_length = 2, state_length = 3) +
+  enter_fade() + exit_shrink()
+
+animate(violence_p, fps = 2)
 
 ```
 
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Chart B
+### Animated line chart of distribution of mental disorders across years by borough
 
-```{r}
+```{r distribution_mental_health}
+## data for mental health disorder
+nyc_drug_health <- nyc_drug %>% 
+  select(id, year, borough, sad = sad_hopeless, 
+         suicide = attempted_suicide, injury = injurious_suicide_attempt) %>% 
+  mutate(year = factor(year))
+
+## sadless
+sad <- nyc_drug_health %>% 
+  filter(!is.na(sad)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            sad = sum(sad == "Yes")/n) %>% 
+  select(-n)
+
+## attempted suicide
+suicide <- nyc_drug_health %>% 
+  filter(!is.na(suicide)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            suicide = sum(suicide == "Yes")/n) %>% 
+  select(-n)
+
+## injurious attempted suicide
+injury_full <- nyc_drug_health %>% 
+  filter(!is.na(injury)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            injury = sum(injury == "Yes")/n) %>% 
+  select(-n) %>% 
+  left_join(sad, by = c("year", "borough")) %>% 
+  left_join(suicide, by = c("year", "borough")) %>% 
+  pivot_longer(injury:suicide,
+               names_to = "mental_disorder",
+               values_to = "proportion")
+
+## animated plot
+mental_p <- injury_full %>%
+  filter(!(is.na(proportion))) %>% 
+  ggplot(aes(x = year, y = proportion, color = borough, shape = mental_disorder, 
+             group = interaction(borough, mental_disorder))) +
+  geom_point(size = 2.2) + geom_path(size = .8) +
+  labs(x = "Year",
+       y = "Proportion of mental disorder",
+       color = "Borough",
+       shape = "Mental disorder") +  
+  scale_shape_discrete(labels = c("injurious attempted suicide", "sad and hopeless", "attempted suicide")) +
+  theme(axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15,face = "bold")) + 
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = "bold"))  +
+  transition_states(mental_disorder, transition_length = 1, state_length = 3, wrap = TRUE) +
+  enter_fade() + exit_fade()
+
+animate(mental_p)
 
 ```
 
-### Chart C
+### Animated bar plot of violence&risky behaviors across drugs and vaping non-users
 
-```{r}
+```{r no_drug_with_violence_risky_behaviors}
+# Plot under non-use of drug
+## cigaretteNo
+cigarette_no <- nyc_drug_violence %>% 
+  filter(cigarette == "No") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            cigarette = sum(reply == "Yes")/n) %>% 
+ select(-n)
+
+## cigarNo
+cigar_no <- nyc_drug_violence %>% 
+  filter(cigar == "No") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            cigar = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## alcoholNo
+alcohol_no <- nyc_drug_violence %>% 
+  filter(alcohol == "No") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            alcohol = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## vapingNo
+vaping_no <- nyc_drug_violence %>% 
+  filter(vaping == "No") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            vaping = sum(reply == "Yes")/n) %>% 
+  select(-n)
+
+## marijuanaYes with all other drugs
+marijuana_no_full <- nyc_drug_violence %>% 
+  filter(marijuana == "No") %>% 
+  gather(key = "violence", value = "reply", safety_concerns_at_school, 
+         threatened_at_school, physical_fighting, bullying_at_school, 
+         bullying_electronically, texting_and_driving, drinking_and_driving, 
+         carring_weapon, na.rm = TRUE) %>% 
+  group_by(year, violence) %>% 
+  summarize(n = n(),
+            marijuana = sum(reply == "Yes")/n) %>% 
+  select(-n) %>% 
+  left_join(cigarette_no, by = c("year", "violence")) %>% 
+  left_join(cigar_no, by = c("year", "violence")) %>% 
+  left_join(alcohol_no, by = c("year", "violence")) %>% 
+  left_join(vaping_no, by = c("year", "violence")) %>% 
+  gather(key = "drug", value = "proportion", 
+         marijuana, cigarette, cigar, alcohol, vaping)
+
+
+## animated plot
+violence_no_p <- marijuana_no_full %>%
+  ggplot(aes(x = drug, y = proportion, fill = violence, group = violence)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Bar plot of teenagers not using the drug in {closest_state}",
+       x = "Drug Type",
+       y = "Proportion of happening violence",
+       fill = "Violence Type") +
+  scale_fill_discrete(labels = c("Bullying at school", "Bullying electronically",
+                                 "Carrying weapons", "Drinking and driving",
+                                 "Physical fighting", "Safely concerns at school",
+                                 "Texting and driving", "Threatened at school")) +
+  theme(plot.title = element_text(size = 30, face = "bold"),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15,face = "bold")) + 
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = "bold")) +
+  transition_states(year, transition_length = 2, state_length = 3) +
+  enter_fade() + exit_shrink()
+
+animate(violence_no_p, fps = 2)
 
 ```
 
