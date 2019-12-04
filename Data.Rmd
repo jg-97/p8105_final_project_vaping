@@ -1,0 +1,25 @@
+---
+output: 
+  html_document:
+    theme: journal
+---
+
+<br> <br>
+
+# Youth Risk Behavior Surveillance System (YRBSS)
+
+<br> <br>
+
+The YRBSS started in 1990 with the goal to monitor health behaviors that contribute markedly to the leading causes of death, disability, and social issues among youth and adults in the United States. The YRBSS monitors behaviors surrouning, for example,
+
+* Alcohol and other drug use
+* Tabacco use
+* Unhealthy dietry behaviors
+* Physical activity 
+* Sexuality and birth control
+
+Between 1991 and 2017, the YRBSS has gathered data from more than 4.4 million high school students in more than 1900 separate surveys. 
+
+Since the dataset is quite extensive - it contains national, state, and district wide data - we decided to focus on data from New York City and investigate youth behaviors related to drug use.
+
+The tidied dataset we used for our analysis can be downloaded [here](https://github.com/jg-97/p8105_final_project_vaping/tree/master/data).
