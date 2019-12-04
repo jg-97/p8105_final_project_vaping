@@ -23,6 +23,40 @@ library(reprex)
 theme_set(theme_bw())
 ```
 
+
+# Motivation
+
+<br>
+
+### Facts about vaping
+
+* 2,051 reported lung illness cases and 39 lung illness deaths due to vaping.[[1](https://www.engadget.com/2019/11/07/cdc-confirms-vaping-lung-injury/)]
+
+* 81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes.[[2](https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/)]
+
+* Most popular e-cigarette product introduces with a 5% nicotine up to 2.7 times delievering nicotine than others.[[3](https://truthinitiative.org/research-resources/emerging-tobacco-products/how-much-nicotine-juul)]
+
+According to reports in recent years, we can see an underlying trend of vaping is increasing, especially in the teenager group.
+
+
+
+
+<br> <br>
+
+# Related Work
+
+<br>
+
+
+
+
+<br> <br>
+
+# Initial Questions
+
+<br>
+
+
 # Our research questions:
 
 * Whether the distribution of vaping has been similar trends as other drugs? What will the trend look like? 
@@ -32,6 +66,80 @@ theme_set(theme_bw())
 * What are drugs decomposed by demographics and year?
 
 * Is vaping associated with violenced and other risky behaviors?
+
+
+
+<br> <br>
+
+### Data and the Data Cleaning Process
+
+<br>
+
+We utilized the **YRBSS** dataset publicly available on [CDC.gov](https://www.cdc.gov/healthyyouth/data/yrbs/data.htm). The YRBSS started in 1990 with the goal to monitor health behaviors that contribute markedly to the leading causes of death, disability, and social issues among youth and adults in the United States. The YRBSS monitors behaviors surrouning, for example,
+
+* Alcohol and other drug use
+* Tabacco use
+* Unhealthy dietry behaviors
+* Physical activity 
+* Sexuality and birth control
+
+Between 1991 and 2017, the YRBSS has gathered data from more than 4.4 million high school students in more than 1900 separate surveys. 
+
+Since the dataset is quite extensive - it contains national, state, and district wide data - we decided to focus on data from New York City and investigate youth behaviors related to drug use.
+
+In particular, we downloaded the [Districts(zip)](https://www.cdc.gov/healthyyouth/data/yrbs/data.htm) data in the Access file format. Subsequently, we used **Microsoft Access 2019**, to extract the data pertaining to the five boroughs of NYC. Since **Microsoft Access 2019** only allowed for a maximum of 65000 observations to be exported as an Excel document at once, we ended up with five Excel documents - one for each borough. These datasets can be found [here](https://github.com/jg-97/p8105_final_project_vaping/tree/master/raw_data). Finally, we used R to combine these five datasets and to select variables of interest to us. These variables provided insights into drug usage behaviors, included risky and violent behaviors, and pertained towards mental health, and demographics. While picking suitable variables, we also took into account the response rates (how many missing values are present in a certain variable in a particular year).
+
+In the end, we worked with the following variables:
+
+**Demographics**
+
+* *borough*:   one of the five boroughs of NYC
+* *year*:   year of the survey
+* *age*:   age of the subject
+* *sex*:   gender of the subject (male, female)
+* *race7*:   race of the subject
+
+**Drug Use**
+
+* *current_cigarette_use*:   smoked cigarettes during the past 30 days   (Yes/No)
+* *current_vaping*:   used an electronic vapor product during the past 30 days   (Yes/No)
+* *current_cigar_use*:   smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
+* *current_alcohol_use*:   had at least one drink of alcohol during the past 30 days   (Yes/No)
+* *current_marijuana_use*:   used marijuana during the past 30 days   (Yes/No)
+
+
+**Mental Health**
+
+* *sad_hopeless*:   during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible   (Yes/No)
+* *attempted_suicide*:   during the past 12 months, actually attempt suicide   (Yes/No)
+* *injurious_suicide_attempt*:   attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse   (Yes/No)
+* *considered_suicide*:   during the past 12 months, seriously considered attempting suicide   (Yes/No)
+
+
+**Risky Behaviors/Violence**
+
+* *safety_concerns_at_school*:  subject did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days   (Yes/No)
+* *threatened_at_school*:  subject has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months   (Yes/No)
+* *physical_fighting*:   subject has been in a physical fight during the past 12 months   (Yes/No)
+* *bullying_at_school*:   subject has been bullied on school property during the past 12 months   (Yes/No)
+* *bullying_electronically*:   subject has been bullied electronically (i.e. facebook) during the past 12 months   (Yes/No)
+* *texting_and_driving*:   subject texted or emailed while driving a car or other vehicle during the past 30 days   (Yes/No)
+* *drinking_and_driving*:   subject drove a car or other vehicle after drinking alcohol during the past 30 days   (Yes/No)
+* *carring_weapon*:   subject carried a weapon such as a gun, knife, or club during the past 30 days   (Yes/No)
+* *sex_before_13*:   subject had first sexual intercourse before age 13   (Yes/No)
+* *current_sexual_activity*: subject had sexual intercourse with 1 or more people during the past 3 months   (Yes/No)
+
+
+<br> <br>
+
+
+
+
+
+
+
+
+
 
 
 # Explorary Analysis
@@ -420,7 +528,92 @@ combine_gifs(plot1 = yes_p, plot2 = no_p)
 
 
 
-## Prediction: Logistic regression 
+
+
+
+
+<br> <br>
+
+# Logistic Regression Model to Predict Vaping
+
+<br>
+
+
+Since we were investigating the prevelance and trend in vaping among NYC's youth, we were interested in predicting **current_vaping**. We began our model building process considering the following predictors:
+
+**Demographics**
+
+* *borough*:   one of the five boroughs of NYC
+* *year*:   year of the survey
+* *age*:   age of the subject
+* *sex*:   gender of the subject (male, female)
+* *race7*:   race of the subject
+
+**Mental Health**
+
+* *sad_hopeless*:   during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible   (Yes/No)
+* *attempted_suicide*:   during the past 12 months, actually attempt suicide   (Yes/No)
+* *injurious_suicide_attempt*:   attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse   (Yes/No)
+* *considered_suicide*:   during the past 12 months, seriously considered attempting suicide   (Yes/No)
+
+
+**Risky Behaviors/Violence**
+
+* *safety_concerns_at_school*:  subject did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days   (Yes/No)
+* *threatened_at_school*:  subject has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months   (Yes/No)
+* *physical_fighting*:   subject has been in a physical fight during the past 12 months   (Yes/No)
+* *bullying_at_school*:   subject has been bullied on school property during the past 12 months   (Yes/No)
+* *bullying_electronically*:   subject has been bullied electronically (i.e. facebook) during the past 12 months   (Yes/No)
+* *texting_and_driving*:   subject texted or emailed while driving a car or other vehicle during the past 30 days   (Yes/No)
+* *drinking_and_driving*:   subject drove a car or other vehicle after drinking alcohol during the past 30 days   (Yes/No)
+* *carring_weapon*:   subject carried a weapon such as a gun, knife, or club during the past 30 days   (Yes/No)
+* *sex_before_13*:   subject had first sexual intercourse before age 13   (Yes/No)
+* *current_sexual_activity*: subject had sexual intercourse with 1 or more people during the past 3 months   (Yes/No)
+
+<br> <br>
+
+## Manuel Method
+
+<br>
+
+First, we attempted to find a predictive model, using a form of **stepwise/automatic approach** by hand. We utilized p-values, pseudo R<sup>2</sup>, and prediction accuracy as our guidance for which predictors to choose, starting with the full model (except for *year*). In the end, this process came up with the following possible model:
+
+<br>
+
+**Model 1:**
+
+current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon
+
+<br> <br>
+
+
+## Hao Method
+
+<br>
+
+
+
+## Siquan Method
+
+<br>
+
+
+
+
+
+
+## Model Selection 
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Conclusion

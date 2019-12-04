@@ -6,10 +6,16 @@ navbar:
     - text: "Project Overview"
       href:  Overview.html
   right:
+    - text: "Data"
+      href: Data.html
     - text: "Explore the Data"
       href: https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use
-    - text: "Analysis"
-      href: Analysis.html
+    - text: Analysis
+      menu:
+      - text: "EDA"
+        href: EDA.html
+      - text: "Logistic Regression"
+        href: Logistic_Regression_Description.html
     - text: "Report"
       href: Report.html
     - icon: fa-video fa-lg

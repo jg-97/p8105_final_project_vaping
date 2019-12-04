@@ -1,0 +1,16 @@
+---
+output: 
+  html_document:
+    theme: journal
+---
+
+
+# EDA
+
+Plots from report have to show up here too. At least the crucial one.
+
+We need to describe the data. Just giving the plots is not enough. 
+
+Something down the line: This graph suggests so and so... 
+
+He was always asking us to interpret graphs as part of your EDA.
