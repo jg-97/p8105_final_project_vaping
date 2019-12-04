@@ -310,8 +310,8 @@ nyc_drug_violence <- nyc_drug %>%
          cigarette = current_cigarette_use, cigar = current_cigar_use,
          alcohol = current_alcohol_use, marijuana = current_marijuana_use,
          vaping = current_vaping, safety_concerns_at_school, threatened_at_school,  
-         physical_fighting, bullying_at_school, bullying_electronically,
-         texting_and_driving, drinking_and_driving, carring_weapon) %>% 
+         physical_fighting, bullying_at_school, bullying_electronically, 
+         carring_weapon) %>% 
   mutate(year = factor(year))
 
 ## cigaretteYes
@@ -319,8 +319,7 @@ cigarette_yes <- nyc_drug_violence %>%
   filter(cigarette == "Yes") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             cigarette = sum(reply == "Yes")/n) %>% 
@@ -331,8 +330,7 @@ cigar_yes <- nyc_drug_violence %>%
   filter(cigar == "Yes") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             cigar = sum(reply == "Yes")/n) %>% 
@@ -343,8 +341,7 @@ alcohol_yes <- nyc_drug_violence %>%
   filter(alcohol == "Yes") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             alcohol = sum(reply == "Yes")/n) %>% 
@@ -355,8 +352,7 @@ vaping_yes <- nyc_drug_violence %>%
   filter(vaping == "Yes") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             vaping = sum(reply == "Yes")/n) %>% 
@@ -367,8 +363,7 @@ marijuana_yes_full <- nyc_drug_violence %>%
   filter(marijuana == "Yes") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             marijuana = sum(reply == "Yes")/n) %>% 
@@ -405,8 +400,7 @@ cigarette_no <- nyc_drug_violence %>%
   filter(cigarette == "No") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             cigarette = sum(reply == "Yes")/n) %>% 
@@ -417,8 +411,7 @@ cigar_no <- nyc_drug_violence %>%
   filter(cigar == "No") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             cigar = sum(reply == "Yes")/n) %>% 
@@ -429,8 +422,7 @@ alcohol_no <- nyc_drug_violence %>%
   filter(alcohol == "No") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             alcohol = sum(reply == "Yes")/n) %>% 
@@ -441,8 +433,7 @@ vaping_no <- nyc_drug_violence %>%
   filter(vaping == "No") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             vaping = sum(reply == "Yes")/n) %>% 
@@ -453,8 +444,7 @@ marijuana_no_full <- nyc_drug_violence %>%
   filter(marijuana == "No") %>% 
   gather(key = "violence", value = "reply", safety_concerns_at_school, 
          threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, texting_and_driving, drinking_and_driving, 
-         carring_weapon, na.rm = TRUE) %>% 
+         bullying_electronically, carring_weapon, na.rm = TRUE) %>% 
   group_by(year, violence) %>% 
   summarize(n = n(),
             marijuana = sum(reply == "Yes")/n) %>% 
@@ -476,9 +466,8 @@ violence_no_p <- marijuana_no_full %>%
        y = "Proportion of happening violence",
        fill = "Violence Type") +
   scale_fill_discrete(labels = c("Bullying at school", "Bullying electronically",
-                                 "Carrying weapons", "Drinking and driving",
-                                 "Physical fighting", "Safely concerns at school",
-                                 "Texting and driving", "Threatened at school")) +
+                                 "Carrying weapons","Physical fighting", 
+                                 "Safely concerns at school", "Threatened at school")) +
   theme(plot.title = element_text(size = 20, face = "bold"),
         axis.text = element_text(size = 15),
         axis.title = element_text(size = 15,face = "bold")) + 
@@ -516,9 +505,11 @@ combine_gifs(plot1 = yes_p, plot2 = no_p)
 ```
 
 * The left plot has the twice value than the right plot when the bar is in the same height. Therefore, the proportion of having violence nad risky behaviors in the teenagers who use drugs is nearly twice than the that in the teenagers who are non-drug users. Moreover, non-drug users have lower proportion in carrying weapons from 2003 to 2017. 
-* Driving after drinking, physical fighting, feeling unsafe at school and being treantened at school increase in proportion during 2005-2007, keep the same proportion in 2009,  and begin to decrease in 2011. 
+
+* Physical fighting, feeling unsafe at school and being treantened at school increase in proportion during 2005-2007, keep the same proportion in 2009,  and begin to decrease in 2011. 
+
 * Physical fighting keeps high proportion in both drug users and non-drug users and becomes a issue which is hard to control and intervent in 2003-2017. 
-* Texting when driving also keeps high level in proportion from 2015 to 2017 and exceeds the proportion of physical fighting in 2017.
+
 * Bullying electronically is another issue whose proportion inceases from 2015 to 2017 in both two groups
 
 
