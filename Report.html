@@ -409,6 +409,29 @@ div.tocify {
 </div>
 
 
+<div id="motivation" class="section level1">
+<h1>Motivation</h1>
+<p><br></p>
+<div id="facts-about-vaping" class="section level3">
+<h3>Facts about vaping</h3>
+<ul>
+<li><p>2,051 reported lung illness cases and 39 lung illness deaths due to vaping.[<a href="https://www.engadget.com/2019/11/07/cdc-confirms-vaping-lung-injury/">1</a>]</p></li>
+<li><p>81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes.[<a href="https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/">2</a>]</p></li>
+<li><p>Most popular e-cigarette product introduces with a 5% nicotine up to 2.7 times delievering nicotine than others.[<a href="https://truthinitiative.org/research-resources/emerging-tobacco-products/how-much-nicotine-juul">3</a>]</p></li>
+</ul>
+<p>According to reports in recent years, we can see an underlying trend of vaping is increasing, especially in the teenager group.</p>
+<p><br> <br></p>
+</div>
+</div>
+<div id="related-work" class="section level1">
+<h1>Related Work</h1>
+<p><br></p>
+<p><br> <br></p>
+</div>
+<div id="initial-questions" class="section level1">
+<h1>Initial Questions</h1>
+<p><br></p>
+</div>
 <div id="our-research-questions" class="section level1">
 <h1>Our research questions:</h1>
 <ul>
@@ -417,6 +440,60 @@ div.tocify {
 <li><p>What are drugs decomposed by demographics and year?</p></li>
 <li><p>Is vaping associated with violenced and other risky behaviors?</p></li>
 </ul>
+<p><br> <br></p>
+<div id="data-and-the-data-cleaning-process" class="section level3">
+<h3>Data and the Data Cleaning Process</h3>
+<p><br></p>
+<p>We utilized the <strong>YRBSS</strong> dataset publicly available on <a href="https://www.cdc.gov/healthyyouth/data/yrbs/data.htm">CDC.gov</a>. The YRBSS started in 1990 with the goal to monitor health behaviors that contribute markedly to the leading causes of death, disability, and social issues among youth and adults in the United States. The YRBSS monitors behaviors surrouning, for example,</p>
+<ul>
+<li>Alcohol and other drug use</li>
+<li>Tabacco use</li>
+<li>Unhealthy dietry behaviors</li>
+<li>Physical activity</li>
+<li>Sexuality and birth control</li>
+</ul>
+<p>Between 1991 and 2017, the YRBSS has gathered data from more than 4.4 million high school students in more than 1900 separate surveys.</p>
+<p>Since the dataset is quite extensive - it contains national, state, and district wide data - we decided to focus on data from New York City and investigate youth behaviors related to drug use.</p>
+<p>In particular, we downloaded the <a href="https://www.cdc.gov/healthyyouth/data/yrbs/data.htm">Districts(zip)</a> data in the Access file format. Subsequently, we used <strong>Microsoft Access 2019</strong>, to extract the data pertaining to the five boroughs of NYC. Since <strong>Microsoft Access 2019</strong> only allowed for a maximum of 65000 observations to be exported as an Excel document at once, we ended up with five Excel documents - one for each borough. These datasets can be found <a href="https://github.com/jg-97/p8105_final_project_vaping/tree/master/raw_data">here</a>. Finally, we used R to combine these five datasets and to select variables of interest to us. These variables provided insights into drug usage behaviors, included risky and violent behaviors, and pertained towards mental health, and demographics. While picking suitable variables, we also took into account the response rates (how many missing values are present in a certain variable in a particular year).</p>
+<p>In the end, we worked with the following variables:</p>
+<p><strong>Demographics</strong></p>
+<ul>
+<li><em>borough</em>: one of the five boroughs of NYC</li>
+<li><em>year</em>: year of the survey</li>
+<li><em>age</em>: age of the subject</li>
+<li><em>sex</em>: gender of the subject (male, female)</li>
+<li><em>race7</em>: race of the subject</li>
+</ul>
+<p><strong>Drug Use</strong></p>
+<ul>
+<li><em>current_cigarette_use</em>: smoked cigarettes during the past 30 days (Yes/No)</li>
+<li><em>current_vaping</em>: used an electronic vapor product during the past 30 days (Yes/No)</li>
+<li><em>current_cigar_use</em>: smoked cigars, cigarillos, or little cigars during the past 30 days (Yes/No)</li>
+<li><em>current_alcohol_use</em>: had at least one drink of alcohol during the past 30 days (Yes/No)</li>
+<li><em>current_marijuana_use</em>: used marijuana during the past 30 days (Yes/No)</li>
+</ul>
+<p><strong>Mental Health</strong></p>
+<ul>
+<li><em>sad_hopeless</em>: during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible (Yes/No)</li>
+<li><em>attempted_suicide</em>: during the past 12 months, actually attempt suicide (Yes/No)</li>
+<li><em>injurious_suicide_attempt</em>: attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse (Yes/No)</li>
+<li><em>considered_suicide</em>: during the past 12 months, seriously considered attempting suicide (Yes/No)</li>
+</ul>
+<p><strong>Risky Behaviors/Violence</strong></p>
+<ul>
+<li><em>safety_concerns_at_school</em>: subject did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days (Yes/No)</li>
+<li><em>threatened_at_school</em>: subject has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months (Yes/No)</li>
+<li><em>physical_fighting</em>: subject has been in a physical fight during the past 12 months (Yes/No)</li>
+<li><em>bullying_at_school</em>: subject has been bullied on school property during the past 12 months (Yes/No)</li>
+<li><em>bullying_electronically</em>: subject has been bullied electronically (i.e. facebook) during the past 12 months (Yes/No)</li>
+<li><em>texting_and_driving</em>: subject texted or emailed while driving a car or other vehicle during the past 30 days (Yes/No)</li>
+<li><em>drinking_and_driving</em>: subject drove a car or other vehicle after drinking alcohol during the past 30 days (Yes/No)</li>
+<li><em>carring_weapon</em>: subject carried a weapon such as a gun, knife, or club during the past 30 days (Yes/No)</li>
+<li><em>sex_before_13</em>: subject had first sexual intercourse before age 13 (Yes/No)</li>
+<li><em>current_sexual_activity</em>: subject had sexual intercourse with 1 or more people during the past 3 months (Yes/No)</li>
+</ul>
+<p><br> <br></p>
+</div>
 </div>
 <div id="explorary-analysis" class="section level1">
 <h1>Explorary Analysis</h1>
@@ -772,9 +849,61 @@ combine_gifs &lt;- function(plot1, plot2) {
 
 combine_gifs(plot1 = yes_p, plot2 = no_p)</code></pre>
 <p><img src="Report_files/figure-html/drug_with_violence_risky_behaviors-1.gif" /><!-- --></p>
+<p><br> <br></p>
 </div>
-<div id="prediction-logistic-regression" class="section level2">
-<h2>Prediction: Logistic regression</h2>
+</div>
+<div id="logistic-regression-model-to-predict-vaping" class="section level1">
+<h1>Logistic Regression Model to Predict Vaping</h1>
+<p><br></p>
+<p>Since we were investigating the prevelance and trend in vaping among NYC’s youth, we were interested in predicting <strong>current_vaping</strong>. We began our model building process considering the following predictors:</p>
+<p><strong>Demographics</strong></p>
+<ul>
+<li><em>borough</em>: one of the five boroughs of NYC</li>
+<li><em>year</em>: year of the survey</li>
+<li><em>age</em>: age of the subject</li>
+<li><em>sex</em>: gender of the subject (male, female)</li>
+<li><em>race7</em>: race of the subject</li>
+</ul>
+<p><strong>Mental Health</strong></p>
+<ul>
+<li><em>sad_hopeless</em>: during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible (Yes/No)</li>
+<li><em>attempted_suicide</em>: during the past 12 months, actually attempt suicide (Yes/No)</li>
+<li><em>injurious_suicide_attempt</em>: attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse (Yes/No)</li>
+<li><em>considered_suicide</em>: during the past 12 months, seriously considered attempting suicide (Yes/No)</li>
+</ul>
+<p><strong>Risky Behaviors/Violence</strong></p>
+<ul>
+<li><em>safety_concerns_at_school</em>: subject did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days (Yes/No)</li>
+<li><em>threatened_at_school</em>: subject has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months (Yes/No)</li>
+<li><em>physical_fighting</em>: subject has been in a physical fight during the past 12 months (Yes/No)</li>
+<li><em>bullying_at_school</em>: subject has been bullied on school property during the past 12 months (Yes/No)</li>
+<li><em>bullying_electronically</em>: subject has been bullied electronically (i.e. facebook) during the past 12 months (Yes/No)</li>
+<li><em>texting_and_driving</em>: subject texted or emailed while driving a car or other vehicle during the past 30 days (Yes/No)</li>
+<li><em>drinking_and_driving</em>: subject drove a car or other vehicle after drinking alcohol during the past 30 days (Yes/No)</li>
+<li><em>carring_weapon</em>: subject carried a weapon such as a gun, knife, or club during the past 30 days (Yes/No)</li>
+<li><em>sex_before_13</em>: subject had first sexual intercourse before age 13 (Yes/No)</li>
+<li><em>current_sexual_activity</em>: subject had sexual intercourse with 1 or more people during the past 3 months (Yes/No)</li>
+</ul>
+<p><br> <br></p>
+<div id="manuel-method" class="section level2">
+<h2>Manuel Method</h2>
+<p><br></p>
+<p>First, we attempted to find a predictive model, using a form of <strong>stepwise/automatic approach</strong> by hand. We utilized p-values, pseudo R<sup>2</sup>, and prediction accuracy as our guidance for which predictors to choose, starting with the full model (except for <em>year</em>). In the end, this process came up with the following possible model:</p>
+<p><br></p>
+<p><strong>Model 1:</strong></p>
+<p>current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon</p>
+<p><br> <br></p>
+</div>
+<div id="hao-method" class="section level2">
+<h2>Hao Method</h2>
+<p><br></p>
+</div>
+<div id="siquan-method" class="section level2">
+<h2>Siquan Method</h2>
+<p><br></p>
+</div>
+<div id="model-selection" class="section level2">
+<h2>Model Selection</h2>
 </div>
 </div>
 <div id="conclusion" class="section level1">
