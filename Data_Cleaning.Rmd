@@ -1,8 +1,8 @@
 ---
 title: "Data Cleaning"
 author: "Daniela Quigee (dq2147)"
-date: "12/02/2019"
-output: html_document
+date: "12/03/2019"
+output: github_document
 ---
 
 
@@ -11,6 +11,39 @@ library(tidyverse)
 library(readxl)
 library(writexl)
 ```
+
+
+```{r Proportion_NA_Function}
+prop_NA_original_data = function(df) {
+
+  df_return = df %>% select(year, everything()) %>% drop_na(year)
+  
+  variable_names = names(df_return)
+  
+  for (i in 2:length(variable_names))
+  {
+    df_return[[i]] = is.na(df_return[[i]])
+  }
+  
+  df_return = df_return %>% 
+    pivot_longer(
+      -year,
+      names_to = "values",
+      values_to = "not_available") %>% 
+    group_by(year, values) %>% 
+    summarize(
+      summeNA = sum(not_available),
+      summeNotNA = sum(!not_available)
+    ) %>% 
+    mutate(
+      proportionNA = summeNA / (summeNA + summeNotNA ),
+      proportionNA = round(proportionNA, digits = 5)
+    ) 
+  
+  df_return
+}
+```
+
 
 ```{r Data_Import}
 df_Bronx = read_excel(path = "./raw_data/Bronx.xlsx", col_types = "text")
@@ -581,14 +614,42 @@ df = df %>%
 ```
 
 ```{r Data_cleaning}
+# Combining Boroughs to one dataset
 df_total = bind_rows(df_Bronx, df_Queens, df_Manhattan, df_StatenIsland, df_Brooklyn)
+
+# How many NA? -> helps us determine which variables to exclude
+prop_NA_all = prop_NA_original_data(df_total)
+
+# Actual Data Cleaning
 df_total = data_cleaning(df_total)
+
+# How many NA in cleaned data?
+prop_NA_clean = prop_NA_original_data(df_total)
 ```
 
 ```{r Exporting_Data}
 write_xlsx(x = df_total, path = "./data/nyc_data.xlsx", col_names = TRUE)
 save(df_total, file = "./data/nyc_data.RData")
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

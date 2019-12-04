@@ -45,7 +45,7 @@ df = df_total %>%
 summary(df)
 str(df)
 #Remove all observations with any missing value
-df<-na.omit(df)
+dflasso<-na.omit(df)%>%filter(year == 2017)
 #Split data into training and test data set
 sample_size = floor(0.8*nrow(df))
 set.seed(8105)

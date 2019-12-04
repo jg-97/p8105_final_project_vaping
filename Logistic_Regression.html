@@ -318,15 +318,49 @@ $(document).ready(function () {
 
 
 <pre class="r"><code># Loading the cleaned data
-load(&quot;./data/nyc_data.RData&quot;)</code></pre>
+load(&quot;./data/nyc_data.RData&quot;)
+fill_NA = function(vector){
+    as.factor(coalesce(as.character(vector),&quot;unknown&quot;))
+}
+set.seed(8105)</code></pre>
+<p>###Manual selection</p>
+<div id="function-definition" class="section level2">
+<h2>Function definition</h2>
+<p>The following code chunck define the functions that is gonna be used to generate and mapped on the cv dataframe, i.e. it build up the component of the pipeline.</p>
+<pre class="r"><code>###Function that do auto log reg
+
+## function for cv
+#crossv_mc(df,n)
+
+## function for autologreg
+log_reg_auto = function(cv_df,formular = manual_formular){
+  cv_df %&gt;%mutate(
+###Automodel selection with AIC as criterial
+         automodel  = map(train, ~glm(current_vaping ~., data = .x, family = binomial(),na.action = na.exclude)%&gt;%MASS::stepAIC(trace = FALSE))
+ ) }
+
+
+###Do lasso stat learning
+lasso = function(cv_df){
+  lasso_temp = cv.glmnet(current_vaping ~., data = cv_df, family = &quot;binomial&quot;)
+glmnet(current_vaping ~., data = cv_df, family = &quot;binomial&quot;,lambda = lasso_temp$lambda.min)
+}
+
+###find prediction accuracy
+accy = function(model,data){
+  Temp = predict(model, data, type = &quot;response&quot;)%&gt;%round()
+1-mean(Temp-(as.numeric(pull(as.tibble(data),current_vaping))-1))
+  }</code></pre>
+</div>
+<div id="data-input-selection" class="section level2">
+<h2>data input selection:</h2>
+<p>This part control the datas that was used to feed in the pipeline</p>
 <pre class="r"><code># Extracting necessary variables
-df = df_total %&gt;% 
-  filter(year == 2017) %&gt;% # Basing model on data from 2017
+df = df_total%&gt;%
   select(
     # binary respone
     current_vaping,
     # possible predictor
-    texting_and_driving,
     carring_weapon,
     sad_hopeless,
     attempted_suicide,
@@ -339,6 +373,185 @@ df = df_total %&gt;%
     sex,
     age,
     race7,
+<<<<<<< HEAD:Logistic-Regression.html
+    borough,
+    illegal_injected_drug_use,
+sex_before_13,
+multiple_sex_partner,
+sexual_contact_2
+,year)
+
+
+df1517 = df%&gt;%filter(year == 2015|year == 2017)%&gt;%na.omit()
+df15 = df%&gt;%filter(year == 2017)%&gt;%na.omit()
+df17 = df%&gt;%filter(year == 2015)%&gt;%na.omit()</code></pre>
+<div id="actual-pipeline" class="section level3">
+<h3>Actual pipeline</h3>
+<p>The following part commbine all the component of the pipelines and feed the table.</p>
+<pre class="r"><code>###Set the manual selected predictor and response for the manual model
+manual_formular = current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon + year
+
+### run the actual pipeline
+regtb_1517=
+  ## CV 
+  crossv_mc(df1517,n=10)%&gt;%
+  ##stepAIC
+  log_reg_auto()%&gt;%
+  ## Manual model
+  mutate(manualmodel = map(train, ~glm(manual_formular, data = .x, family = binomial,na.action = na.exclude)))%&gt;%
+  ## Lasso model
+  mutate(lassomodel = map(train,~lasso(.x)))</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre class="r"><code>###Prediction Accuracy computation
+regtb_1517=regtb_1517%&gt;%
+  mutate(
+        accuracy_automodel= map2_dbl(.x = automodel,.y = test, ~accy(data =.y,model =.x)),
+        accuracy_manualmodel= map2_dbl(.x = manualmodel,.y = test, ~accy(data =.y,model =.x)),
+        accuracy_lasso= map2_dbl(.x = lassomodel,.y = test, ~accy(data =.y,model =.x))
+        )</code></pre>
+<pre><code>## Warning: `as.tibble()` is deprecated, use `as_tibble()` (but mind the new semantics).
+## This warning is displayed once per session.</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame
+
+## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame
+
+## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame
+
+## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame
+
+## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame
+
+## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame
+
+## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame
+
+## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame
+
+## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame
+
+## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre class="r"><code>###Graph accuracy distribution
+regtb_1517%&gt;%select(starts_with(&quot;accuracy&quot;)) %&gt;% 
+  pivot_longer(
+    everything(),
+    names_to = &quot;model&quot;, 
+    values_to = &quot;accuracy&quot;,
+    names_prefix = &quot;accuracy_&quot;) %&gt;% 
+  mutate(model = fct_inorder(model)) %&gt;% 
+  ggplot(aes(x = model, y = accuracy)) + geom_violin()</code></pre>
+<p><img src="Logistic-Regression_files/figure-html/implimentation-1.png" width="672" /></p>
+<pre class="r"><code>###Finalize model retrived:
+
+Final_1517=
+  ## CV 
+  tibble(train = list(df1517),
+         test = list(df1517))%&gt;%
+  ##stepAIC
+  log_reg_auto()%&gt;%
+  ## Manual model
+  mutate(manualmodel = map(train, ~glm(manual_formular, data = .x, family = binomial,na.action = na.exclude)))%&gt;%
+  ## Lasso model
+  mutate(lassomodel = map(train,~lasso(.x)))
+
+Final_1517%&gt;%
+  mutate(
+        accuracy_automodel= map2_dbl(.x = automodel,.y = test, ~accy(data =.y,model =.x)),
+        accuracy_manualmodel= map2_dbl(.x = manualmodel,.y = test, ~accy(data =.y,model =.x)),
+        accuracy_lasso= map2_dbl(.x = lassomodel,.y = test, ~accy(data =.y,model =.x))
+        )</code></pre>
+<pre><code>## # A tibble: 1 x 8
+##   train test  automodel manualmodel lassomodel accuracy_automo…
+##   &lt;lis&gt; &lt;lis&gt; &lt;list&gt;    &lt;list&gt;      &lt;list&gt;                &lt;dbl&gt;
+## 1 &lt;tib… &lt;tib… &lt;glm&gt;     &lt;glm&gt;       &lt;glmnt.fr&gt;            0.876
+## # … with 2 more variables: accuracy_manualmodel &lt;dbl&gt;,
+## #   accuracy_lasso &lt;dbl&gt;</code></pre>
+<pre class="r"><code>final_modle_formula = list(
+Final_1517[[1,3]]$formula,
+Final_1517[[1,4]]$formula,
+Final_1517[[1,5]]$terms
+)
+final_modle_formula</code></pre>
+<pre><code>## [[1]]
+## current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide + 
+##     safety_concerns_at_school + physical_fighting + bullying_at_school + 
+##     bullying_electronically + sex + race7 + illegal_injected_drug_use + 
+##     sexual_contact_2
+## &lt;environment: 0x7f87f9a0c768&gt;
+## 
+## [[2]]
+## current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + 
+##     threatened_at_school + physical_fighting + bullying_electronically + 
+##     carring_weapon + year
+## 
+## [[3]]
+## ~carring_weapon + sad_hopeless + attempted_suicide + injurious_suicide_attempt + 
+##     safety_concerns_at_school + threatened_at_school + physical_fighting + 
+##     bullying_at_school + bullying_electronically + sex + age + 
+##     race7 + borough + illegal_injected_drug_use + sex_before_13 + 
+##     multiple_sex_partner + sexual_contact_2 + year</code></pre>
+<pre class="r"><code>  accy(Final_1517[[1,5]],Final_1517[[1,1]])</code></pre>
+<pre><code>## [1] 0.8706405</code></pre>
+<div id="section" class="section level116">
+<p></p>
+<p>The incoperated log reg pipeline ends here</p>
+<p>#Note that we could do the same procedure with the imputed data and see whether the prediction accuracy has been imporved.</p>
+<p>#Also note that we could add more potential covariates into the model and see whether the prediction accuracy has been imporved.</p>
+<p>#Compare with the original model ``{r} fit_logistic = glm(current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon, data = data_tr, family = binomial())</p>
+<p>fit_logistics_predict = round(predict(fit_logistic, data_te, type = “response”)) CrossTable(x = as.numeric(unlist(y_te))-1,y = fit_logistics_predict, prop.r = F, prop.c = F, prop.chisq = F) mean(as.numeric(unlist(y_te))-1 ==fit_logistics_predict)</p>
+<pre><code></code></pre>
+</div>
+</div>
+</div>
+=======
     borough)
 # Fitting a logistic regression model
 fit_logistic = glm(current_vaping ~ sad_hopeless + attempted_suicide  + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())
@@ -466,6 +679,7 @@ model_caret</code></pre>
 ##   0.8471262  0.09581872</code></pre>
 <pre class="r"><code>AIC(fit_logistic)</code></pre>
 <pre><code>## [1] 5906.472</code></pre>
+>>>>>>> 172ccea276d1a5737171c12a09e7fab4f69b27be:Logistic_Regression.html
 
 
 

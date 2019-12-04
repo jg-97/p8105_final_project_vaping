@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniela Quigee (dq2147)" />
 
-<meta name="date" content="2019-12-02" />
+<meta name="date" content="2019-12-03" />
 
 <title>Data Cleaning</title>
 
@@ -312,11 +312,39 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Data Cleaning</h1>
 <h4 class="author">Daniela Quigee (dq2147)</h4>
-<h4 class="date">12/02/2019</h4>
+<h4 class="date">12/03/2019</h4>
 
 </div>
 
 
+<pre class="r"><code>prop_NA_original_data = function(df) {
+
+  df_return = df %&gt;% select(year, everything()) %&gt;% drop_na(year)
+  
+  variable_names = names(df_return)
+  
+  for (i in 2:length(variable_names))
+  {
+    df_return[[i]] = is.na(df_return[[i]])
+  }
+  
+  df_return = df_return %&gt;% 
+    pivot_longer(
+      -year,
+      names_to = &quot;values&quot;,
+      values_to = &quot;not_available&quot;) %&gt;% 
+    group_by(year, values) %&gt;% 
+    summarize(
+      summeNA = sum(not_available),
+      summeNotNA = sum(!not_available)
+    ) %&gt;% 
+    mutate(
+      proportionNA = summeNA / (summeNA + summeNotNA ),
+      proportionNA = round(proportionNA, digits = 5)
+    ) 
+  
+  df_return
+}</code></pre>
 <pre class="r"><code>df_Bronx = read_excel(path = &quot;./raw_data/Bronx.xlsx&quot;, col_types = &quot;text&quot;)
 df_Queens = read_excel(path = &quot;./raw_data/Queens.xlsx&quot;, col_types = &quot;text&quot;)
 df_Manhattan = read_excel(path = &quot;./raw_data/Manhattan.xlsx&quot;, col_types = &quot;text&quot;)
@@ -879,8 +907,17 @@ df = df %&gt;%
 
   df = rowid_to_column(df, &quot;id&quot;)
 }</code></pre>
-<pre class="r"><code>df_total = bind_rows(df_Bronx, df_Queens, df_Manhattan, df_StatenIsland, df_Brooklyn)
-df_total = data_cleaning(df_total)</code></pre>
+<pre class="r"><code># Combining Boroughs to one dataset
+df_total = bind_rows(df_Bronx, df_Queens, df_Manhattan, df_StatenIsland, df_Brooklyn)
+
+# How many NA? -&gt; helps us determine which variables to exclude
+prop_NA_all = prop_NA_original_data(df_total)
+
+# Actual Data Cleaning
+df_total = data_cleaning(df_total)
+
+# How many NA in cleaned data?
+prop_NA_clean = prop_NA_original_data(df_total)</code></pre>
 <pre class="r"><code>write_xlsx(x = df_total, path = &quot;./data/nyc_data.xlsx&quot;, col_names = TRUE)
 save(df_total, file = &quot;./data/nyc_data.RData&quot;)</code></pre>
 <p>The following sections get the percentage of NA and the distribution of all response among all years and all question into the data cleaning rmd, after the undesired column is removed, can get new result by simply rerun the following codes.</p>
