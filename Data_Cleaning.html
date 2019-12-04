@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Daniela Quigee (dq2147)" />
+
+<meta name="date" content="2019-12-03" />
+
+<title>Data Cleaning</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Overview.html">Project Overview</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use">Explore the Data</a>
+</li>
+<li>
+  <a href="Analysis.html">Analysis</a>
+</li>
+<li>
+  <a href="Report.html">Report</a>
+</li>
+<li>
+  <a href="Screencast.html">
+    <span class="fa fa-video fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/jg-97/p8105_final_project_vaping">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Data Cleaning</h1>
+<h4 class="author">Daniela Quigee (dq2147)</h4>
+<h4 class="date">12/03/2019</h4>
+
+</div>
+
+
+<pre class="r"><code>prop_NA_original_data = function(df) {
+
+  df_return = df %&gt;% select(year, everything()) %&gt;% drop_na(year)
+  
+  variable_names = names(df_return)
+  
+  for (i in 2:length(variable_names))
+  {
+    df_return[[i]] = is.na(df_return[[i]])
+  }
+  
+  df_return = df_return %&gt;% 
+    pivot_longer(
+      -year,
+      names_to = &quot;values&quot;,
+      values_to = &quot;not_available&quot;) %&gt;% 
+    group_by(year, values) %&gt;% 
+    summarize(
+      summeNA = sum(not_available),
+      summeNotNA = sum(!not_available)
+    ) %&gt;% 
+    mutate(
+      proportionNA = summeNA / (summeNA + summeNotNA ),
+      proportionNA = round(proportionNA, digits = 5)
+    ) 
+  
+  df_return
+}</code></pre>
+<pre class="r"><code>df_Bronx = read_excel(path = &quot;./raw_data/Bronx.xlsx&quot;, col_types = &quot;text&quot;)
+df_Queens = read_excel(path = &quot;./raw_data/Queens.xlsx&quot;, col_types = &quot;text&quot;)
+df_Manhattan = read_excel(path = &quot;./raw_data/Manhattan.xlsx&quot;, col_types = &quot;text&quot;)
+df_StatenIsland = read_excel(path = &quot;./raw_data/Staten_Island.xlsx&quot;, col_types = &quot;text&quot;)
+df_Brooklyn = read_excel(path = &quot;./raw_data/Brooklyn.xlsx&quot;, col_types = &quot;text&quot;)</code></pre>
+<pre class="r"><code>data_cleaning = function(df) {
+df = df %&gt;% 
+    # Removing duplicate rows
+    distinct() %&gt;% 
+    # Deleting unnecessary variables Part I
+    select(-sitecode, -sitetype, -sitetypenum,
+           -survyear, -weight, -stratum, -PSU,
+           -record, -qnobese, -qnowt, -sexid2, -sexpart2,
+           -qnwater, -qnwater1, -qnwater2, -qnwater3,
+           -qngenderexp, -qntypealcohol, -qnpropertydamage,
+           -qndlype, -qnpa7day, -qnpa0day, -qnbk7day, -qnmilk3,
+           -qnmilk2, -qnmilk1, -qnsoda3, -qnsoda2, -qnsoda1, 
+           -qnveg3, -qnveg2, -qnveg1, -qnveg0, -qnfr3,
+           -qnfr2, -qnfr1, -qnfr0, -qnowt, -qnobese, -qnbcnone,
+           -qndualbc, -qnothhpl, -qnshparg, -qniudimp, -qntb2, 
+           -qntb3, -qntb4) %&gt;% 
+     # Deleting unnecessary variables Part II
+     select(-qndaycgr, -qnfrcgr, -qndayskl, -qnfrskl, -qndayevp, -qnfrevp, -qndaycig, 
+            -qnfrcig, -qnnodnt, -qnbikehelmet, -qncigschool, -qnchewtobschool, -qnalcoholschool,
+            -qnmarijuanaschool, -qncurrentcocaine, -qntaughtHIV, -qnmusclestrength, -qnsunscreenuse,
+            -qnindoortanning, -qntransgender, -qn89, -qn88, -qn87, -qn86, -qn85, -qn83,
+            -qn82, -qn81, -qn80, -qn79, -qn78, -qn77, -qn76, -qn75, -qn74,-qn73, -qn72, -qn71,
+            -qn70, -qn69, -qn68, -race4, -stheight, -stweight, -bmi, -bmipct, -grade, -q67, -sexid, -q66, -sexpart) %&gt;% 
+    # Deleting unnecessary variables Part III
+     select(-qn65, -qn64, -qn63, -qn61, -qn59, -qn58, -qn57, -qn55, 
+            -qn54, -qn53, -qn52, -qn51, -qn50, -qn49, -qn47, -qn46,
+            -qn45, -qn44, -qn43, -qn41, -qn40, -qn37, -qn33, -qn30,
+            -qn27, -qn22, -qn21, -qn19, -qn18, -qn14, -qn13, -qn9, -qn8) %&gt;% 
+     # No data
+     select(
+       -qn20, -qn31, -qn34, -qn36, -qn39, -qn56, -qn84,
+       -qnspeakenglish, -qnwheresleep, -qncurrentasthma, 
+       -qnconcentrating, -qnsunburn, -qnwenthungry, 
+       -qnfoodallergy, -qnfastfood, -qnsugardrink, 
+       -qnenergydrink, -qnspdrk1, -qnspdrk2, -qnspdrk3, 
+       -qnsportsdrink, -qncoffeetea, -qndietpop, -qntaughtbc,
+       -qntaughtcondom, -qntaughtstd, -qntaughtsexed, 
+       -qnprescription30d, -qnhallucdrug, -qncurrentmeth, 
+       -qncurrentheroin, -qnhowmarijuana, -qnchokeself, 
+       -qnbullygay, -qnbullygender, -qnbullyweight, 
+       -qncelldriving, -qndrivemarijuana) %&gt;%
+    rename(
+      borough = sitename) %&gt;%
+    mutate(
+      borough = recode(borough,
+                       &quot;Borough of Bronx (NYG)&quot; = &quot;Bronx&quot;,
+                       &quot;Borough of Queens (NYJ)&quot; = &quot;Queens&quot;,
+                       &quot;Borough of Manhattan (NYI)&quot; = &quot;Manhattan&quot;,
+                       &quot;Borough of Staten Island (NYK)&quot; = &quot;Staten Island&quot;,
+                       &quot;Borough of Brooklyn (NYH)&quot; = &quot;Brooklyn&quot;),
+      borough = as.factor(borough)) %&gt;%
+    mutate(
+      year = as.numeric(year)) %&gt;%
+    mutate(
+      age = recode(age,
+                   &quot;1&quot; = &quot;12 years old or younger&quot;, 
+                   &quot;2&quot; = &quot;13 years old&quot;,
+                   &quot;3&quot; = &quot;14 years old&quot;,
+                   &quot;4&quot; = &quot;15 years old&quot;,
+                   &quot;5&quot; = &quot;16 years old&quot;,
+                   &quot;6&quot; = &quot;17 years old&quot;,
+                   &quot;7&quot; = &quot;18 years old or older&quot;),
+      age = as.factor(age)) %&gt;%
+    mutate(
+      sex = recode(sex,
+                   &quot;1&quot; = &quot;female&quot;, 
+                   &quot;2&quot; = &quot;male&quot;),
+      sex = as.factor(sex)) %&gt;%
+    mutate(
+      race7 = recode(race7,
+                     &quot;1&quot; = &quot;American Indian/Alaska Native&quot;, 
+                     &quot;2&quot; = &quot;Asian&quot;, 
+                     &quot;3&quot; = &quot;Black or African American&quot;, 
+                     &quot;4&quot; = &quot;Hispanic/Latino&quot;, 
+                     &quot;5&quot; = &quot;Native Hawaiian/Other Pacific Islander&quot;, 
+                     &quot;6&quot; = &quot;White&quot;,
+                     &quot;7&quot; = &quot;Multiple Races (Non-Hispanic)&quot;),
+      race7 = as.factor(race7)) %&gt;%
+##################################################################################### 
+    # During the past 30 days, how many times did you drive a car or other vehicle when you had been drinking alcohol?
+    mutate(
+      qn10 = recode(qn10,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No/did not drive&quot;),
+      qn10 = as.factor(qn10),
+      qn10 = fct_relevel(qn10, c(&quot;Yes&quot;, &quot;No/did not drive&quot;))) %&gt;% 
+    rename(drinking_and_driving = qn10) %&gt;% 
+##################################################################################### 
+    # During the past 30 days, on how many days did you text or e-mail while driving a car or other vehicle?
+    mutate(
+      qn11 = recode(qn11,
+                 &quot;1&quot; = &quot;Yes&quot;,
+                 &quot;2&quot; = &quot;No/did not drive&quot;),
+      qn11 = as.factor(qn11),
+      qn11 = fct_relevel(qn11, c(&quot;Yes&quot;, &quot;No/did not drive&quot;))) %&gt;% 
+    rename(texting_and_driving = qn11) %&gt;% 
+##################################################################################### 
+    # During the past 30 days, on how many days did you carry a weapon such as a gun, knife, or club?
+    mutate(
+      qn12 = recode(qn12,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn12 = as.factor(qn12),
+      qn12 = fct_relevel(qn12, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(carring_weapon = qn12) %&gt;%
+##################################################################################### 
+    # During the past 30 days, on how many days did you not go to school because you felt you would be unsafe at school or on your way to or from school?
+    mutate(
+      qn15 = recode(qn15,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn15 = as.factor(qn15),
+      qn15 = fct_relevel(qn15, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(safety_concerns_at_school = qn15) %&gt;%
+##################################################################################### 
+    # During the past 12 months, how many times has someone threatened or injured you with a weapon such as a gun, knife, or club on school property?
+    mutate(
+      qn16 = recode(qn16,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn16 = as.factor(qn16),
+      qn16 = fct_relevel(qn16, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(threatened_at_school = qn16) %&gt;%
+##################################################################################### 
+    # During the past 12 months, how many times were you in a physical fight?
+    mutate(
+      qn17 = recode(qn17,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn17 = as.factor(qn17),
+      qn17 = fct_relevel(qn17, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(physical_fighting = qn17) %&gt;%
+##################################################################################### 
+    # During the past 12 months, have you ever been bullied on school property?
+    mutate(
+      qn23 = recode(qn23,
+                 &quot;1&quot; = &quot;Yes&quot;,
+                 &quot;2&quot; = &quot;No&quot;),
+      qn23 = as.factor(qn23),
+      qn23 = fct_relevel(qn23, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(bullying_at_school = qn23) %&gt;%
+##################################################################################### 
+    # During the past 12 months, have you ever been electronically bullied? (Count being bullied through texting, Instagram, Facebook, or other social media.)
+    mutate(
+      qn24 = recode(qn24,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn24 = as.factor(qn24),
+      qn24 = fct_relevel(qn24, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(bullying_electronically = qn24) %&gt;%
+##################################################################################### 
+    # During the past 12 months, did you ever feel so sad or hopeless almost every day for two weeks or more in a row that you stopped doing some usual activities?
+    mutate(
+      qn25 = recode(qn25,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn25 = as.factor(qn25),
+      qn25 = fct_relevel(qn25, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(sad_hopeless = qn25) %&gt;%
+##################################################################################### 
+    # During the past 12 months, did you ever seriously consider attempting suicide?
+    mutate(
+      qn26 = recode(qn26, 
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn26 = as.factor(qn26),
+      qn26 = fct_relevel(qn26, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(considered_suicide = qn26) %&gt;% 
+##################################################################################### 
+    # During the past 12 months, how many times did you actually attempt suicide?
+    mutate(
+      qn28 = recode(qn28,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn28 = as.factor(qn28),
+      qn28 = fct_relevel(qn28, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(attempted_suicide = qn28) %&gt;% 
+##################################################################################### 
+    # If you attempted suicide during the past 12 months, did any attempt result in an injury, poisoning, or overdose that had to be treated by a doctor or nurse?
+    mutate(
+      qn29 = recode(qn29,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No/did not attempt suicide&quot;),
+      qn29 = as.factor(qn29),
+      qn29 = fct_relevel(qn29, c(&quot;Yes&quot;, &quot;No/did not attempt suicide&quot;))) %&gt;% 
+    rename(injurious_suicide_attempt = qn29) %&gt;%
+##################################################################################### 
+    # During the past 30 days, on how many days did you smoke cigarettes?
+    mutate(
+      qn32 = recode(qn32,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn32 = as.factor(qn32),
+      qn32 = fct_relevel(qn32, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(current_cigarette_use = qn32) %&gt;% 
+##################################################################################### 
+    # During the past 30 days, on how many days did you use an electronic vapor product?
+    mutate(
+      qn35 = recode(qn35,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn35 = as.factor(qn35),
+      qn35 = fct_relevel(qn35, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(current_vaping = qn35) %&gt;%
+#####################################################################################
+    # During the past 30 days, on how many days did you smoke cigars, cigarillos, or little cigars?
+    mutate(
+      qn38 = recode(qn38,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn38 = as.factor(qn38),
+      qn38 = fct_relevel(qn38, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(current_cigar_use = qn38) %&gt;% 
+#####################################################################################
+    # During the past 30 days, on how many days did you have at least one drink of alcohol?
+    mutate(
+      qn42 = recode(qn42,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn42 = as.factor(qn42),
+      qn42 = fct_relevel(qn42, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(current_alcohol_use = qn42) %&gt;%
+#####################################################################################
+    # During the past 30 days, how many times did you use marijuana?
+    mutate(
+      qn48 = recode(qn48,
+                    &quot;1&quot; = &quot;Yes&quot;,
+                    &quot;2&quot; = &quot;No&quot;),
+      qn48 = as.factor(qn48),
+      qn48 = fct_relevel(qn48, c(&quot;Yes&quot;, &quot;No&quot;))) %&gt;% 
+    rename(current_marijuana_use  = qn48) %&gt;%
+#####################################################################################
+    # How old were you when you had sexual intercourse for the first time? 
+    mutate(
+      qn60 = recode(qn60,
+                    &quot;1&quot; = &quot;Yes&quot;,                     # &quot;12 years or younger&quot;,
+                    &quot;2&quot; = &quot;No/No sex yet&quot;),          # &quot;never sexual intercourse/ 13 years or older&quot;),
+      qn60 = as.factor(qn60),
+      qn60 = fct_relevel(qn60, c(&quot;Yes&quot;, &quot;No/No sex yet&quot;))) %&gt;% 
+    rename(sex_before_13 = qn60) %&gt;%
+#####################################################################################
+    # During the past 3 months, with how many people did you have sexual intercourse?
+    mutate(
+      qn62 = recode(qn62,
+                    &quot;1&quot; = &quot;1 people or more&quot;,
+                    &quot;2&quot; = &quot;never sex/no sex during past 3 month&quot;),
+      qn62 = as.factor(qn62)) %&gt;% 
+    rename(current_sexual_activity = qn62)
+#####################################################################################
+
+
+
+
+  df = rowid_to_column(df, &quot;id&quot;)
+}</code></pre>
+<pre class="r"><code># Combining Boroughs to one dataset
+df_total = bind_rows(df_Bronx, df_Queens, df_Manhattan, df_StatenIsland, df_Brooklyn)
+
+# How many NA? -&gt; helps us determine which variables to exclude
+prop_NA_all = prop_NA_original_data(df_total)
+
+# Actual Data Cleaning
+df_total = data_cleaning(df_total)
+
+# How many NA in cleaned data?
+prop_NA_clean = prop_NA_original_data(df_total)</code></pre>
+<pre class="r"><code>write_xlsx(x = df_total, path = &quot;./data/nyc_data.xlsx&quot;, col_names = TRUE)
+save(df_total, file = &quot;./data/nyc_data.RData&quot;)</code></pre>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
