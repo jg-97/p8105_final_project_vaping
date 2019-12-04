@@ -137,11 +137,6 @@ In the end, we worked with the following variables:
 
 
 
-
-
-
-
-
 # Explorary Analysis
 
 
