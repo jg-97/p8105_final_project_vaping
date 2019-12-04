@@ -6,7 +6,7 @@ output:
     theme: journal
 ---
 
-# Motivation
+# Motivation & Related Work
 
 <left><img src = "images/youthvaping.jpg" style = "width:60%"> </left>
 
