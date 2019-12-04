@@ -10,11 +10,12 @@ output:
 
 <left><img src = "images/youthvaping.jpg" style = "width:60%"> </left>
 
+Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was initially regarded as a less harmful substitution for cigarettes. However, vaping still introduces nicotine into the body. The prevalence of lung damage caused by vaping is actually so high that the CDC[[1](https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub)] needed to issue guidance explicitly on it. According to the New York Post, a second vaping related death occured on November 9th, 2019. Vaping has claimed at least 42 lives and injured over 2,000 others across the country[[2](https://nypost.com/2019/11/20/second-new-yorker-dead-from-vaping-related-illness-officials/)]. 
 
-Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was initially regarded as a less harmful substitution for cigarettes. However, vaping still introduces nicotine into the body. The prevalence of lung damage caused by vaping is actually so high that the CDC[[1](https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub)] needed to issue guidance explicitly on it.  As the popularity of vaping grows, concerns about vaping are covered both in academia and in the press[[2](https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction),[3](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)]. A journal article published last week even describes the prevalence of vaping in a "red alert" state[[4](https://link.springer.com/article/10.1057/s41271-019-00193-2)]. In press, vaping is accused of being both a  gateway drug and a new "drug" itself. To provide grounds for potential public health interventions on this "scourge of drug"[[5](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)], we will evaluate the current landscape of vaping usage among teenagers and young adults in NYC using pre-collected data and analyze the potential risks of vaping in terms of future substance abuse and mental hygiene condistions.
+As the popularity of vaping grows, concerns about vaping are covered both in academia and in the press[[3](https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction),[4](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)]. A journal article published recently even describes the prevalence of vaping in a "red alert" state[[5](https://link.springer.com/article/10.1057/s41271-019-00193-2)]. In press, vaping is accused of being both a  gateway drug and a new "drug" itself.  81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes[[6](https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/)]. To provide grounds for potential public health interventions on this "scourge of drug"[[6](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)], we will evaluate the current landscape of vaping usage among teenagers and young adults in NYC using pre-collected data and analyze the potential risks of vaping in terms of future substance abuse and mental hygiene condistions.
 
 
-# Dataset
+# Data sources:
 
 Our final dataset came from the follwoing sources: 
 
@@ -26,24 +27,21 @@ Our final dataset came from the follwoing sources:
 
 4.   [Youth Risk Behavior Survey](https://a816-healthpsi.nyc.gov/epiquery/YRBS/yrbsIndex.html) contains information of risk behaviors in youths around New York City.
 
+For detailed data cleaning process, codes and codebook, please click here.
 
 # Methods
 
-1.    Data cleaning procedures: 
+1.    We used shiny for interactive plots
 
-      * The Github repository for this project can be found here.
-      * The final report is housed in a repository here.
+2.    We used use LASSO to automatically choose important predictors in the logistic regression model based on cross-validation error
 
-2.    We used shiny for interactive plots
+3.    80/20 was used for cross-validation
 
-3.    We used use LASSO to automatically choose important predictors in the logistic regression model based on cross-validation error
-
-4.    80/20 was used for cross-validation
-
-5.    We first used listwise exclusion for missing data. We than used imputation to replace missingness and run the same models. Since the results did not differ significantly, we used data without any missing replacement. 
-
+4.    We first used listwise exclusion for missing data. We than used imputation to replace missingness and run the same models. Since the results did not differ significantly, we used data without any missing replacement. 
 
 # Findings
+
+Please click here to see our analysis and results section. 
 
 # More Vaping Facts
 
