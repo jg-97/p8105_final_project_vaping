@@ -50,20 +50,14 @@ According to reports in recent years, we can see an underlying trend of vaping i
 
 # Initial Questions
 
-<br>
+1. How did drugs use in youth change over time in NYC?
 
+2. How did mental health related issues in youth change over time in NYC?
 
-# Our research questions:
+3. How does drug use and mental health status differ by demographics in NYC youth?
 
-* Whether the distribution of vaping has been similar trends as other drugs? What will the trend look like? 
-
-* Is there any association between mental health and vaping in NYC youth?
-
-* What are drugs decomposed by demographics and year?
-
-* Is vaping associated with violenced and other risky behaviors?
-
-
+4. Can we build a model with current available data to predict future vaping use?
+ 
 
 <br> <br>
 
