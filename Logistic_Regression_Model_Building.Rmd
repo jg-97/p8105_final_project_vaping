@@ -1,0 +1,101 @@
+---
+title: "Logistic Regression: Model Building"
+author: "Daniela Quigee (dq2147)"
+date: "12/3/2019"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(modelr)
+library(caret)
+library(pscl)
+```
+
+
+```{r Data Import}
+# Loading the cleaned data
+load("./data/nyc_data.RData")
+```
+
+
+```{r Data_frame_for_Prediction_Model}
+# Creating the dataset we will use to build the model
+df = df_total %>% 
+  filter(year == 2015 | year == 2017) %>% # Basing model on data from 2015 and 2017
+  select(
+    # binary respone
+    current_vaping,
+    # possible predictor
+    borough,
+    year,
+    age,
+    sex,
+    race7,
+    sad_hopeless,
+    attempted_suicide,
+    injurious_suicide_attempt,
+    considered_suicide,
+    safety_concerns_at_school,
+    threatened_at_school,
+    physical_fighting,
+    bullying_at_school,
+    bullying_electronically,
+    texting_and_driving,
+    drinking_and_driving, 
+    carring_weapon,
+    sex_before_13,
+    current_sexual_activity) 
+```
+
+
+
+# Manuel Method
+
+```{r Manuel_Method}
+# Fitting a logistic regression model
+fit_logistic = glm(current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())
+
+# Looking at the model coefficients
+fit_logistic %>% 
+  broom::tidy() %>% 
+  mutate(OR = exp(estimate)) %>%
+  knitr::kable(digits = 3)
+```
+
+```{r Model_Criteria}
+# What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
+caret::varImp(fit_logistic)
+
+
+# Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
+pR2(  glm(current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())  )["McFadden"]
+
+
+# Cross-Validating the model
+data_train <- trainControl(method = "cv", number = 5)
+
+model_caret <- train(
+  current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon,
+                   data = df,
+                   trControl = data_train,
+                   method = 'glm',
+                   family = binomial(),
+                   na.action = na.pass)
+  
+# Model predictions using 4 parts of the data for training 
+model_caret
+```
+
+
+Model 1: current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon
+
+
+
+# Hao Model
+
+
+
+
+
+# Siquan Model

@@ -1,0 +1,22 @@
+---
+title: "Logistic Regression: Model Selection"
+author: "Daniela Quigee (dq2147)"
+date: "12/3/2019"
+output: html_document
+---
+
+
+# These are our three possible models
+
+
+
+# Model validation/Selection
+
+
+
+
+
+
+
+
+# Final Model

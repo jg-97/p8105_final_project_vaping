@@ -1,0 +1,77 @@
+---
+output: 
+  html_document:
+    theme: journal
+---
+<br> <br>
+
+# Logistic Regression
+
+<br>
+
+Since we were investigating the prevelance and trend in vaping among NYC's youth, we were interested in predicting **current_vaping**. We began our model building process considering the following predictors:
+
+**Demographics**
+
+* *borough*:   one of the five boroughs of NYC
+* *year*:   year of the survey
+* *age*:   age of the subject
+* *sex*:   gender of the subject (male, female)
+* *race7*:   race of the subject
+
+**Mental Health**
+
+* *sad_hopeless*:   during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible   (Yes/No)
+* *attempted_suicide*:   during the past 12 months, actually attempt suicide   (Yes/No)
+* *injurious_suicide_attempt*:   attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse   (Yes/No)
+* *considered_suicide*:   during the past 12 months, seriously considered attempting suicide   (Yes/No)
+
+
+**Risky Behaviors/Violence**
+
+* *safety_concerns_at_school*:  subject did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days   (Yes/No)
+* *threatened_at_school*:  subject has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months   (Yes/No)
+* *physical_fighting*:   subject has been in a physical fight during the past 12 months   (Yes/No)
+* *bullying_at_school*:   subject has been bullied on school property during the past 12 months   (Yes/No)
+* *bullying_electronically*:   subject has been bullied electronically (i.e. facebook) during the past 12 months   (Yes/No)
+* *texting_and_driving*:   subject texted or emailed while driving a car or other vehicle during the past 30 days   (Yes/No)
+* *drinking_and_driving*:   subject drove a car or other vehicle after drinking alcohol during the past 30 days   (Yes/No)
+* *carring_weapon*:   subject carried a weapon such as a gun, knife, or club during the past 30 days   (Yes/No)
+* *sex_before_13*:   subject had first sexual intercourse before age 13   (Yes/No)
+* *current_sexual_activity*: subject had sexual intercourse with 1 or more people during the past 3 months   (Yes/No)
+
+<br> <br>
+
+## Manuel Method
+
+<br>
+
+First, we attempted to find a predictive model, using a form of **stepwise/automatic approach** by hand. We utilized p-values, pseudo R<sup>2</sup>, and prediction accuracy as our guidance for which predictors to choose, starting with the full model (except for *year*). In the end, this process came up with the following possible model:
+
+<br>
+
+**Model 1:**
+
+current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon
+
+<br> <br>
+
+
+## Hao Method
+
+<br>
+
+
+
+## Siquan Method
+
+<br>
+
+
+
+
+
+
+## Model Selection 
+
+
