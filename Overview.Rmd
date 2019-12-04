@@ -15,19 +15,16 @@ Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was
 As the popularity of vaping grows, concerns about vaping are covered both in academia and in the press[[3](https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction),[4](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)]. A journal article published recently even describes the prevalence of vaping in a "red alert" state[[5](https://link.springer.com/article/10.1057/s41271-019-00193-2)]. In press, vaping is accused of being both a  gateway drug and a new "drug" itself.  81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes[[6](https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/)]. To provide grounds for potential public health interventions on this "scourge of drug"[[6](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)], we will evaluate the current landscape of vaping usage among teenagers and young adults in NYC using pre-collected data and analyze the potential risks of vaping in terms of future substance abuse and mental hygiene condistions.
 
 
-# Data sources:
 
-Our final dataset came from the follwoing sources: 
 
-1.    National Survey on Drug Use and Health ([NSDUH](<https://www.samhsa.gov/data/all-reports?f[]=field_report_and_document_type:6461&f[]=field_samhsa_survey:6511&f%5B%5D[]=field_report_and_document_type:6461&f%5B%5D[]=field_samhsa_survey:6511&order=desc&sort=field_date_printed_on_report&items_per_page=15&page=0>)) offers the information of multiple drugs.
+# Data
 
-2.   [YRBSS](https://www.cdc.gov/healthyyouth/data/yrbs/data.htm) Data contains data of the youths' risk behaviors.
+We utilized the **YRBSS** dataset publicly available on [CDC.gov](https://www.cdc.gov/healthyyouth/data/yrbs/data.htm). For a description of the data please refer to the Data tab on the top right corner of this webpage.
 
-3.   [State Tobacco Activities Tracking and Evaluation (State) Sytem](https://nccd.cdc.gov/STATESystem/rdPage.aspx?rdReport=OSH_State.CustomReports&rdAgReset=True&rdShowModes=showResults&rdShowWait=true&rdPaging=Interactive&islMeasure=180EVP) provides the data of NYC tobacco use.
 
-4.   [Youth Risk Behavior Survey](https://a816-healthpsi.nyc.gov/epiquery/YRBS/yrbsIndex.html) contains information of risk behaviors in youths around New York City.
 
-For detailed data cleaning process, codes and codebook, please click here.
+
+
 
 # Methods
 
