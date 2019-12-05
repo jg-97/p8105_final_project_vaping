@@ -432,6 +432,7 @@ div.tocify {
 </div>
 <div id="initial-questions" class="section level1">
 <h1>Initial Questions</h1>
+<p><br></p>
 <p>We were interested in the following questions:</p>
 <ol style="list-style-type: decimal">
 <li><p>How has drug use changed over time in NYC’s youth?</p></li>
@@ -443,7 +444,7 @@ div.tocify {
 <p><br></p>
 <p>Initially, we were interested in building a model to determine associations. However, as our studies in data science class progressed further, we learned new great procedures and methods that we wanted to incorporate into our project. In particular, we became interested in building a predictive model (based on data from 2015), and using this model to predict vaping for 2017.</p>
 <p>It should be noted that question 3 and 4 were originally very general. With the help of Shiny, however, we were able to develop more focused questions of interest.</p>
-<p><br> <br></p>
+<p><br></p>
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>
@@ -504,6 +505,7 @@ div.tocify {
 <h2>Exploring the change of Vaping and other drug use over Time</h2>
 <p><br></p>
 <p>In order to analyze the change of vaping and other drug usage over time in NYC’s youth, we created the following animated plot:</p>
+<p><br></p>
 <pre class="r"><code>## filter the data used in this part
 nyc_drug_used &lt;- nyc_drug %&gt;% 
   select(id, borough, year, 
@@ -592,6 +594,7 @@ animate(drug_p)</code></pre>
 <h2>Exploring the change of Mental Health over Time</h2>
 <p><br></p>
 <p>In order to analyze the change of mental health status of NYC’s youth over time, we created the following animated plot:</p>
+<p><br></p>
 <pre class="r"><code>## data for mental health disorder
 nyc_drug_health &lt;- nyc_drug %&gt;% 
   select(id, year, borough, sad = sad_hopeless, 
@@ -657,6 +660,7 @@ animate(mental_p)</code></pre>
 <h2>Exploring drug use in 2017 by sex within each borough</h2>
 <p><br></p>
 <p>We were interested in whether there is a difference in drug use between female and male teenagers in different boroughs in NYC in 2017. To that end, we created the following plots:</p>
+<p><br></p>
 <pre class="r"><code>sex_plot = function(df, borough) {
 df %&gt;% 
   select(
@@ -694,7 +698,7 @@ df %&gt;%
   theme(legend.position = &quot;none&quot;) +
   facet_grid(~drug)}
 
-sex_Bronx = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot; The Bronx&quot;)
+sex_Bronx = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot;The Bronx&quot;)
 sex_Brooklyn = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Brooklyn&quot;), &quot;Brooklyn&quot;)
 sex_Manhattan = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Manhattan&quot;), &quot;Manhattan&quot;)
 sex_Queens = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Queens&quot;), &quot;Queens&quot;)
@@ -723,6 +727,7 @@ sex_Bronx</code></pre>
 <h2>Exploring drug use in 2017 by being involved in fights</h2>
 <p><br></p>
 <p>We were interested in whether there is a difference in drug use between teenagers involved in fights and teenagers not involved in fights in different boroughs of NYC in 2017. To that end, we created the following plots:</p>
+<p><br></p>
 <pre class="r"><code>fight_plot = function(df, borough) {
 df %&gt;% 
   select(
@@ -762,7 +767,7 @@ df %&gt;%
 
 
 
-fight_Bronx = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot; The Bronx&quot;)
+fight_Bronx = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot;The Bronx&quot;)
 fight_Brooklyn = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Brooklyn&quot;), &quot;Brooklyn&quot;)
 fight_Manhattan = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Manhattan&quot;), &quot;Manhattan&quot;)
 fight_Queens = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Queens&quot;), &quot;Queens&quot;)
@@ -786,7 +791,8 @@ fight_Bronx</code></pre>
 <li><p>According to our survey data, it appears as if the proportion of teenagers involved in a fight in Queens is slightly higher for children vaping (about 0.24%) and smoking cigars (about 0,23%).</p></li>
 <li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Staten Island is about 19% - the lowest proportion of all boroughs.</p></li>
 </ul>
-<p>If this Exploritary Analysis sparked your interested, feel free to explore the data more using the Explore the Data tab on the top right corner of the website.</p>
+<p><br></p>
+<p><strong>If this Exploratory Analysis sparked your interested, feel free to explore the data more using the Explore the Data tab on the top right corner of the website.</strong></p>
 <p><br> <br></p>
 </div>
 </div>
@@ -853,7 +859,7 @@ AIC(fit_logistic)
 
 fit_logistic$formula</code></pre>
 <p>In the end, this process came up with the following possible model:</p>
-<p><strong>Model 1</strong></p>
+<p><br> <strong>Model 1</strong></p>
 <p>current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13</p>
 <p><br> <br></p>
 </div>
@@ -875,7 +881,7 @@ AIC(auto_logistic)
 auto_logistic %&gt;% broom::tidy()
 auto_logistic$formula</code></pre>
 <p>The formula generated by the function is as follows:</p>
-<p><strong>Model 2</strong></p>
+<p><br> <strong>Model 2</strong></p>
 <p>current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide + safety_concerns_at_school + physical_fighting + bullying_electronically + age + race7 + illegal_injected_drug_use + sexual_contact_2</p>
 <p><br><br></p>
 </div>
@@ -900,7 +906,8 @@ auto_logistic$formula</code></pre>
     lambda = lasso_temp$lambda.min
     )</code></pre>
 <p>In the end the final model from LASSO is the following:</p>
-<p><br> Model 3: current_vaping ~ age + sex + race7 + sad_hopeless + attempted_suicide + injurious_suicide_attempt + safety_concerns_at_school + physical_fighting + bullying_electronically + illegal_injected_drug_use + carring_weapon + sex_before_13 + current_sexual_activity</p>
+<p><br> <strong>Model 3:</strong></p>
+<p>current_vaping ~ age + sex + race7 + sad_hopeless + attempted_suicide + injurious_suicide_attempt + safety_concerns_at_school + physical_fighting + bullying_electronically + illegal_injected_drug_use + carring_weapon + sex_before_13 + current_sexual_activity</p>
 <p><br> The LASSO model has tunning paramter lamda equals 0.005 and the model contains more covariates than the above two models since LASSO putting shringkage on the coefficient of each covariate and thus will include more covariates (remember that LASSO will automatically do the variable selection).</p>
 <p><br></p>
 </div>
@@ -909,6 +916,7 @@ auto_logistic$formula</code></pre>
 <p><br></p>
 <div id="picking-the-best-model" class="section level3">
 <h3>Picking the “best” Model</h3>
+<p><br></p>
 <p>At this point we had three predictive models. In order to decide which of them is the “best” one, we employed the cross-validation prediction accuracy as our criterion. The prediction accuracy is calculated as the proportion of correct predictions made by the model.</p>
 <p>To perform the cross-validation in a compact and well-integrated manner, we coded our model selection process as robust functions that can be mapped to a modlr cv object by purrr to streamline the cross-validation process. We conducted a 5 fold 10 times CV on the three models.</p>
 <pre class="r"><code>## function for stepAIC method
@@ -964,9 +972,14 @@ cv_df%&gt;%select(starts_with(&quot;accuracy&quot;)) %&gt;%
     names_prefix = &quot;accuracy_&quot;) %&gt;% 
   mutate(Models = recode(model,automodel = &quot;StepAIC Model&quot;,manualmodel = &quot;Manual Model&quot;, lasso = &quot;Lasso Model&quot;))%&gt;%
   ggplot(aes(x = Models, y = Accuracy)) + geom_violin()</code></pre>
+<p><br></p>
 <p><left><img src = "Logistic_Regression_Model_Selection_files/figure-html/CrossValidation-1.png" style = "width:60%"> </left></p>
 <p>According to the violin plot, which shows the distribution of prediction accuracy, the model that was generated by stepAIC (StepAIC model) has an accuracy of about 1% better than the accuracy of the model generated by lasso (Lasso model) and an accuracy of about 2% better than the model generated by the manual selection (Manual model) method. Therefore, we picked the stepAIC model as our finial model.</p>
-<p><br> ### Model applied to 2017 Data <br></p>
+<p><br></p>
+</div>
+<div id="model-applied-to-2017-data" class="section level3">
+<h3>Model applied to 2017 Data</h3>
+<p><br></p>
 <p>Subsequently, we used all three models to predict the vaping status of teenagers in 2017. As can be seen in the table below, the StepAIC model also performed best among the three models considered, giving a more than 87% accuracy rate.</p>
 <pre class="r"><code>## The model generated using the full data set is recreated
 Final_model =
@@ -1013,9 +1026,9 @@ Final_model =
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>
 <p><br> Vaping, no doubt, is getting not just press attention, but is also a public health crisis in youth. How to use current available data to prevent future vaping use in youth is an urgent task for public health researchers. After visualizing the YRBSS data, we proposed three different models using data in 2015 to predict youth vaping use in 2017. We used prediction accuracy in cross-validation (CV) as the criterion to choose the best predicting model. By conducting a 5 folds 10 times CV, the model that was generated by StepAIC outstood the manually created and the LASSO selected models. The StepAIC model picked 10 predictors (carring_weapon, sad_hopeless, attempted_suicide, safety_concerns_at_school, physical_fighting, bullying_electronically, age, ace7, illegal_injected_drug_use and sexual_contact_2) and gives an overall of 87% accuracy rate. Overall, teenagers with a depressive mood, who are suffering from depression, who have problems in school and exhibit risky behaviors are more likely to start vaping at a young age.</p>
-<p><br> <br></p>
+<p><br></p>
 <p>The limitation of this dataset is that we only have vaping data for two years. In addition to that, we had to drop some potential predictors due to high levels of missingness. Despite this, our findings are important. We wish to apply our methods to data from 2018 and 2019, when they become publicly available. Should the prediction accuracy rate stay high, it will help policy makers, schoolteachers, and parents to work together to focus on a targeted population to improve efficiency in reducing the vaping rate in youth.</p>
-<p><br> <br></p>
+<p><br></p>
 <p>We thank Dr. Jeff Goldsmith and his TA team for helping us and giving us this opportunity to work together to actually trying to solve some real public health issues. We hope that you have enjoyed watching our screencast and going through the work that we presented here. <br></p>
 </div>
 
