@@ -24,6 +24,7 @@
    devtools::install_github('thomasp85/gganimate')
 <br>  
 3. to animate the line plot
+<br>
    install.packages(c("gifski", "magick", "transformr")) 
 <br>
 4. for Logistic_Regression_Model_Building.rmd
