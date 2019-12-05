@@ -411,12 +411,13 @@ div.tocify {
 
 <div id="motivation-related-work" class="section level1">
 <h1>Motivation &amp; Related Work</h1>
+<p><br></p>
 <p><left><img src = "images/youthvaping.jpg" style = "width:60%"> </left></p>
+<p><br></p>
 <p>Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was initially regarded as a less harmful substitution for cigarettes. However, vaping still introduces nicotine into the body. The prevalence of lung damage caused by vaping is actually so high that the CDC[<a href="https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub">1</a>] needed to issue guidance explicitly on it. According to the New York Post, a second vaping related death occured on November 9th, 2019. Vaping has claimed at least 42 lives and injured over 2,000 others across the country[<a href="https://nypost.com/2019/11/20/second-new-yorker-dead-from-vaping-related-illness-officials/">2</a>].</p>
 <p>As the popularity of vaping grows, concerns about vaping are covered both in academia and in the press[<a href="https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction">3</a>,<a href="https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html">4</a>]. A journal article published recently even describes the prevalence of vaping in a “red alert” state[<a href="https://link.springer.com/article/10.1057/s41271-019-00193-2">5</a>]. In press, vaping is accused of being both a gateway drug and a new “drug” itself. 81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes[<a href="https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/">6</a>]. To provide grounds for potential public health interventions on this “scourge of drug”[<a href="https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html">6</a>], we will evaluate the current landscape of vaping usage among teenagers and young adults in NYC using pre-collected data and analyze the potential risks of vaping in terms of future substance abuse and mental hygiene condistions.</p>
 <p><br></p>
-<div id="facts-about-vaping" class="section level3">
-<h3>Facts about vaping</h3>
+<p><strong>Facts about vaping</strong></p>
 <ul>
 <li><p>2,051 reported lung illness cases and 39 lung illness deaths due to vaping.[<a href="https://www.engadget.com/2019/11/07/cdc-confirms-vaping-lung-injury/">1</a>]</p></li>
 <li><p>81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes.[<a href="https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/">2</a>]</p></li>
@@ -425,18 +426,21 @@ div.tocify {
 <p>According to reports in recent years, we can see an underlying trend of vaping is increasing, especially in the teenager group.</p>
 <p><br> <br></p>
 </div>
-</div>
 <div id="initial-questions" class="section level1">
 <h1>Initial Questions</h1>
+<p><br></p>
 <ol style="list-style-type: decimal">
-<li><p>How did drugs use in youth change over time in NYC?</p></li>
-<li><p>How did mental health related issues in youth change over time in NYC?</p></li>
-<li><p>How does drug use and mental health status differ by demographics in NYC youth?</p></li>
+<li><p>How did drugs use change over time in NYC’s youth?</p></li>
+<li><p>How did mental health related issues change over time in NYC’s youth?</p></li>
+<li><p>How does drug use and mental health status differ by demographics in NYC’s youth?</p></li>
+<li><p>How do risky and violent behaviors differ between NYC children using drugs and not using drugs?</p></li>
 <li><p>Can we build a model with current available data to predict future vaping use?</p></li>
 </ol>
+<p>Initially, we were interested in building a model to determine associations. However, as our studies in data science class progressed further, we learned new great procedures and methods that we wanted to incorporate into our project. In particular, we became interested in building a predictive model based on data from 2015, and using this data to predict vaping for 2017</p>
 <p><br> <br></p>
-<div id="data-and-the-data-cleaning-process" class="section level3">
-<h3>Data and the Data Cleaning Process</h3>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
 <p><br></p>
 <p>We utilized the <strong>YRBSS</strong> dataset publicly available on <a href="https://www.cdc.gov/healthyyouth/data/yrbs/data.htm">CDC.gov</a>. The YRBSS started in 1990 with the goal to monitor health behaviors that contribute markedly to the leading causes of death, disability, and social issues among youth and adults in the United States. The YRBSS monitors behaviors surrouning, for example,</p>
 <ul>
@@ -487,9 +491,9 @@ div.tocify {
 </ul>
 <p><br> <br></p>
 </div>
-</div>
 <div id="explorary-analysis" class="section level1">
 <h1>Explorary Analysis</h1>
+<p><br></p>
 <pre class="r"><code>### load the cleaned data
 load(&quot;./data/nyc_data.RData&quot;)
 nyc_drug &lt;- df_total</code></pre>
@@ -849,14 +853,13 @@ combine_gifs(plot1 = yes_p, plot2 = no_p)</code></pre>
 <p><br> <br></p>
 </div>
 </div>
-<div id="logistic-regression-model-to-predict-vaping" class="section level1">
-<h1>Logistic Regression Model to Predict Vaping</h1>
+<div id="logistic-regression-model" class="section level1">
+<h1>Logistic Regression Model</h1>
 <p><br></p>
 <p>Since we were investigating the prevelance and trend in vaping among NYC’s youth, we were interested in predicting <strong>current_vaping</strong>. We began our model building process considering the following predictors:</p>
 <p><strong>Demographics</strong></p>
 <ul>
 <li><em>borough</em>: one of the five boroughs of NYC</li>
-<li><em>year</em>: year of the survey</li>
 <li><em>age</em>: age of the subject</li>
 <li><em>sex</em>: gender of the subject (male, female)</li>
 <li><em>race7</em>: race of the subject</li>
@@ -884,10 +887,10 @@ combine_gifs(plot1 = yes_p, plot2 = no_p)</code></pre>
 <div id="manuel-method" class="section level2">
 <h2>Manuel Method</h2>
 <p><br></p>
-<p>First, we attempted to find a predictive model, using a form of <strong>stepwise/automatic approach</strong> by hand. We utilized p-values, pseudo R<sup>2</sup>, and prediction accuracy as our guidance for which predictors to choose, starting with the full model (except for <em>year</em>). In the end, this process came up with the following possible model:</p>
+<p>First, we attempted to find a predictive model by using a variation on <strong>stepwise/automatic procedures</strong> (by hand). We utilized p-values and prediction accuracy as our guidance for which predictors to choose, starting with the full model. In the end, this process came up with the following possible model:</p>
 <p><br></p>
-<p><strong>Model 1:</strong></p>
-<p>current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon</p>
+<p><strong>Model 1</strong></p>
+<p>current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13</p>
 <p><br> <br></p>
 </div>
 <div id="hao-method" class="section level2">
@@ -901,9 +904,6 @@ combine_gifs(plot1 = yes_p, plot2 = no_p)</code></pre>
 <div id="model-selection" class="section level2">
 <h2>Model Selection</h2>
 </div>
-</div>
-<div id="conclusion" class="section level1">
-<h1>Conclusion</h1>
 </div>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>
