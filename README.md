@@ -8,7 +8,7 @@ This is the repo for p8105 final group project!
 4. Hao Sun(hs3163)
 5. Siquan Wang(sw3442) 
 
-## All the R packages and installaton instructions are listed here:
+## All the R packages and installation instructions are listed here:
 <br>
 1. For datacleaning.rmd: 
 <br>
@@ -50,3 +50,7 @@ This is the repo for p8105 final group project!
 <br>
    fontawsome package
    devtools::install_github("rstudio/fontawesome")
+   
+   
+## Our website can be found here:
+   https://jg-97.github.io/p8105_final_project_vaping/
