@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>EDA.utf8.md</title>
+<title>EDA.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -234,6 +233,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -329,9 +329,72 @@ $(document).ready(function () {
 
 <div id="eda" class="section level1">
 <h1>EDA</h1>
-<p>We need to describe the data. Just giving the plots is not enough.</p>
-<p>Something down the line: This graph suggests so and so…</p>
-<p>He was always asking us to interpret graphs as part of your EDA.</p>
+<p>In this page, we will give you interpretation of the plot and the corresponding question each graph answers.</p>
+<div id="interpretation-of-vaping-drug-use-plots" class="section level2">
+<h2>Interpretation of vaping &amp; drug use plots</h2>
+<center>
+<img src = "images/cigarette.png" style = "width:100%">
+</center>
+<ul>
+<li><p>Among five kinds of drugs(vaping), alcohol holds the highest proportion but decreases in use from 2007 across five boroughs in NYC. In addition, cigarette has a lower total proportion than alcohol but the similar decreasing trend after 2009.</p></li>
+<li><p>Cigar maintains the steady but low-proportion trend during 2003-2017, which could be compared with marijuana holding steady but higher proportion in total. Moreover, the marijuana users in Manhattan increase from the lowest level to highest level among five boroughs during 2007-2011.</p></li>
+<li><p>Vaping, which is our target subject, hold the increasing trend from 2015-2017. This trend is quite similar to the alcohol, cigar and cigarette before being intervented, and maintains at the same proportion level with marijuana in 2015-2017, which indicates that it can grow into a new drug threatening the public health.</p></li>
+</ul>
+<p>This section’s graphs are combined into an animated one to answer the question: <em>How did drugs use change over time in NYC’s youth?</em></p>
+<p>If you are interested in more details, please visit our <a href="Report.html">Report</a>.</p>
+</div>
+<div id="interpretation-of-mental-health-plots" class="section level2">
+<h2>Interpretation of mental health plots</h2>
+<center>
+<img src = "images/sad.png" style = "width:100%">
+</center>
+<ul>
+<li><p>Above three mental disorders are related to the vaping and other drug use in the report/survey. The emotion issue, feeling sad and hopeless, hold the highest level among three metal disorders. The data shows large number of teenagers do not have a positive mood based on the participants attending the report, and the trend decreases slightly after 2009. Staten Island keeps the lowest proportion in the reported sadness except 2011. Bronx almost keeps the highest level and Queens fluctuates heavily which decreases a lot during 2005 to 2011.</p></li>
+<li><p>The proportion of attempted suicide holds the level near 0.1 and is higher than that of getting injured due to the attempted suicide. Both of attempted suicide and injurious attempted suicide keep the relative steady trend in proportion and the same level across five boroughs.</p></li>
+</ul>
+<p>This section’s graphs are combined into an animated one to answer the question: <em>How did mental health related issues in youth change over time in NYC?</em></p>
+<p>If you are interested in more details, please visit our <a href="Report.html">Report</a>.</p>
+</div>
+<div id="the-demographics-of-vaping-and-drug-use-by-gender-races-and-ages" class="section level2">
+<h2>The demographics of vaping and drug use by gender, races and ages</h2>
+<p>This section’s graphs are combined into an animated one to answer the question: <em>How does drug use and mental health status differ by demographics in NYC youth?</em></p>
+<div id="drug-use-grouped-by-the-gender-in-2017" class="section level3">
+<h3>drug use grouped by the gender in 2017</h3>
+<center>
+<img src = "images/sex.png" style = "width:100%">
+</center>
+<p>This is an example plot showing the condition of the marijuana and vaping use in the NYC grouped by the gender.</p>
+</div>
+<div id="drug-use-grouped-by-the-races-in-2017" class="section level3">
+<h3>drug use grouped by the races in 2017</h3>
+<center>
+<img src = "images/race.png" style = "width:100%">
+</center>
+<p>This is an example plot showing the condition of marijuana and vaping use in NYC grouped by races.</p>
+</div>
+<div id="drug-use-grouped-by-the-ages-in-2017" class="section level3">
+<h3>drug use grouped by the ages in 2017</h3>
+<center>
+<img src = "images/age.png" style = "width:100%">
+</center>
+<p>This is an example plot showing the condition of marijuana and vaping use in NYC grouped by ages</p>
+<p>If you are interested in more details, please visit our <a href="https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use">Explore the Data</a>.</p>
+</div>
+</div>
+<div id="interpretation-of-violence-risky-behaviors-plots" class="section level2">
+<h2>interpretation of violence &amp; risky behaviors plots</h2>
+<center>
+<img src = "2003.png" style = "width:90%">
+</center>
+<ul>
+<li><p>The left plot has the twice value than the right plot when the bar is in the same height. Therefore, the proportion of having violence nad risky behaviors in the teenagers who use drugs is nearly twice than the that in the teenagers who are non-drug users. Moreover, non-drug users have lower proportion in carrying weapons from 2003 to 2017.</p></li>
+<li><p>Physical fighting, feeling unsafe at school and being treantened at school increase in proportion during 2005-2007, keep the same proportion in 2009, and begin to decrease in 2011.</p></li>
+<li><p>Physical fighting keeps high proportion in both drug users and non-drug users and becomes a issue which is hard to control and intervent in 2003-2017.</p></li>
+<li><p>Bullying electronically is another issue whose proportion inceases from 2015 to 2017 in both two groups</p></li>
+</ul>
+<p>This section’s graphs are combined into one animated one to answer the question: <em>How does risky and violent behaviors differ between NYC children using drugs and not using drugs?</em></p>
+<p>If you are interested in more details, please visit our <a href="Report.html">Report</a>.</p>
+</div>
 </div>
 
 

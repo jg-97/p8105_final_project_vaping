@@ -16,7 +16,6 @@ knitr::opts_chunk$set(echo = TRUE,
 library(tidyverse)
 library(gganimate)
 library(transformr)
-library(readxl)
 library(gifski)
 library(magick)
 library(reprex)
