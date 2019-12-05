@@ -67,7 +67,7 @@ If you are interested in more details, please visit our [Explore the Data](https
 
 ## interpretation of violence & risky behaviors plots
 
-<center><img src = "2003.png" style = "width:90%"> </center>
+<center><img src = "images/2003.png" style = "width:90%"> </center>
 
 * The left plot has the twice value than the right plot when the bar is in the same height. Therefore, the proportion of having violence nad risky behaviors in the teenagers who use drugs is nearly twice than the that in the teenagers who are non-drug users. Moreover, non-drug users have lower proportion in carrying weapons from 2003 to 2017. 
 
