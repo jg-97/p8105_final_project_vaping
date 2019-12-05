@@ -418,8 +418,8 @@ div.tocify {
 <div id="motivation-related-work" class="section level1">
 <h1>Motivation &amp; Related Work</h1>
 <p><br></p>
-<p>Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was initially regarded as a less harmful substitution for cigarettes. However, vaping still introduces nicotine into the body. The prevalence of lung damage caused by vaping is actually so high that the CDC[<a href="https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub">1</a>] needed to issue some guidance explicitly on it. According to the New York Post, a second vaping related death occured on November 9th, 2019. Overall, vaping has claimed at least 42 lives and injured over 2,000 others across the country[<a href="https://nypost.com/2019/11/20/second-new-yorker-dead-from-vaping-related-illness-officials/">2</a>].</p>
-<p>As the popularity of vaping grows, concerns about vaping are covered both in academia and in the press[<a href="https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction">3</a>,<a href="https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html">4</a>]. A journal article published recently even describes the prevalence of vaping in a “red alert” state[<a href="https://link.springer.com/article/10.1057/s41271-019-00193-2">5</a>]. In the press, vaping is accused of being both a gateway drug and a new “drug” in itself. Moreover, 81% of Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes[<a href="https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/">6</a>]. To provide grounds for potential public health interventions targeting this “scourge of drug”[<a href="https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html">6</a>], we evaluated the current landscape of vaping usage among teenagers and young adults in NYC using pre-collected data and analyzed the relationship between vaping and other drug usage with mental health and risky/violent behaviors.</p>
+<p>Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was initially regarded as a less harmful substitution for cigarettes. However, vaping still introduces nicotine into the body. The prevalence of lung damage caused by vaping is actually so high that the CDC[<a href="https://www.cdc.gov/mmwr/volumes/68/wr/mm6841e3.htm">1</a>] needed to issue some guidance explicitly on it. According to the New York Post, a second vaping related death occured on November 9th, 2019. Overall, vaping has claimed at least 42 lives and injured over 2,000 others across the country[<a href="https://nypost.com/2019/11/20/second-new-yorker-dead-from-vaping-related-illness-officials/">2</a>].</p>
+<p>As the popularity of vaping grows, concerns about vaping are covered both in academia and in the press[<a href="https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction">3</a>,<a href="https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html">4</a>]. A journal article published recently even describes the prevalence of vaping in a “red alert” state[<a href="https://link.springer.com/article/10.1057/s41271-019-00193-2">5</a>]. In the press, vaping is accused of being both a gateway drug and a new “drug” in itself. Moreover, 81% of Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes[<a href="https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/">6</a>]. To provide grounds for potential public health interventions targeting this “scourge of drug”[<a href="https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html">4</a>], we evaluated the current landscape of vaping usage among teenagers and young adults in NYC using pre-collected data and analyzed the relationship between vaping and other drug usage with mental health and risky/violent behaviors.</p>
 <p><br></p>
 <p><strong>Quick Facts about vaping</strong></p>
 <ul>
@@ -581,14 +581,18 @@ drug_p &lt;- marijuana_full %&gt;%
 
 animate(drug_p)</code></pre>
 <p><img src="Report_files/figure-html/distribution_vaping_other_drugs-1.gif" /><!-- --></p>
+<div id="interpretation" class="section level4">
+<h4>Interpretation</h4>
+<p><br></p>
 <p>After analyzing the plot, we drew the following conclusions:</p>
 <ul>
 <li><p>Among the five types of drugs considered, alcohol has the highest proportion in year 2003, but started decreasing in use from 2007 onwards across all five boroughs in NYC. In addition, cigarette has a lower total proportion than alcohol but a similar decreasing trend after 2009.</p></li>
 <li><p>Cigar maintains a steady but low-proportion trend during 2003-2017, which could be compared with marijuana holding a steady but higher proportion in total. Moreover, the marijuana use in Manhattan increased from the lowest level in 2007 to the highest level in 2011 among five boroughs.</p></li>
-<li><p>Staten Island had the highest Marijuana use over the years among all five NYC boroughs. However, in year 2017, it dropped dramatically and had the lowest proportion among all boroughs.</p></li>
+<li><p>Staten Island had the highest Marijuana use over the years among all five NYC boroughs. However, in year 2017, it dropped dramatically and had the lowest proportion among all boroughs. Overall Marijuana stayed almost the same among all boroughs over the years.</p></li>
 <li><p>Vaping, which is our main drug of interest, has a slightly increasing trend from 2015-2017. This trend is quite similar to the alcohol, cigar and cigarette trend observed from 2003 to 2005, and has a proportion about as high as the proportion observed in marijuana in 2015-2017, which indicates that it could possibliy grow into a new drug threatening public health.</p></li>
 </ul>
 <p><br> <br></p>
+</div>
 </div>
 <div id="exploring-the-change-of-mental-health-over-time" class="section level2">
 <h2>Exploring the change of Mental Health over Time</h2>
@@ -649,12 +653,16 @@ mental_p &lt;- injury_full %&gt;%
 
 animate(mental_p)</code></pre>
 <p><img src="Report_files/figure-html/distribution_mental_health-1.gif" /><!-- --></p>
+<div id="interpretation-1" class="section level4">
+<h4>Interpretation</h4>
+<p><br></p>
 <p>Examining this plot, we determined the following:</p>
 <ul>
 <li><p>Teenagers, feeling sad and hopeless, constitute the highest proportion among all three mental health issues considered. Based on the considered survey data, we see that a high percentage of teenagers do not have a positive mood. The trend decreases slightly after 2009, just to pick up again in 2015. Staten Island has the lowest proportion in the reported sadness with the exception of 2011. Bronx almost alwyas has the highest proportion, and Queens fluctuates greatly.</p></li>
 <li><p>The proportion of attempted suicide is approximately constant at about 0.1 and is higher than the proportion associated with getting injured due to an attempted suicide. Both attempted suicide and injurious attempted suicide are relatively steady over time and have about the same magnitude across all five NYC boroughs.</p></li>
 </ul>
 <p><br> <br></p>
+</div>
 </div>
 <div id="exploring-drug-use-in-2017-by-sex-within-each-borough" class="section level2">
 <h2>Exploring drug use in 2017 by sex within each borough</h2>
@@ -694,34 +702,55 @@ df %&gt;%
   ggplot(aes(x = sex, y = percent, fill = sex)) + 
   geom_bar(stat = &quot;identity&quot;) +
   labs(
-    title = str_c(&quot;Drug Use in 2017 by Sex in &quot;, borough)) + 
+    title = str_c(&quot;Drug Use in 2017 by Sex in &quot;, borough),
+    x = &quot;sex&quot;,
+    y = &quot;proportion of drug use&quot;) + 
   theme(legend.position = &quot;none&quot;) +
   facet_grid(~drug)}
 
-sex_Bronx = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot;The Bronx&quot;)
-sex_Brooklyn = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Brooklyn&quot;), &quot;Brooklyn&quot;)
-sex_Manhattan = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Manhattan&quot;), &quot;Manhattan&quot;)
-sex_Queens = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Queens&quot;), &quot;Queens&quot;)
-sex_Staten_Island = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Staten Island&quot;), &quot;Staten Island&quot;)
-
-sex_Bronx</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-1.png" width="960" /></p>
-<pre class="r"><code>sex_Brooklyn</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-2.png" width="960" /></p>
-<pre class="r"><code>sex_Manhattan</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-3.png" width="960" /></p>
-<pre class="r"><code>sex_Queens</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-4.png" width="960" /></p>
-<pre class="r"><code>sex_Staten_Island</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-5.png" width="960" /></p>
+sex_Bronx = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot; - The Bronx&quot;)
+sex_Brooklyn = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Brooklyn&quot;), &quot; - Brooklyn&quot;)
+sex_Manhattan = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Manhattan&quot;), &quot; - Manhattan&quot;)
+sex_Queens = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Queens&quot;), &quot; - Queens&quot;)
+sex_Staten_Island = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Staten Island&quot;), &quot; - Staten Island&quot;)</code></pre>
+</div>
+<div id="section" class="section level2 tabset tabset-fade tabset-pills">
+<h2></h2>
+<div id="bronx" class="section level3">
+<h3><strong>Bronx</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-1-1.png" width="960" /></p>
+</div>
+<div id="brooklyn" class="section level3">
+<h3><strong>Brooklyn</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-2-1.png" width="960" /></p>
+</div>
+<div id="manhattan" class="section level3">
+<h3><strong>Manhattan</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+</div>
+<div id="queens" class="section level3">
+<h3><strong>Queens</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+</div>
+<div id="staten-island" class="section level3">
+<h3><strong>Staten Island</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+</div>
+</div>
+<div id="section-1" class="section level2">
+<h2></h2>
+<div id="interpretation-2" class="section level4">
+<h4>Interpretation</h4>
+<p><br></p>
 <p>Studying these plots, we were able to derive the following results:</p>
 <ul>
-<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of male teenagers in the Bronx using a particular type of drug is higher (about 55%) compared to their female counterparts.</p></li>
-<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Brooklyn using a particular type of drug is higher (about 55%) compared to their male counterparts.</p></li>
-<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Manhattan using a particular type of drug is higher (almost 60%) compared to their male counterparts.</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of male teenagers in the Bronx using a particular type of drug is higher (about 0.55) compared to their female counterparts.</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Brooklyn using a particular type of drug is higher (about 0.55) compared to their male counterparts.</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Manhattan using a particular type of drug is higher (almost 0.60) compared to their male counterparts.</p></li>
 <li><p>According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Queens using a particular type of drug is about equal to the proportion of their male counterparts. A similar trend can be observed in Staten Island. However it seems as if marijuana use is slightly higher in female than in males teenagers in Staten Island.</p></li>
 </ul>
 <p><br><br></p>
+</div>
 </div>
 <div id="exploring-drug-use-in-2017-by-being-involved-in-fights" class="section level2">
 <h2>Exploring drug use in 2017 by being involved in fights</h2>
@@ -761,39 +790,60 @@ df %&gt;%
   ggplot(aes(x = physical_fighting, y = percent, fill = physical_fighting)) + 
   geom_bar(stat = &quot;identity&quot;) +
   labs(
-    title = str_c(&quot;Drug Use in 2017 by Being Involved in a Fight or Not &quot;, borough)) + 
+    title = str_c(&quot;Drug Use in 2017 by Being Involved in a Fight or Not &quot;, borough),
+    x = &quot;involved in a fight&quot;,
+    y = &quot;proportion of drug use&quot;) +   
   theme(legend.position = &quot;none&quot;) +
   facet_grid(~drug)}
 
 
 
-fight_Bronx = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot;The Bronx&quot;)
-fight_Brooklyn = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Brooklyn&quot;), &quot;Brooklyn&quot;)
-fight_Manhattan = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Manhattan&quot;), &quot;Manhattan&quot;)
-fight_Queens = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Queens&quot;), &quot;Queens&quot;)
-fight_Staten_Island = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Staten Island&quot;), &quot;Staten Island&quot;)
-
-fight_Bronx</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-1.png" width="960" /></p>
-<pre class="r"><code>fight_Brooklyn</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-2.png" width="960" /></p>
-<pre class="r"><code>fight_Manhattan</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-3.png" width="960" /></p>
-<pre class="r"><code>fight_Queens</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-4.png" width="960" /></p>
-<pre class="r"><code>fight_Staten_Island</code></pre>
-<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-5.png" width="960" /></p>
+fight_Bronx = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot; - The Bronx&quot;)
+fight_Brooklyn = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Brooklyn&quot;), &quot; - Brooklyn&quot;)
+fight_Manhattan = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Manhattan&quot;), &quot; - Manhattan&quot;)
+fight_Queens = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Queens&quot;), &quot; - Queens&quot;)
+fight_Staten_Island = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Staten Island&quot;), &quot; - Staten Island&quot;)</code></pre>
+</div>
+<div id="section-2" class="section level2 tabset tabset-fade tabset-pills">
+<h2></h2>
+<div id="bronx-1" class="section level3">
+<h3><strong>Bronx</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
+</div>
+<div id="brooklyn-1" class="section level3">
+<h3><strong>Brooklyn</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+</div>
+<div id="manhattan-1" class="section level3">
+<h3><strong>Manhattan</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-8-1.png" width="960" /></p>
+</div>
+<div id="queens-1" class="section level3">
+<h3><strong>Queens</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-9-1.png" width="960" /></p>
+</div>
+<div id="staten-island-1" class="section level3">
+<h3><strong>Staten Island</strong></h3>
+<p><img src="Report_files/figure-html/unnamed-chunk-10-1.png" width="960" /></p>
+</div>
+</div>
+<div id="section-3" class="section level2">
+<h2></h2>
+<div id="interpretation-3" class="section level4">
+<h4>Interpretation</h4>
+<p><br></p>
 <p>Studying these plots, we were able to derive the following result:</p>
 <ul>
-<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in the Bronx is about 28%, with the exception of alcohol, for which the proportion seems to be about 25%.</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in the Bronx is about 0.28, with the exception of alcohol, for which the proportion seems to be about 0.25.</p></li>
 <li><p>The same trend can be observed in Brooklyn. The only differences appear to be that the proportions itself are a bit lower: 0.22 for alcohol and about 0.25 for the remaining types of drugs.</p></li>
-<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Manhatten is about 22%.</p></li>
-<li><p>According to our survey data, it appears as if the proportion of teenagers involved in a fight in Queens is slightly higher for children vaping (about 0.24%) and smoking cigars (about 0,23%).</p></li>
-<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Staten Island is about 19% - the lowest proportion of all boroughs.</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Manhatten is about 0.22.</p></li>
+<li><p>According to our survey data, it appears as if the proportion of teenagers involved in a fight in Queens is slightly higher for children vaping (about 0.24) and smoking cigars (about 0.23).</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Staten Island is about 0.19 - the lowest proportion of all boroughs.</p></li>
 </ul>
 <p><br></p>
 <p><strong>If this Exploratory Analysis sparked your interested, feel free to explore the data more using the Explore the Data tab on the top right corner of the website.</strong></p>
 <p><br> <br></p>
+</div>
 </div>
 </div>
 <div id="logistic-regression-model" class="section level1">
