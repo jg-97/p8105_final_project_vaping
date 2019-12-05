@@ -11,7 +11,6 @@ This is the repo for p8105 final group project!
 ## All the R packages and installaton instructions are listed here:
 
 1. For datacleaning.rmd: 
-<br>
    library(tidyverse)
    library(readxl)
    library(writexl)
