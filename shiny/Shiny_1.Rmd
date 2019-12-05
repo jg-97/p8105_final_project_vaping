@@ -363,11 +363,11 @@ renderPlotly({
 
 <br> <br>
 
-* **Marijuana**:   used marijuana during the past 30 days   (Yes/No)
-* **Alcohol**:   had at least one drink of alcohol during the past 30 days   (Yes/No)
-* **Cigarettes**:   smoked cigarettes during the past 30 days   (Yes/No)
-* **Vaping**:   used an electronic vapor product during the past 30 days   (Yes/No)
-* **Cigar**:   smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
+* **Marijuana**:   respondent used marijuana during the past 30 days   (Yes/No)
+* **Alcohol**:   respondent had at least one drink of alcohol during the past 30 days   (Yes/No)
+* **Cigarettes**:   respondent smoked cigarettes during the past 30 days   (Yes/No)
+* **Vaping**:   respondent used an electronic vapor product during the past 30 days   (Yes/No)
+* **Cigar**:   respondent smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
 
 
 Drug Use over Time
@@ -535,11 +535,11 @@ renderPlotly({
 
 <br> <br>
 
-* **Marijuana**:   used marijuana during the past 30 days   (Yes/No)
-* **Alcohol**:   had at least one drink of alcohol during the past 30 days   (Yes/No)
-* **Cigarettes**:   smoked cigarettes during the past 30 days   (Yes/No)
-* **Vaping**:   used an electronic vapor product during the past 30 days   (Yes/No)
-* **Cigar**:   smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
+* **Marijuana**:   respondent used marijuana during the past 30 days   (Yes/No)
+* **Alcohol**:   respondent had at least one drink of alcohol during the past 30 days   (Yes/No)
+* **Cigarettes**:   respondent smoked cigarettes during the past 30 days   (Yes/No)
+* **Vaping**:   respondent used an electronic vapor product during the past 30 days   (Yes/No)
+* **Cigar**:   respondent smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
 
 
 
@@ -869,10 +869,10 @@ renderPlotly({
 
 <br> <br>
 
-* **feel sad or hopeless**:   during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible   (Yes/No)
-* **considered suicide**:   during the past 12 months, seriously considered attempting suicide   (Yes/No)
-* **attempted suicide**:   during the past 12 months, actually attempt suicide   (Yes/No)
-* **injured during attempted suicide**:   attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse   (Yes/No)
+* **feel sad or hopeless**:   during the past 12 months, respondent felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible   (Yes/No)
+* **considered suicide**:   during the past 12 months, respondent seriously considered attempting suicide   (Yes/No)
+* **attempted suicide**:   during the past 12 months, respondent actually attempt suicide   (Yes/No)
+* **injured during attempted suicide**:   respondent attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse   (Yes/No)
 
 
 
@@ -971,10 +971,10 @@ renderPlotly({
 
 <br> <br>
 
-* **feel sad or hopeless**:   during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible   (Yes/No)
-* **considered suicide**:   during the past 12 months, seriously considered attempting suicide   (Yes/No)
-* **attempted suicide**:   during the past 12 months, actually attempt suicide   (Yes/No)
-* **injured during attempted suicide**:   attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse   (Yes/No)
+* **feel sad or hopeless**:   during the past 12 months, respondent felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible   (Yes/No)
+* **considered suicide**:   during the past 12 months, respondent seriously considered attempting suicide   (Yes/No)
+* **attempted suicide**:   during the past 12 months, respondent actually attempt suicide   (Yes/No)
+* **injured during attempted suicide**:   respondent attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse   (Yes/No)
 
 
 
@@ -1420,11 +1420,11 @@ renderPlotly({
 
 <br> <br>
 
-* **Marijuana**:   used marijuana during the past 30 days   (Yes/No)
-* **Alcohol**:   had at least one drink of alcohol during the past 30 days   (Yes/No)
-* **Cigarettes**:   smoked cigarettes during the past 30 days   (Yes/No)
-* **Vaping**:   used an electronic vapor product during the past 30 days   (Yes/No)
-* **Cigar**:   smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
+* **Marijuana**:   respondent used marijuana during the past 30 days   (Yes/No)
+* **Alcohol**:   respondent had at least one drink of alcohol during the past 30 days   (Yes/No)
+* **Cigarettes**:   respondent smoked cigarettes during the past 30 days   (Yes/No)
+* **Vaping**:   respondent used an electronic vapor product during the past 30 days   (Yes/No)
+* **Cigar**:   respondent smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
 
 
 
@@ -1432,14 +1432,14 @@ renderPlotly({
 <br> <br>
 
 * **illegal_injected_drug_use**: subject has used needle to inject any illegal drug into body during life time   (Yes/No)
-* **carring weapon**:   subject carried a weapon such as a gun, knife, or club during the past 30 days   (Yes/No)
-* **safety concerns at_school**:  subject did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days   (Yes/No)
-* **threatened at school**:  subject has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months   (Yes/No)
-* **physical fighting**:   subject has been in a physical fight during the past 12 months   (Yes/No)
-* **bullying at school**:   subject has been bullied on school property during the past 12 months   (Yes/No)
-* **bullying electronically**:   subject has been bullied electronically (i.e. facebook) during the past 12 months   (Yes/No)
-* **sex before 13**:   subject had first sexual intercourse before age 13   (Yes/No)
-* **current sexual activity**: subject had sexual intercourse with 1 or more people during the past 3 months   (Yes/No)
+* **carring weapon**:   respondent carried a weapon such as a gun, knife, or club during the past 30 days   (Yes/No)
+* **safety concerns at_school**:  respondent did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days   (Yes/No)
+* **threatened at school**:  respondent has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months   (Yes/No)
+* **physical fighting**:   respondent has been in a physical fight during the past 12 months   (Yes/No)
+* **bullying at school**:   respondent has been bullied on school property during the past 12 months   (Yes/No)
+* **bullying electronically**:   respondent has been bullied electronically (i.e. facebook) during the past 12 months   (Yes/No)
+* **sex before 13**:   respondent had first sexual intercourse before age 13   (Yes/No)
+* **current sexual activity**: respondent had sexual intercourse with 1 or more people during the past 3 months   (Yes/No)
 
 
 
