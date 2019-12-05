@@ -69,9 +69,9 @@ We were interested in the following questions:
 
 2. How have mental health related issues changed over time in NYC's youth?
 
-3. How did drug use differ by sex in NYC's youth in 2017?
+3. What is the distribution of sex for each particular drug in 2017 across all boroughs?
 
-4. How did drug use differ by being involved in fights in NYC's youth in 2017?
+4. What is the distribution of being involved in a fight for each particular drug in 2017 across all boroughs?
 
 5. Can we build a model with currently available data to predict future vaping use?
  
@@ -335,12 +335,15 @@ Examining these plots, we determined the following:
 * The proportion of attempted suicide is approximately constant at about 0.1 and is higher than the proportion associated with getting injured due to an attempted suicide. Both attempted suicide and injurious attempted suicide are relatively steady over time and have about the same magnitude across all five NYC boroughs. 
 
 
+
 <br> <br>
 
-## Exploring drug use in 2017 by sex within each borough
+## Exploring the distribution of sex for each particular drug in 2017 across all boroughs
 <br>
 
-We were interested in whether there is a difference in drug use between female and male teenagers in different boroughs in NYC in 2017. To that end, we created the following plots:
+We were interested in the distribution of sex for each particular drug in different boroughs of NYC in 2017. To that end, we created the following plots: 
+
+Note that the plots show only data for teenagers consuming the particular drug of interest.
 
 <br>
 
@@ -362,6 +365,7 @@ df %>%
   mutate(
     drug = str_replace(drug, "_use", "")) %>%
   drop_na() %>% 
+  filter(status == "Yes") %>% 
   group_by(
     drug,
     sex
@@ -380,7 +384,7 @@ df %>%
   labs(
     title = str_c("Drug Use in 2017 by Sex in ", borough),
     x = "sex",
-    y = "proportion of drug use") + 
+    y = "proportion") + 
   theme(legend.position = "none") +
   facet_grid(~drug)}
 
@@ -427,23 +431,37 @@ sex_Staten_Island
 #### Interpretation
 <br>
 
-Studying these plots, we were able to derive the following results:
+Studying these plots, we were able to derive the following interesting results:
 
-* According to our survey data, it appears as if independent of the type of drug the proportion of male teenagers in the Bronx using a particular type of drug is higher (about 0.55) compared to their female counterparts.
+* According to our survey data, it appears as if the consumpution of alcohol is more common among female teenagers in all boroughs except for Staten Island. 
 
-* According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Brooklyn using a particular type of drug is higher (about 0.55) compared to their male counterparts.
+* According to our survey data, it appears as if cigars are more smoked among male teenagers in all boroughs.
 
-* According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Manhattan using a particular type of drug is higher (almost 0.60) compared to their male counterparts.
+* According to our survey data, it appears as if cigarettes are more smoked among male teenagers in all boroughs.
 
-* According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in  Queens using a particular type of drug is about equal to the proportion of their male counterparts. A similar trend can be observed in Staten Island. However it seems as if marijuana use is slightly higher in female than in males teenagers in Staten Island.
+* According to our survey data, it appears as if there is no difference in marijuana usage between the genders in the Bronx and Queens.
+
+* According to our survey data, it appears as if marijunana is more smoked among female teenagers in Brooklyn and in Manhattan.
+
+* According to our survey data, it appears as if marijunana is more smoked among male teenagers in Staten Island.
+
+* According to our survey data, it appears as if there is no difference in vaping between the genders in the Bronx.
+
+* According to our survey data, it appears as if there is more vaping present among male teenagers in Brooklyn, Queens, Staten Island.
+
+* According to our survey data, it appears as if there is more vaping present among female teenagers in Manhattan.
 
 
-<br><br>
 
-## Exploring drug use in 2017 by being involved in fights
+
+<br> <br>
+
+## Exploring the distribution of being involved in a fight for each particular drug in 2017 across all boroughs
 <br>
 
-We were interested in whether there is a difference in drug use between teenagers involved in fights and teenagers not involved in fights in different boroughs of NYC in 2017. To that end, we created the following plots:
+We were interested in the distribution of being involved in a fight for each particular drug in different boroughs of NYC in 2017. To that end, we created the following plots: 
+
+Note that the plots show only data for teenagers consuming the particular drug of interest.
 
 <br>
 
@@ -465,6 +483,7 @@ df %>%
   mutate(
     drug = str_replace(drug, "_use", "")) %>%
   drop_na() %>% 
+  filter(status == "Yes") %>% 
   group_by(
     drug,
     physical_fighting
@@ -483,7 +502,7 @@ df %>%
   labs(
     title = str_c("Drug Use in 2017 by Being Involved in a Fight or Not ", borough),
     x = "involved in a fight",
-    y = "proportion of drug use") +   
+    y = "proportion") +   
   theme(legend.position = "none") +
   facet_grid(~drug)}
 
@@ -531,22 +550,19 @@ fight_Staten_Island
 #### Interpretation
 <br>
 
-Studying these plots, we were able to derive the following result:
+Studying these plots, we were able to derive the following interesting results:
 
-* According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in the Bronx is about 0.28, with the exception of alcohol, for which the proportion seems to be about 0.25.
+* According to our survey data, it appears as if among teenagers consuming alcohol between 0.35 and 0.45 have been involved in a fight in all boroughs. 
 
-* The same trend can be observed in Brooklyn. The only differences appear to be that the proportions itself are a bit lower: 0.22 for alcohol and about 0.25 for the remaining types of drugs.
+* According to our survey data, it appears as if among teenagers smoking cigars between 0.55 and 0.65 have been involved in a fight in all boroughs. 
 
-* According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Manhatten is about 0.22.
+* According to our survey data, it appears as if among teenagers smoking cigarettes between 0.48 and 0.70 have been involved in a fight in all boroughs, with Manhattan having the lowest proportion of about 0.48
 
-* According to our survey data, it appears as if the proportion of teenagers involved in a fight in Queens is slightly higher for children vaping (about 0.24) and smoking cigars (about 0.23). 
+* According to our survey data, it appears af if among teenagers smoking marijuana only in the Bronx the proportion of teenagers involved in a fight is above 0.5. For Brooklyn and Queens the proportion is about 0.5 and for Staten Island and Manhattan it is below 0.5.
 
-* According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Staten Island is about 0.19 - the lowest proportion of all boroughs.
+* According to our survey data, it appears as if among teenagers vaping the proportion of teenagers being involved in a fight is about 0.5 for the Bronx and Brooklyn, while it is below 0.5 in Manhattan, Queens, and Staten Island.
 
 <br>
-
-**If this Exploratory Analysis sparked your interested, feel free to explore the data more using the Explore the Data tab on the top right corner of the website.**
-
 
 
 

@@ -36,9 +36,9 @@ We utilized the **YRBSS** dataset publicly available on [CDC.gov](https://www.cd
 
 2. How have mental health related issues changed over time in NYC's youth?
 
-3. How did drug use differ by sex in NYC's youth in 2017?
+3. What is the distribution of sex for each particular drug in 2017 across all boroughs?
 
-4. How did drug use differ by being involved in fights in NYC's youth in 2017?
+4. What is the distribution of being involved in a fight for each particular drug in 2017 across all boroughs?
 
 5. Can we build a model with currently available data to predict future vaping use?
 
