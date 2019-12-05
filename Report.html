@@ -436,12 +436,13 @@ div.tocify {
 <ol style="list-style-type: decimal">
 <li><p>How has drug use changed over time in NYC’s youth?</p></li>
 <li><p>How have mental health related issues changed over time in NYC’s youth?</p></li>
-<li><p>How do drug use and mental health status differ by demographics in NYC’s youth?</p></li>
-<li><p>How do risky and violent behaviors differ between NYC children using drugs and not using drugs?</p></li>
+<li><p>How did drug use differ by sex in NYC’s youth in 2017?</p></li>
+<li><p>How did drug use differ by being involved in fights in NYC’s youth in 2017?</p></li>
 <li><p>Can we build a model with currently available data to predict future vaping use?</p></li>
 </ol>
 <p><br></p>
 <p>Initially, we were interested in building a model to determine associations. However, as our studies in data science class progressed further, we learned new great procedures and methods that we wanted to incorporate into our project. In particular, we became interested in building a predictive model (based on data from 2015), and using this model to predict vaping for 2017.</p>
+<p>It should be noted that question 3 and 4 were originally very general. With the help of Shiny, however, we were able to develop more focused questions of interest.</p>
 <p><br> <br></p>
 </div>
 <div id="data" class="section level1">
@@ -463,9 +464,9 @@ div.tocify {
 <ul>
 <li><em>borough</em>: one of the five boroughs of NYC</li>
 <li><em>year</em>: year of the survey</li>
-<li><em>age</em>: age of the subject</li>
-<li><em>sex</em>: gender of the subject (male, female)</li>
-<li><em>race7</em>: race of the subject</li>
+<li><em>age</em>: age of the respondent</li>
+<li><em>sex</em>: gender of the respondent (male, female)</li>
+<li><em>race7</em>: race of the respondent</li>
 </ul>
 <p><strong>Drug Use</strong></p>
 <ul>
@@ -501,6 +502,7 @@ div.tocify {
 <p><br></p>
 <div id="exploring-the-change-of-vaping-and-other-drug-use-over-time" class="section level2">
 <h2>Exploring the change of Vaping and other drug use over Time</h2>
+<p><br></p>
 <p>In order to analyze the change of vaping and other drug usage over time in NYC’s youth, we created the following animated plot:</p>
 <pre class="r"><code>## filter the data used in this part
 nyc_drug_used &lt;- nyc_drug %&gt;% 
@@ -579,13 +581,16 @@ animate(drug_p)</code></pre>
 <p><img src="Report_files/figure-html/distribution_vaping_other_drugs-1.gif" /><!-- --></p>
 <p>After analyzing the plot, we drew the following conclusions:</p>
 <ul>
-<li><p>Among five kinds of drugs(vaping), alcohol holds the highest proportion but decreases in use from 2007 across five boroughs in NYC. In addition, cigarette has a lower total proportion than alcohol but the similar decreasing trend after 2009.</p></li>
-<li><p>Cigar maintains the steady but low-proportion trend during 2003-2017, which could be compared with marijuana holding steady but higher proportion in total. Moreover, the marijuana users in Manhattan increase from the lowest level to highest level among five boroughs during 2007-2011.</p></li>
-<li><p>Vaping, which is our target subject, hold the increasing trend from 2015-2017. This trend is quite similar to the alcohol, cigar and cigarette before being intervented, and maintains at the same proportion level with marijuana in 2015-2017, which indicates that it can grow into a new drug threatening the public health.</p></li>
+<li><p>Among the five types of drugs considered, alcohol has the highest proportion in year 2003, but started decreasing in use from 2007 onwards across all five boroughs in NYC. In addition, cigarette has a lower total proportion than alcohol but a similar decreasing trend after 2009.</p></li>
+<li><p>Cigar maintains a steady but low-proportion trend during 2003-2017, which could be compared with marijuana holding a steady but higher proportion in total. Moreover, the marijuana use in Manhattan increased from the lowest level in 2007 to the highest level in 2011 among five boroughs.</p></li>
+<li><p>Staten Island had the highest Marijuana use over the years among all five NYC boroughs. However, in year 2017, it dropped dramatically and had the lowest proportion among all boroughs.</p></li>
+<li><p>Vaping, which is our main drug of interest, has a slightly increasing trend from 2015-2017. This trend is quite similar to the alcohol, cigar and cigarette trend observed from 2003 to 2005, and has a proportion about as high as the proportion observed in marijuana in 2015-2017, which indicates that it could possibliy grow into a new drug threatening public health.</p></li>
 </ul>
+<p><br> <br></p>
 </div>
 <div id="exploring-the-change-of-mental-health-over-time" class="section level2">
 <h2>Exploring the change of Mental Health over Time</h2>
+<p><br></p>
 <p>In order to analyze the change of mental health status of NYC’s youth over time, we created the following animated plot:</p>
 <pre class="r"><code>## data for mental health disorder
 nyc_drug_health &lt;- nyc_drug %&gt;% 
@@ -643,218 +648,145 @@ animate(mental_p)</code></pre>
 <p><img src="Report_files/figure-html/distribution_mental_health-1.gif" /><!-- --></p>
 <p>Examining this plot, we determined the following:</p>
 <ul>
-<li><p>Above three mental disorders are related to the vaping and other drug use in the report/survey. The emotion issue, feeling sad and hopeless, hold the highest level among three metal disorders. The data shows large number of teenagers do not have a positive mood based on the participants attending the report, and the trend decreases slightly after 2009. Staten Island keeps the lowest proportion in the reported sadness except 2011. Bronx almost keeps the highest level and Queens fluctuates heavily which decreases a lot during 2005 to 2011.</p></li>
-<li><p>The proportion of attempted suicide holds the level near 0.1 and is higher than that of getting injured due to the attempted suicide. Both of attempted suicide and injurious attempted suicide keep the relative steady trend in proportion and the same level across five boroughs.</p></li>
+<li><p>Teenagers, feeling sad and hopeless, constitute the highest proportion among all three mental health issues considered. Based on the considered survey data, we see that a high percentage of teenagers do not have a positive mood. The trend decreases slightly after 2009, just to pick up again in 2015. Staten Island has the lowest proportion in the reported sadness with the exception of 2011. Bronx almost alwyas has the highest proportion, and Queens fluctuates greatly.</p></li>
+<li><p>The proportion of attempted suicide is approximately constant at about 0.1 and is higher than the proportion associated with getting injured due to an attempted suicide. Both attempted suicide and injurious attempted suicide are relatively steady over time and have about the same magnitude across all five NYC boroughs.</p></li>
 </ul>
+<p><br> <br></p>
 </div>
-<div id="exploring-violent-and-risky-behaviors" class="section level2">
-<h2>Exploring violent and risky behaviors</h2>
-<p>We were interested in whether violent and risky behaviors differ among teenagers using a particular drug, compared to teenagers who do not use a certain drug. To that end, we create the following animated plot:</p>
-<pre class="r"><code>## drugs with violence
-nyc_drug_violence &lt;- nyc_drug %&gt;% 
-  select(id, borough, year, 
-         cigarette = current_cigarette_use, cigar = current_cigar_use,
-         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
-         vaping = current_vaping, safety_concerns_at_school, threatened_at_school,  
-         physical_fighting, bullying_at_school, bullying_electronically, 
-         carring_weapon) %&gt;% 
-  mutate(year = factor(year))
-
-## cigaretteYes
-cigarette_yes &lt;- nyc_drug_violence %&gt;% 
-  filter(cigarette == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            cigarette = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
- select(-n)
-
-## cigarYes
-cigar_yes &lt;- nyc_drug_violence %&gt;% 
-  filter(cigar == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            cigar = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## alcoholYes
-alcohol_yes &lt;- nyc_drug_violence %&gt;% 
-  filter(alcohol == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            alcohol = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## vapingYes
-vaping_yes &lt;- nyc_drug_violence %&gt;% 
-  filter(vaping == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            vaping = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## marijuanaYes with all other drugs
-marijuana_yes_full &lt;- nyc_drug_violence %&gt;% 
-  filter(marijuana == &quot;Yes&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            marijuana = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n) %&gt;% 
-  left_join(cigarette_yes, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  left_join(cigar_yes, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  left_join(alcohol_yes, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  left_join(vaping_yes, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  gather(key = &quot;drug&quot;, value = &quot;proportion&quot;, 
-         marijuana, cigarette, cigar, alcohol, vaping)
-
-
-## animated plot
-violence_p &lt;- marijuana_yes_full %&gt;%
-  ggplot(aes(x = drug, y = proportion, fill = violence, group = violence)) +
-  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
-  labs(title = &quot;Teenagers using drugs in {closest_state}&quot;,
-       x = &quot;Drug Type&quot;,
-       y = &quot;Proportion of happening violence&quot;,
-       fill = &quot;Violence Type&quot;) +
-  theme(plot.title = element_text(size = 20, face = &quot;bold&quot;),
-        axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15,face = &quot;bold&quot;)) + 
+<div id="exploring-drug-use-in-2017-by-sex-within-each-borough" class="section level2">
+<h2>Exploring drug use in 2017 by sex within each borough</h2>
+<p><br></p>
+<p>We were interested in whether there is a difference in drug use between female and male teenagers in different boroughs in NYC in 2017. To that end, we created the following plots:</p>
+<pre class="r"><code>sex_plot = function(df, borough) {
+df %&gt;% 
+  select(
+    sex, 
+    current_vaping, 
+    current_cigarette_use, 
+    current_cigar_use, 
+    current_alcohol_use, 
+    current_marijuana_use) %&gt;% 
+  pivot_longer(
+    -sex,
+    names_to = &quot;drug&quot;,
+    names_prefix = &quot;current_&quot;,
+    values_to = &quot;status&quot;) %&gt;% 
+  mutate(
+    drug = str_replace(drug, &quot;_use&quot;, &quot;&quot;)) %&gt;%
+  drop_na() %&gt;% 
+  group_by(
+    drug,
+    sex
+  ) %&gt;% 
+  summarize(
+    number = n()
+  ) %&gt;% 
+  ungroup() %&gt;% 
+  group_by(drug) %&gt;% 
+  mutate(
+    number_in_group = sum(number),
+    percent = number / number_in_group) %&gt;% 
+  select(-number, -number_in_group) %&gt;% 
+  ggplot(aes(x = sex, y = percent, fill = sex)) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  labs(
+    title = str_c(&quot;Drug Use in 2017 by Sex in &quot;, borough)) + 
   theme(legend.position = &quot;none&quot;) +
-  transition_states(year, transition_length = 2, state_length = 3) +
-  enter_fade() + exit_shrink()
+  facet_grid(~drug)}
 
-yes_p &lt;- animate(violence_p, fps = 2, width = 480, height = 350)
+sex_Bronx = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot; The Bronx&quot;)
+sex_Brooklyn = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Brooklyn&quot;), &quot;Brooklyn&quot;)
+sex_Manhattan = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Manhattan&quot;), &quot;Manhattan&quot;)
+sex_Queens = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Queens&quot;), &quot;Queens&quot;)
+sex_Staten_Island = sex_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Staten Island&quot;), &quot;Staten Island&quot;)
 
-
-# Plot under non-use of drug
-## cigaretteNo
-cigarette_no &lt;- nyc_drug_violence %&gt;% 
-  filter(cigarette == &quot;No&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            cigarette = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
- select(-n)
-
-## cigarNo
-cigar_no &lt;- nyc_drug_violence %&gt;% 
-  filter(cigar == &quot;No&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            cigar = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## alcoholNo
-alcohol_no &lt;- nyc_drug_violence %&gt;% 
-  filter(alcohol == &quot;No&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            alcohol = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## vapingNo
-vaping_no &lt;- nyc_drug_violence %&gt;% 
-  filter(vaping == &quot;No&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            vaping = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n)
-
-## marijuanaYes with all other drugs
-marijuana_no_full &lt;- nyc_drug_violence %&gt;% 
-  filter(marijuana == &quot;No&quot;) %&gt;% 
-  gather(key = &quot;violence&quot;, value = &quot;reply&quot;, safety_concerns_at_school, 
-         threatened_at_school, physical_fighting, bullying_at_school, 
-         bullying_electronically, carring_weapon, na.rm = TRUE) %&gt;% 
-  group_by(year, violence) %&gt;% 
-  summarize(n = n(),
-            marijuana = sum(reply == &quot;Yes&quot;)/n) %&gt;% 
-  select(-n) %&gt;% 
-  left_join(cigarette_no, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  left_join(cigar_no, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  left_join(alcohol_no, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  left_join(vaping_no, by = c(&quot;year&quot;, &quot;violence&quot;)) %&gt;% 
-  gather(key = &quot;drug&quot;, value = &quot;proportion&quot;, 
-         marijuana, cigarette, cigar, alcohol, vaping)
-
-
-## animated plot
-violence_no_p &lt;- marijuana_no_full %&gt;%
-  ggplot(aes(x = drug, y = proportion, fill = violence, group = violence)) +
-  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
-  labs(title = &quot;Teenagers not using drugs in {closest_state}&quot;,
-       x = &quot;Drug Type&quot;,
-       y = &quot;Proportion of happening violence&quot;,
-       fill = &quot;Violence Type&quot;) +
-  scale_fill_discrete(labels = c(&quot;Bullying at school&quot;, &quot;Bullying electronically&quot;,
-                                 &quot;Carrying weapons&quot;,&quot;Physical fighting&quot;, 
-                                 &quot;Safely concerns at school&quot;, &quot;Threatened at school&quot;)) +
-  theme(plot.title = element_text(size = 20, face = &quot;bold&quot;),
-        axis.text = element_text(size = 15),
-        axis.title = element_text(size = 15,face = &quot;bold&quot;)) + 
-  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = &quot;bold&quot;)) +
-  transition_states(year, transition_length = 2, state_length = 3) +
-  enter_fade() + exit_shrink()
-
-no_p &lt;- animate(violence_no_p, fps = 2, width = 620, height = 350)
-
-combine_gifs &lt;- function(plot1, plot2) {
-    require(magick) 
-    # read the plots and store them
-    plot1 &lt;- image_read(plot1) 
-    plot2 &lt;- image_read(plot2) 
-    # sync the number of frames in each plot
-    n1 = length(plot1)
-    n2 = length(plot2)
-    # match number of frames of the two plots
-    if (!(n1 == n2)) plot1 &lt;- rep(plot1, n2) 
-    if (!(n1 == n2)) plot2 &lt;- rep(plot2, n1)
-    # initialize the combined plot
-    p &lt;- image_append(c(plot1[1], plot2[1]))
-    # grow the combined plot frame by frame
-    n = ifelse(n1 == n2, n1, n1 * n2) 
-    n = min(1000, n)  # set max to 1000
-    for (i in 2:(n-1)) {
-        tmp &lt;- image_append(c(plot1[i], plot2[i]))
-        p &lt;- c(p, tmp)
-    }
-    return(p) 
-}
-
-combine_gifs(plot1 = yes_p, plot2 = no_p)</code></pre>
-<p><img src="Report_files/figure-html/drug_with_violence_risky_behaviors-1.gif" /><!-- --></p>
-<p>Studying this plot, we were able to derive the following results:</p>
+sex_Bronx</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-1.png" width="960" /></p>
+<pre class="r"><code>sex_Brooklyn</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-2.png" width="960" /></p>
+<pre class="r"><code>sex_Manhattan</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-3.png" width="960" /></p>
+<pre class="r"><code>sex_Queens</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-4.png" width="960" /></p>
+<pre class="r"><code>sex_Staten_Island</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Sex-5.png" width="960" /></p>
+<p>Studying these plots, we were able to derive the following results:</p>
 <ul>
-<li><p>The left plot has the twice value than the right plot when the bar is in the same height. Therefore, the proportion of having violence nad risky behaviors in the teenagers who use drugs is nearly twice than the that in the teenagers who are non-drug users. Moreover, non-drug users have lower proportion in carrying weapons from 2003 to 2017.</p></li>
-<li><p>Physical fighting, feeling unsafe at school and being treantened at school increase in proportion during 2005-2007, keep the same proportion in 2009, and begin to decrease in 2011.</p></li>
-<li><p>Physical fighting keeps high proportion in both drug users and non-drug users and becomes a issue which is hard to control and intervent in 2003-2017.</p></li>
-<li><p>Bullying electronically is another issue whose proportion inceases from 2015 to 2017 in both two groups</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of male teenagers in the Bronx using a particular type of drug is higher (about 55%) compared to their female counterparts.</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Brooklyn using a particular type of drug is higher (about 55%) compared to their male counterparts.</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Manhattan using a particular type of drug is higher (almost 60%) compared to their male counterparts.</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Queens using a particular type of drug is about equal to the proportion of their male counterparts. A similar trend can be observed in Staten Island. However it seems as if marijuana use is slightly higher in female than in males teenagers in Staten Island.</p></li>
 </ul>
+<p><br><br></p>
+</div>
+<div id="exploring-drug-use-in-2017-by-being-involved-in-fights" class="section level2">
+<h2>Exploring drug use in 2017 by being involved in fights</h2>
+<p><br></p>
+<p>We were interested in whether there is a difference in drug use between teenagers involved in fights and teenagers not involved in fights in different boroughs of NYC in 2017. To that end, we created the following plots:</p>
+<pre class="r"><code>fight_plot = function(df, borough) {
+df %&gt;% 
+  select(
+    physical_fighting, 
+    current_vaping, 
+    current_cigarette_use, 
+    current_cigar_use, 
+    current_alcohol_use, 
+    current_marijuana_use) %&gt;% 
+  pivot_longer(
+    -physical_fighting,
+    names_to = &quot;drug&quot;,
+    names_prefix = &quot;current_&quot;,
+    values_to = &quot;status&quot;) %&gt;% 
+  mutate(
+    drug = str_replace(drug, &quot;_use&quot;, &quot;&quot;)) %&gt;%
+  drop_na() %&gt;% 
+  group_by(
+    drug,
+    physical_fighting
+  ) %&gt;% 
+  summarize(
+    number = n()
+  ) %&gt;% 
+  ungroup() %&gt;% 
+  group_by(drug) %&gt;% 
+  mutate(
+    number_in_group = sum(number),
+    percent = number / number_in_group) %&gt;% 
+  select(-number, -number_in_group) %&gt;% 
+  ggplot(aes(x = physical_fighting, y = percent, fill = physical_fighting)) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  labs(
+    title = str_c(&quot;Drug Use in 2017 by Being Involved in a Fight or Not &quot;, borough)) + 
+  theme(legend.position = &quot;none&quot;) +
+  facet_grid(~drug)}
+
+
+
+fight_Bronx = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Bronx&quot;),&quot; The Bronx&quot;)
+fight_Brooklyn = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Brooklyn&quot;), &quot;Brooklyn&quot;)
+fight_Manhattan = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Manhattan&quot;), &quot;Manhattan&quot;)
+fight_Queens = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Queens&quot;), &quot;Queens&quot;)
+fight_Staten_Island = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot; &amp; borough == &quot;Staten Island&quot;), &quot;Staten Island&quot;)
+
+fight_Bronx</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-1.png" width="960" /></p>
+<pre class="r"><code>fight_Brooklyn</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-2.png" width="960" /></p>
+<pre class="r"><code>fight_Manhattan</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-3.png" width="960" /></p>
+<pre class="r"><code>fight_Queens</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-4.png" width="960" /></p>
+<pre class="r"><code>fight_Staten_Island</code></pre>
+<p><img src="Report_files/figure-html/Drug_Use_2017_by_Feeling_Sad_Hopeless-5.png" width="960" /></p>
+<p>Studying these plots, we were able to derive the following result:</p>
+<ul>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in the Bronx is about 28%, with the exception of alcohol, for which the proportion seems to be about 25%.</p></li>
+<li><p>The same trend can be observed in Brooklyn. The only differences appear to be that the proportions itself are a bit lower: 0.22 for alcohol and about 0.25 for the remaining types of drugs.</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Manhatten is about 22%.</p></li>
+<li><p>According to our survey data, it appears as if the proportion of teenagers involved in a fight in Queens is slightly higher for children vaping (about 0.24%) and smoking cigars (about 0,23%).</p></li>
+<li><p>According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Staten Island is about 19% - the lowest proportion of all boroughs.</p></li>
+</ul>
+<p>If this Exploritary Analysis sparked your interested, feel free to explore the data more using the Explore the Data tab on the top right corner of the website.</p>
 <p><br> <br></p>
 </div>
 </div>
@@ -865,28 +797,28 @@ combine_gifs(plot1 = yes_p, plot2 = no_p)</code></pre>
 <p><strong>Demographics</strong></p>
 <ul>
 <li><em>borough</em>: one of the five boroughs of NYC</li>
-<li><em>age</em>: age of the subject</li>
-<li><em>sex</em>: gender of the subject (male, female)</li>
-<li><em>race7</em>: race of the subject</li>
+<li><em>age</em>: age of the respondent</li>
+<li><em>sex</em>: gender of the respondent (male, female)</li>
+<li><em>race7</em>: race of the respondent</li>
 </ul>
 <p><strong>Mental Health</strong></p>
 <ul>
-<li><em>sad_hopeless</em>: during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible (Yes/No)</li>
-<li><em>attempted_suicide</em>: during the past 12 months, actually attempt suicide (Yes/No)</li>
-<li><em>injurious_suicide_attempt</em>: attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse (Yes/No)</li>
-<li><em>considered_suicide</em>: during the past 12 months, seriously considered attempting suicide (Yes/No)</li>
+<li><em>sad_hopeless</em>: during the past 12 months, respondent felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible (Yes/No)</li>
+<li><em>attempted_suicide</em>: during the past 12 months, respondent actually attempt suicide (Yes/No)</li>
+<li><em>injurious_suicide_attempt</em>: respondent attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse (Yes/No)</li>
+<li><em>considered_suicide</em>: during the past 12 months, respondent seriously considered attempting suicide (Yes/No)</li>
 </ul>
 <p><strong>Risky Behaviors/Violence</strong></p>
 <ul>
-<li><em>safety_concerns_at_school</em>: subject did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days (Yes/No)</li>
-<li><em>threatened_at_school</em>: subject has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months (Yes/No)</li>
-<li><em>physical_fighting</em>: subject has been in a physical fight during the past 12 months (Yes/No)</li>
-<li><em>bullying_at_school</em>: subject has been bullied on school property during the past 12 months (Yes/No)</li>
-<li><em>bullying_electronically</em>: subject has been bullied electronically (i.e. facebook) during the past 12 months (Yes/No)</li>
-<li><em>illegal_injected_drug_use</em>: subject has used needle to inject any illegal drug into body during life time (Yes/No)</li>
-<li><em>carring_weapon</em>: subject carried a weapon such as a gun, knife, or club during the past 30 days (Yes/No)</li>
-<li><em>sex_before_13</em>: subject had first sexual intercourse before age 13 (Yes/No)</li>
-<li><em>current_sexual_activity</em>: subject had sexual intercourse with 1 or more people during the past 3 months (Yes/No)</li>
+<li><em>safety_concerns_at_school</em>: respondent did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days (Yes/No)</li>
+<li><em>threatened_at_school</em>: respondent has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months (Yes/No)</li>
+<li><em>physical_fighting</em>: respondent has been in a physical fight during the past 12 months (Yes/No)</li>
+<li><em>bullying_at_school</em>: respondent has been bullied on school property during the past 12 months (Yes/No)</li>
+<li><em>bullying_electronically</em>: respondent has been bullied electronically (i.e. facebook) during the past 12 months (Yes/No)</li>
+<li><em>illegal_injected_drug_use</em>: respondent has used needle to inject any illegal drug into body during life time (Yes/No)</li>
+<li><em>carring_weapon</em>: respondent carried a weapon such as a gun, knife, or club during the past 30 days (Yes/No)</li>
+<li><em>sex_before_13</em>: respondent had first sexual intercourse before age 13 (Yes/No)</li>
+<li><em>current_sexual_activity</em>: respondent had sexual intercourse with 1 or more people during the past 3 months (Yes/No)</li>
 </ul>
 <p><br> <br></p>
 <div id="manuel-method" class="section level2">
@@ -921,7 +853,6 @@ AIC(fit_logistic)
 
 fit_logistic$formula</code></pre>
 <p>In the end, this process came up with the following possible model:</p>
-<p><br></p>
 <p><strong>Model 1</strong></p>
 <p>current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13</p>
 <p><br> <br></p>
@@ -929,7 +860,7 @@ fit_logistic$formula</code></pre>
 <div id="step-aic-model" class="section level2">
 <h2>Step AIC Model</h2>
 <p><br></p>
-<p>Considering the large number of predictor candidates in our model, we decided to take advantage of modern computational power and use the stepwise regression method to come up with a model. The criteria we used is AIC, a goodness of fit measure that helps to avoid overfitting. It also circumvents the big p value problem introduced by our potentially highly correlated predictor candidates. The actual function used is the StepAIC function from the MASS package.</p>
+<p>Considering the large number of predictor candidates in our model, we decided to take advantage of the existing modern computational power and use the stepwise regression method to come up with a model. We used the AIC criterion, a goodness of fit measure that helps to avoid overfitting. It also circumvents the big p value problem introduced by our potentially highly correlated predictor candidates. The actual function used is the StepAIC function from the MASS package.</p>
 <pre class="r"><code>###Defining a glm object that contains the regression model generated
 auto_logistic = glm(
   ###Fixing &quot;current_vaping&quot; as response,whith all the vairble candidtates as pridictors.
@@ -946,11 +877,12 @@ auto_logistic$formula</code></pre>
 <p>The formula generated by the function is as follows:</p>
 <p><strong>Model 2</strong></p>
 <p>current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide + safety_concerns_at_school + physical_fighting + bullying_electronically + age + race7 + illegal_injected_drug_use + sexual_contact_2</p>
+<p><br><br></p>
 </div>
 <div id="lasso" class="section level2">
 <h2>LASSO</h2>
 <p><br></p>
-<p>The motivation behind using the LASSO method is that we have a lot of potential predictors available and we cannot (and do not want to) to do an exhaustive search manually. LASSO is a shinkage method that avoids overfitting and help with variable selection. These advantages make LASSO one of the most popular methods in regression problem settings. In our study we chose the penalty paramter lamda based on the cross-validation error. Then we used the optimal lamda to rerun the LASSO again to get our final model.</p>
+<p>The motivation behind using the LASSO method is that we have a lot of potential predictors available and we cannot (and do not want to) to do an exhaustive search manually. LASSO is a shinkage method that avoids overfitting and help with variable selection. These advantages make LASSO one of the most popular methods in regression problem settings. In our study we chose the penalty parameter lamda based on the cross-validation error. Then we used the optimal lamda to rerun the LASSO again to get our final model.</p>
 <pre class="r"><code>###Defining a glmnet object that contains the cv lasso model generated to find the best lambda to use
   lasso_temp = cv.glmnet(
   ###Fixing &quot;current_vaping&quot; as response,whith all the vairble candidtates as pridictors.
@@ -968,15 +900,16 @@ auto_logistic$formula</code></pre>
     lambda = lasso_temp$lambda.min
     )</code></pre>
 <p>In the end the final model from LASSO is the following:</p>
-<p>Model 3: current_vaping ~ age + sex + race7 + sad_hopeless + attempted_suicide + injurious_suicide_attempt + safety_concerns_at_school + physical_fighting + bullying_electronically + illegal_injected_drug_use + carring_weapon + sex_before_13 + current_sexual_activity</p>
-<p>The LASSO model has tunning paramter lamda equals 0.005 and the model contains more covariates than the above two models since LASSO putting shringkage on the coefficient of each covariate and thus will include more covariates (remember that LASSO will automatically do the variable selection).</p>
+<p><br> Model 3: current_vaping ~ age + sex + race7 + sad_hopeless + attempted_suicide + injurious_suicide_attempt + safety_concerns_at_school + physical_fighting + bullying_electronically + illegal_injected_drug_use + carring_weapon + sex_before_13 + current_sexual_activity</p>
+<p><br> The LASSO model has tunning paramter lamda equals 0.005 and the model contains more covariates than the above two models since LASSO putting shringkage on the coefficient of each covariate and thus will include more covariates (remember that LASSO will automatically do the variable selection).</p>
 <p><br></p>
 </div>
 <div id="model-selection" class="section level2">
 <h2>Model Selection</h2>
+<p><br></p>
 <div id="picking-the-best-model" class="section level3">
 <h3>Picking the “best” Model</h3>
-<p>At this point we had three predictive models. In order to decide which of them is the “best”, we employed cross-validation prediction accuracy as our criteria. The prediction accuracy is calculated as the proportion of correct prediction made by the model.</p>
+<p>At this point we had three predictive models. In order to decide which of them is the “best” one, we employed the cross-validation prediction accuracy as our criterion. The prediction accuracy is calculated as the proportion of correct predictions made by the model.</p>
 <p>To perform the cross-validation in a compact and well-integrated manner, we coded our model selection process as robust functions that can be mapped to a modlr cv object by purrr to streamline the cross-validation process. We conducted a 5 fold 10 times CV on the three models.</p>
 <pre class="r"><code>## function for stepAIC method
 log_reg_auto = function(cv_df){
@@ -1032,10 +965,8 @@ cv_df%&gt;%select(starts_with(&quot;accuracy&quot;)) %&gt;%
   mutate(Models = recode(model,automodel = &quot;StepAIC Model&quot;,manualmodel = &quot;Manual Model&quot;, lasso = &quot;Lasso Model&quot;))%&gt;%
   ggplot(aes(x = Models, y = Accuracy)) + geom_violin()</code></pre>
 <p><left><img src = "Logistic_Regression_Model_Selection_files/figure-html/CrossValidation-1.png" style = "width:60%"> </left></p>
-<p>According to the violin plot, which shows the distribution of prediction accuracy, the model that was generated by stepAIC (StepAIC model) has an accuracy about 1% better than the accuracy of the model generated by lasso (Lasso model) and an accuracy about and 2% better than the one from the manual selection (Manual model) method. Therefore, we picked the stepAIC model as our finial model.</p>
-</div>
-<div id="model-applied-to-2017-data" class="section level3">
-<h3>Model applied to 2017 Data</h3>
+<p>According to the violin plot, which shows the distribution of prediction accuracy, the model that was generated by stepAIC (StepAIC model) has an accuracy of about 1% better than the accuracy of the model generated by lasso (Lasso model) and an accuracy of about 2% better than the model generated by the manual selection (Manual model) method. Therefore, we picked the stepAIC model as our finial model.</p>
+<p><br> ### Model applied to 2017 Data <br></p>
 <p>Subsequently, we used all three models to predict the vaping status of teenagers in 2017. As can be seen in the table below, the StepAIC model also performed best among the three models considered, giving a more than 87% accuracy rate.</p>
 <pre class="r"><code>## The model generated using the full data set is recreated
 Final_model =
@@ -1072,6 +1003,7 @@ Final_model =
 </tr>
 </tbody>
 </table>
+<p><br></p>
 <p>In conclusion, the final logistic regression model (StepAIC model) has the following formulae:</p>
 <p><strong>current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide + safety_concerns_at_school + physical_fighting + bullying_electronically + age + race7 + illegal_injected_drug_use + sexual_contact_2</strong></p>
 <p><br><br></p>
@@ -1080,11 +1012,11 @@ Final_model =
 </div>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>
-<p><br> Vaping, no doubt is getting not just press attention, but is a public health crisis in youth. How to use current available data to prevent future vaping use in youth is an urgent task for public health researchers. After visualizing the YRBSS data, we proposed three different models using data in 2015 to predict youth vaping use in 2017. We used prediction accuracy in cross-validation (CV) as the criteria to choose the best predicting model. By conducting a 5 folds 10 times CV, the model that generated by StepAIC outstood the manually and LASSO selected models. The StepAIC model picked 10 predictors (carring_weapon, sad_hopeless, attempted_suicide, safety_concerns_at_school, physical_fighting, bullying_electronically, age, ace7, illegal_injected_drug_use and sexual_contact_2) and gives an overall of 87% accuracy rates. Teenagers with depressive mood, suffering depression, have problems at school and involve with risky behaviors are more like to start vaping at a young age.</p>
+<p><br> Vaping, no doubt, is getting not just press attention, but is also a public health crisis in youth. How to use current available data to prevent future vaping use in youth is an urgent task for public health researchers. After visualizing the YRBSS data, we proposed three different models using data in 2015 to predict youth vaping use in 2017. We used prediction accuracy in cross-validation (CV) as the criterion to choose the best predicting model. By conducting a 5 folds 10 times CV, the model that was generated by StepAIC outstood the manually created and the LASSO selected models. The StepAIC model picked 10 predictors (carring_weapon, sad_hopeless, attempted_suicide, safety_concerns_at_school, physical_fighting, bullying_electronically, age, ace7, illegal_injected_drug_use and sexual_contact_2) and gives an overall of 87% accuracy rate. Overall, teenagers with a depressive mood, who are suffering from depression, who have problems in school and exhibit risky behaviors are more likely to start vaping at a young age.</p>
 <p><br> <br></p>
-<p>The limitation of this dataset is that we only have vaping data for two years. In addition to that, we have to drop some potential predictors due to high level of missingness. Despite these, our findings are important. We wish to apply our methods to data from 2018 and 2019 when they become publicly available. Should the prediction accuracy rate stay high, it will help policy makers, schoolteachers, parents to work together to focus on targeted population to improve efficiency in reducing vaping rate in youth.</p>
+<p>The limitation of this dataset is that we only have vaping data for two years. In addition to that, we had to drop some potential predictors due to high levels of missingness. Despite this, our findings are important. We wish to apply our methods to data from 2018 and 2019, when they become publicly available. Should the prediction accuracy rate stay high, it will help policy makers, schoolteachers, and parents to work together to focus on a targeted population to improve efficiency in reducing the vaping rate in youth.</p>
 <p><br> <br></p>
-<p>We thank Dr. Jeff Goldsmith and his TA team for helping us and gave us this opportunity to work together to actually trying to solve some real public health issues. We hope that you enjoy watch our screencast and the work that we presented. <br></p>
+<p>We thank Dr. Jeff Goldsmith and his TA team for helping us and giving us this opportunity to work together to actually trying to solve some real public health issues. We hope that you have enjoyed watching our screencast and going through the work that we presented here. <br></p>
 </div>
 
 
