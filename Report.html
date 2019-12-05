@@ -413,7 +413,6 @@ div.tocify {
 <div id="motivation-related-work" class="section level1">
 <h1>Motivation &amp; Related Work</h1>
 <p><br></p>
-<p><left><img src = "images/youthvaping.jpg" style = "width:60%"> </left></p>
 <p>Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was initially regarded as a less harmful substitution for cigarettes. However, vaping still introduces nicotine into the body. The prevalence of lung damage caused by vaping is actually so high that the CDC[<a href="https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub">1</a>] needed to issue guidance explicitly on it. According to the New York Post, a second vaping related death occured on November 9th, 2019. Overall, vaping has claimed at least 42 lives and injured over 2,000 others across the country[<a href="https://nypost.com/2019/11/20/second-new-yorker-dead-from-vaping-related-illness-officials/">2</a>].</p>
 <p>As the popularity of vaping grows, concerns about vaping are covered both in academia and in the press[<a href="https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction">3</a>,<a href="https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html">4</a>]. A journal article published recently even describes the prevalence of vaping in a “red alert” state[<a href="https://link.springer.com/article/10.1057/s41271-019-00193-2">5</a>]. In press, vaping is accused of being both a gateway drug and a new “drug” itself. 81% of Americans report that teenagers who would not smoke cigarettes are using flavored e-cigarettes[<a href="https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/">6</a>]. To provide grounds for potential public health interventions targeting this “scourge of drug”[<a href="https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html">6</a>], we evaluated the current landscape of vaping usage among teenagers and young adults in NYC using pre-collected data and analyzed the relation between vaping and other drug usage with mental health and risky/violent behaviors.</p>
 <p><br></p>
@@ -436,6 +435,7 @@ div.tocify {
 <li><p>How do risky and violent behaviors differ between NYC children using drugs and not using drugs?</p></li>
 <li><p>Can we build a model with current available data to predict future vaping use?</p></li>
 </ol>
+<p><br></p>
 <p>Initially, we were interested in building a model to determine associations. However, as our studies in data science class progressed further, we learned new great procedures and methods that we wanted to incorporate into our project. In particular, we became interested in building a predictive model based on data from 2015, and using this data to predict vaping for 2017</p>
 <p><br> <br></p>
 </div>
@@ -887,26 +887,195 @@ combine_gifs(plot1 = yes_p, plot2 = no_p)</code></pre>
 <div id="manuel-method" class="section level2">
 <h2>Manuel Method</h2>
 <p><br></p>
-<p>First, we attempted to find a predictive model by using a variation on <strong>stepwise/automatic procedures</strong> (by hand). We utilized p-values and prediction accuracy as our guidance for which predictors to choose, starting with the full model. In the end, this process came up with the following possible model:</p>
+<p>First, we attempted to find a predictive model by using a variation on <strong>stepwise/automatic procedures</strong> (by hand). We utilized p-values and prediction accuracy as our guidance for which predictors to choose, starting with the full model.</p>
+<pre class="r"><code># Fitting a logistic regression model
+fit_logistic = glm(current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13 , data = df, family = binomial(),na.action = na.omit)
+
+# Looking at the model coefficients
+fit_logistic %&gt;% 
+  broom::tidy() %&gt;% 
+  mutate(OR = exp(estimate)) %&gt;%
+  knitr::kable(digits = 3)</code></pre>
+<pre class="r"><code># What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
+caret::varImp(fit_logistic)
+
+# Cross-Validating the model
+data_train &lt;- trainControl(method = &quot;cv&quot;, number = 5)
+
+model_caret &lt;- train(
+  current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon,
+                   data = df,
+                   trControl = data_train,
+                   method = &#39;glm&#39;,
+                   family = binomial(),
+                   na.action = na.pass)
+  
+model_caret
+AIC(fit_logistic)
+
+
+fit_logistic$formula</code></pre>
+<p>In the end, this process came up with the following possible model:</p>
 <p><br></p>
 <p><strong>Model 1</strong></p>
 <p>current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13</p>
 <p><br> <br></p>
 </div>
-<div id="hao-method" class="section level2">
-<h2>Hao Method</h2>
+<div id="step-aic-model" class="section level2">
+<h2>Step AIC Model</h2>
 <p><br></p>
+<p>Considering the large number of predictor candidates in our model, we decided to take advantage of modern computational power and use the stepwise regression method to come up with a model. The criteria we used is AIC, a goodness of fit measure that helps to avoid overfitting. It also circumvents the big p value problem introduced by our potentially highly correlated predictor candidates. The actual function used is the StepAIC function from the MASS package.</p>
+<pre class="r"><code>###Defining a glm object that contains the regression model generated
+auto_logistic = glm(
+  ###Fixing &quot;current_vaping&quot; as response,whith all the vairble candidtates as pridictors.
+  current_vaping ~., data = df, 
+  ###Runing logistics regression, with complete analysis
+  family = binomial(),na.action = na.omit) %&gt;%
+  ###Choose a model by AIC in a Stepwise Algorithm
+  MASS::stepAIC(trace = FALSE)
+
+AIC(auto_logistic)
+
+auto_logistic %&gt;% broom::tidy()
+auto_logistic$formula</code></pre>
+<p>The formula generated by the function is as follows:</p>
+<p><strong>Model 2</strong></p>
+<p>current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide + safety_concerns_at_school + physical_fighting + bullying_electronically + age + race7 + illegal_injected_drug_use + sexual_contact_2</p>
 </div>
-<div id="siquan-method" class="section level2">
-<h2>Siquan Method</h2>
+<div id="lasso" class="section level2">
+<h2>LASSO</h2>
+<p><br></p>
+<p>The motivation behind using the LASSO method is that we have a lot of potential predictors available and we cannot (and do not want to) to do an exhaustive search manually. LASSO is a shinkage method that avoids overfitting and help with variable selection. These advantages make LASSO one of the most popular methods in regression problem settings. In our study we chose the penalty paramter lamda based on the cross-validation error. Then we used the optimal lamda to rerun the LASSO again to get our final model.</p>
+<pre class="r"><code>###Defining a glmnet object that contains the cv lasso model generated to find the best lambda to use
+  lasso_temp = cv.glmnet(
+  ###Fixing &quot;current_vaping&quot; as response,whith all the vairble candidtates as pridictors.
+    current_vaping ~., data = df, 
+    ###Runing for logistics outcom
+    family = &quot;binomial&quot;)
+
+###Defining a glmnet object that contains the final lasso model using the best lambda generated
+  lasso_logistic = glmnet(
+  ###Fixing &quot;current_vaping&quot; as response,whith all the vairble candidtates as pridictors.
+    current_vaping ~., data = df, 
+    ###Runing for logistics outcom
+    family = &quot;binomial&quot;,
+    ### With the best lambda
+    lambda = lasso_temp$lambda.min
+    )</code></pre>
+<p>In the end the final model from LASSO is the following:</p>
+<p>Model 3: current_vaping ~ age + sex + race7 + sad_hopeless + attempted_suicide + injurious_suicide_attempt + safety_concerns_at_school + physical_fighting + bullying_electronically + illegal_injected_drug_use + carring_weapon + sex_before_13 + current_sexual_activity</p>
+<p>The LASSO model has tunning paramter lamda equals 0.005 and the model contains more covariates than the above two models since LASSO putting shringkage on the coefficient of each covariate and thus will include more covariates (remember that LASSO will automatically do the variable selection).</p>
 <p><br></p>
 </div>
 <div id="model-selection" class="section level2">
 <h2>Model Selection</h2>
+<div id="picking-the-best-model" class="section level3">
+<h3>Picking the “best” Model</h3>
+<p>At this point we had three predictive models. In order to decide which of them is the “best”, we employed cross-validation prediction accuracy as our criteria. The prediction accuracy is calculated as the proportion of correct prediction made by the model.</p>
+<p>To perform the cross-validation in a compact and well-integrated manner, we coded our model selection process as robust functions that can be mapped to a modlr cv object by purrr to streamline the cross-validation process. We conducted a 5 fold 10 times CV on the three models.</p>
+<pre class="r"><code>## function for stepAIC method
+log_reg_auto = function(cv_df){
+  cv_df %&gt;% mutate(
+###Automodel selection with AIC as criterial
+         automodel  = map(train, ~glm(current_vaping ~., data = .x, family = binomial(),na.action = na.exclude)%&gt;%MASS::stepAIC(trace = FALSE))
+ ) }
+
+###function for lasso selection method
+lasso = function(df){
+  lasso_temp = cv.glmnet(current_vaping ~., data = df, family = &quot;binomial&quot;)
+glmnet(current_vaping ~., data = df, family = &quot;binomial&quot;,lambda = lasso_temp$lambda.min)
+}
+### formular for manual selection
+manual_formular = current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + 
+    threatened_at_school + physical_fighting + bullying_electronically + 
+    carring_weapon
+
+###find prediction accuracy
+accy = function(model,data){
+  Temp = predict(model, data, type = &quot;response&quot;) %&gt;% round()
+1 - mean(Temp - (as.numeric(pull(as.tibble(data),current_vaping)) - 1))
+}</code></pre>
+<pre class="r"><code>cv_df=
+  ## Making the CV_df by modelr, for 5 folds and 10 times.
+  crossv_mc(df15,n=10)
+
+
+cv_df = cv_df%&gt;%
+##stepAIC
+  log_reg_auto()%&gt;%
+  ## Manual model
+  mutate(manual_model = map(train, ~glm(manual_formular, data = .x, family = binomial,na.action = na.exclude)))%&gt;%
+  ## Lasso model
+ mutate(lasso_model = map(train,~lasso(.x)))
+
+###Prediction Accuracy computation
+cv_df = cv_df%&gt;%
+  mutate(
+        accuracy_automodel= map2_dbl(.x = automodel,.y = test, ~accy(data =.y,model =.x)),
+        accuracy_manualmodel= map2_dbl(.x = manual_model,.y = test, ~accy(data =.y,model =.x)),
+        accuracy_lasso= map2_dbl(.x = lasso_model,.y = test, ~accy(data =.y,model =.x))
+        )
+
+
+###Graph accuracy distribution
+cv_df%&gt;%select(starts_with(&quot;accuracy&quot;)) %&gt;% 
+  pivot_longer(
+    everything(),
+    names_to = &quot;model&quot;, 
+    values_to = &quot;Accuracy&quot;,
+    names_prefix = &quot;accuracy_&quot;) %&gt;% 
+  mutate(Models = recode(model,automodel = &quot;StepAIC Model&quot;,manualmodel = &quot;Manual Model&quot;, lasso = &quot;Lasso Model&quot;))%&gt;%
+  ggplot(aes(x = Models, y = Accuracy)) + geom_violin()</code></pre>
+<p><left><img src = "Logistic_Regression_Model_Selection_files/figure-html/CrossValidation-1.png" style = "width:60%"> </left></p>
+<p>According to the violin plot, which shows the distribution of prediction accuracy, the model that was generated by stepAIC (StepAIC model) has an accuracy about 1% better than the accuracy of the model generated by lasso (Lasso model) and an accuracy about and 2% better than the one from the manual selection (Manual model) method. Therefore, we picked the stepAIC model as our finial model.</p>
+</div>
+<div id="model-applied-to-2017-data" class="section level3">
+<h3>Model applied to 2017 Data</h3>
+<p>Subsequently, we used all three models to predict the vaping status of teenagers in 2017. As can be seen in the table below, the StepAIC model also performed best among the three models considered, giving a more than 87% accuracy rate.</p>
+<pre class="r"><code>## The model generated using the full data set is recreated
+Final_model =
+  ## tibble
+  tibble(train = list(df15),
+         test = list(df17)) %&gt;%
+  ##stepAIC
+  log_reg_auto() %&gt;%
+  ## Manual model
+  mutate(manualmodel = map(train, ~glm(manual_formular, data = .x, family = binomial,na.action = na.exclude))) %&gt;%
+  ## Lasso model
+  mutate(lassomodel = map(train,~lasso(.x)))</code></pre>
+<pre class="r"><code>Final_model %&gt;%
+  mutate(
+        accuracy_automodel = map2_dbl(.x = automodel,.y = test, ~accy(data =.y,model =.x)),
+        accuracy_manualmodel = map2_dbl(.x = manualmodel,.y = test, ~accy(data =.y,model =.x)),
+        accuracy_lasso = map2_dbl(.x = lassomodel,.y = test, ~accy(data =.y,model =.x))
+        ) %&gt;%
+  select(&quot;Accuracy StepAIC Model&quot;=accuracy_automodel, &quot;Accuracy Manual Model&quot; = accuracy_manualmodel, &quot;Accuracy Lasso Model&quot;= accuracy_lasso) %&gt;% round(digits = 3) %&gt;% knitr::kable(caption = &quot;Prediction Accuray by Model on 2017 data&quot;)</code></pre>
+<table>
+<caption>Prediction Accuray by Model on 2017 data</caption>
+<thead>
+<tr class="header">
+<th align="right">Accuracy StepAIC Model</th>
+<th align="right">Accuracy Manual Model</th>
+<th align="right">Accuracy Lasso Model</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.873</td>
+<td align="right">0.863</td>
+<td align="right">0.865</td>
+</tr>
+</tbody>
+</table>
+<p>In conclusion, the final logistic regression model (StepAIC model) has the following formulae:</p>
+<p><strong>current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide + safety_concerns_at_school + physical_fighting + bullying_electronically + age + race7 + illegal_injected_drug_use + sexual_contact_2</strong></p>
+<p><br><br></p>
+</div>
 </div>
 </div>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>
+<p><br></p>
 </div>
 
 
