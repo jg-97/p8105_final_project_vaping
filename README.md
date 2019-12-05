@@ -36,6 +36,9 @@ This is the repo for p8105 final group project!
    library(gifski)
    library(magick)
    library(reprex)
+   library(modelr)
+   library(glmnet)
+   library(glmnetUtils): install.packages("glmnetUtils")
 <br>
 5. for Shiny.rmd
 <br>
