@@ -10,17 +10,34 @@ This is the repo for p8105 final group project!
 
 ## All the R packages and installaton instructions are listed here:
 
-1. for fontawsome package
-devtools::install_github("rstudio/fontawesome")
+1. For datacleaning.rmd: 
+   library(tidyverse)
+   library(readxl)
+   library(writexl)
 
 2. for creating animated plots
-devtools::install_github('thomasp85/gganimate')
-install.packages(c("gifski", "magick", "transformr")) to animate the line plot
+   devtools::install_github('thomasp85/gganimate')
+  
+3. to animate the line plot
+   install.packages(c("gifski", "magick", "transformr")) 
 
-3.
+4. for Logistic_Regression_Model_Building.rmd
+   library(modelr)
+   library(caret)
+   library(pscl)
 
-4.
+4. for Report.rmd
+   library(gganimate)
+   library(transformr)
+   library(gifski)
+   library(magick)
+   library(reprex)
 
-5.
+5. for Shiny.rmd
+   library(flexdashboard)
+   library(shiny)
+   library(plotly)
 
-6.
+6. for Screencast.rmd
+   fontawsome package
+   devtools::install_github("rstudio/fontawesome")
