@@ -7,9 +7,11 @@ output:
 # EDA
 
 In this page, we will give you interpretation of the plot and the corresponding question each graph answers.
-
+<br> <br>
 
 ## Interpretation of vaping & drug use plots 
+
+<br>
 
 <center><img src = "images/cigarette.png" style = "width:100%"> </center>
 
@@ -23,8 +25,11 @@ This section's graphs are combined into an animated one to answer the question:
 _How did drugs use change over time in NYC's youth?_
 
 If you are interested in more details, please visit our [Report](Report.html).
+<br> <br>
 
 ## Interpretation of mental health plots
+
+<br>
 
 <center><img src = "images/sad.png" style = "width:100%"> </center>
 
@@ -36,9 +41,11 @@ This section's graphs are combined into an animated one to answer the question:
 _How did mental health related issues in youth change over time in NYC?_
 
 If you are interested in more details, please visit our [Report](Report.html).
-
+<br> <br>
 
 ## The demographics of vaping and drug use by gender, races and ages
+
+<br>
 
 This section's graphs are combined into an animated one to answer the question:
 _How does drug use and mental health status differ by demographics in NYC youth?_
@@ -46,11 +53,15 @@ _How does drug use and mental health status differ by demographics in NYC youth?
 
 ### drug use grouped by the gender in 2017
 
+<br>
+
 <center><img src = "images/sex.png" style = "width:100%"> </center>
 
 This is an example plot showing the condition of the marijuana and vaping use in the NYC grouped by the gender. 
 
 ### drug use grouped by the races in 2017
+
+<br>
 
 <center><img src = "images/race.png" style = "width:100%"> </center>
 
@@ -58,14 +69,18 @@ This is an example plot showing the condition of marijuana and vaping use in NYC
 
 ### drug use grouped by the ages in 2017
 
+<br>
+
 <center><img src = "images/age.png" style = "width:100%"> </center>
 
 This is an example plot showing the condition of marijuana and vaping use in NYC grouped by ages
 
 If you are interested in more details, please visit our [Explore the Data](https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use).
-
+<br> <br>
 
 ## interpretation of violence & risky behaviors plots
+
+<br>
 
 <center><img src = "images/2003.png" style = "width:90%"> </center>
 

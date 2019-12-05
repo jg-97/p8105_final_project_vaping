@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -235,6 +234,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -471,8 +471,8 @@ model_caret &lt;- train(
                    method = &#39;glm&#39;,
                    family = binomial(),
                    na.action = na.pass)</code></pre>
-<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts = weights, info =
-## trainInfo, : There were missing values in resampled performance measures.</code></pre>
+<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo, :
+## There were missing values in resampled performance measures.</code></pre>
 <pre class="r"><code># Model predictions using 4 parts of the data for training 
 model_caret</code></pre>
 <pre><code>## Generalized Linear Model 
@@ -483,11 +483,19 @@ model_caret</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
+<<<<<<< HEAD
 ## Summary of sample sizes: 17704, 15172, 15171, 15173, 15173, 15172, ... 
 ## Resampling results:
 ## 
 ##   Accuracy   Kappa     
 ##   0.8484683  0.08272878</code></pre>
+=======
+## Summary of sample sizes: 17704, 15173, 15172, 15172, 15171, 15173, ... 
+## Resampling results:
+## 
+##   Accuracy   Kappa     
+##   0.8483306  0.08085571</code></pre>
+>>>>>>> e21137e0975012bbaa24a469559cb3e0abe917ed
 <p>Model 1: current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon</p>
 </div>
 <div id="hao-model" class="section level1">
