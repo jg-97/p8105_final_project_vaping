@@ -16,13 +16,6 @@ library(transformr)
 library(gifski)
 library(magick)
 library(reprex)
-library(modelr)
-library(glmnet)
-library(patchwork)
-###This package provide glm like interface for glmnet
-library(glmnetUtils)
-set.seed(8105)
-
 theme_set(theme_bw())
 ```
 
@@ -128,6 +121,11 @@ drug_p <- marijuana_full %>%
 animate(drug_p)
 ```
 
+
+
+#### Interpretation
+<br>
+
 After analyzing the plot, we drew the following conclusions:
 
 * Among the five types of drugs considered, alcohol has the highest proportion in year 2003, but started decreasing in use from 2007 onwards across all five boroughs in NYC. In addition, cigarette has a lower total proportion than alcohol but a similar decreasing trend after 2009. 
@@ -203,6 +201,11 @@ mental_p <- injury_full %>%
 animate(mental_p)
 
 ```
+
+
+
+#### Interpretation
+<br>
 
 Examining this plot, we determined the following:
 
@@ -297,7 +300,10 @@ sex_Queens
 sex_Staten_Island
 ```
 
+## 
 
+#### Interpretation
+<br>
 
 Studying these plots, we were able to derive the following results:
 
@@ -396,7 +402,10 @@ fight_Queens
 fight_Staten_Island
 ```
 
+## 
 
+#### Interpretation
+<br>
 
 Studying these plots, we were able to derive the following result:
 
@@ -406,7 +415,7 @@ Studying these plots, we were able to derive the following result:
 
 * According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Manhatten is about 0.22.
 
-* According to our survey data, it appears as if the proportion of teenagers involved in a fight in Queens is slightly higher for children vaping (about 0.24) and smoking cigars (about 0,23). 
+* According to our survey data, it appears as if the proportion of teenagers involved in a fight in Queens is slightly higher for children vaping (about 0.24) and smoking cigars (about 0.23). 
 
 * According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Staten Island is about 0.19 - the lowest proportion of all boroughs.
 
