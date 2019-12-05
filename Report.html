@@ -845,8 +845,8 @@ fight_Staten_Island = fight_plot(nyc_drug %&gt;% filter(year == &quot;2017&quot;
 </div>
 </div>
 </div>
-<div id="logistic-regression-model" class="section level1">
-<h1>Logistic Regression Model</h1>
+<div id="logistic-regression-models" class="section level1">
+<h1>Logistic Regression Models</h1>
 <p><br></p>
 <p>Since we were investigating the prevelance and trend in vaping among NYC’s youth, we were interested in predicting <strong>current_vaping</strong>. We began our model building process considering the following predictors:</p>
 <p><strong>Demographics</strong></p>
@@ -912,8 +912,8 @@ fit_logistic$formula</code></pre>
 <p>current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13</p>
 <p><br> <br></p>
 </div>
-<div id="step-aic-model" class="section level2">
-<h2>Step AIC Model</h2>
+<div id="step-aic-method" class="section level2">
+<h2>Step AIC Method</h2>
 <p><br></p>
 <p>Considering the large number of predictor candidates in our model, we decided to take advantage of the existing modern computational power and use the stepwise regression method to come up with a model. We used the AIC criterion, a goodness of fit measure that helps to avoid overfitting. It also circumvents the big p value problem introduced by our potentially highly correlated predictor candidates. The actual function used is the StepAIC function from the MASS package.</p>
 <pre class="r"><code>###Defining a glm object that contains the regression model generated
@@ -934,8 +934,8 @@ auto_logistic$formula</code></pre>
 <p>current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide + safety_concerns_at_school + physical_fighting + bullying_electronically + age + race7 + illegal_injected_drug_use + sexual_contact_2</p>
 <p><br><br></p>
 </div>
-<div id="lasso" class="section level2">
-<h2>LASSO</h2>
+<div id="lasso-method" class="section level2">
+<h2>LASSO Method</h2>
 <p><br></p>
 <p>The motivation behind using the LASSO method is that we have a lot of potential predictors available and we cannot (and do not want to) to do an exhaustive search manually. LASSO is a shinkage method that avoids overfitting and help with variable selection. These advantages make LASSO one of the most popular methods in regression problem settings. In our study we chose the penalty parameter lamda based on the cross-validation error. Then we used the optimal lamda to rerun the LASSO again to get our final model.</p>
 <pre class="r"><code>###Defining a glmnet object that contains the cv lasso model generated to find the best lambda to use
