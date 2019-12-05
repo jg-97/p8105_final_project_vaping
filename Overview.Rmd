@@ -30,7 +30,7 @@ We utilized the **YRBSS** dataset publicly available on [CDC.gov](https://www.cd
 
 # Research Questions
 
-<br
+<br>
 
 1. How has drug use changed over time in NYC's youth?
 
@@ -47,7 +47,7 @@ We utilized the **YRBSS** dataset publicly available on [CDC.gov](https://www.cd
 
 # More Vaping Facts
 
-<br
+<br>
 
 Here are some useful links for your reference:
 
