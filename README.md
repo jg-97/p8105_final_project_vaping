@@ -1,6 +1,9 @@
 # p8105_final_project_vaping
 This is the repo for p8105 final group project!
-
+## Our website can be found here:
+   https://jg-97.github.io/p8105_final_project_vaping/
+<br>  
+   
 ## Team members are: [in alphabetical order]
 1. Ying Chen(yc384)
 2. Jin Ge(jg4197)
@@ -52,5 +55,4 @@ This is the repo for p8105 final group project!
    devtools::install_github("rstudio/fontawesome")
    
    
-## Our website can be found here:
-   https://jg-97.github.io/p8105_final_project_vaping/
+
