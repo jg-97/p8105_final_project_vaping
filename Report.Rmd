@@ -550,11 +550,9 @@ Studying these plots, we were able to derive the following result:
 
 
 
-
-
 <br> <br>
 
-# Logistic Regression Model
+# Logistic Regression Models
 
 <br>
 
@@ -640,7 +638,7 @@ current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + 
 <br> <br>
 
 
-## Step AIC Model
+## Step AIC Method
 
 <br>
 
@@ -679,7 +677,7 @@ current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide +
 
 <br><br>
 
-## LASSO
+## LASSO Method
 
 <br>
 

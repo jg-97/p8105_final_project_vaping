@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 
 <meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -234,7 +235,6 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
-  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -478,15 +478,8 @@ model_caret &lt;- train(
                    trControl = data_train,
                    method = &#39;glm&#39;,
                    family = binomial(),
-<<<<<<< HEAD
                    na.action = na.pass)
   
-=======
-                   na.action = na.pass)</code></pre>
-<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo, :
-## There were missing values in resampled performance measures.</code></pre>
-<pre class="r"><code># Model predictions using 4 parts of the data for training 
->>>>>>> 1a02519b2eed32d22f98556beb529781c1959e70
 model_caret</code></pre>
 <pre><code>## Generalized Linear Model 
 ## 
@@ -496,12 +489,11 @@ model_caret</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
-<<<<<<< HEAD
-## Summary of sample sizes: 3994, 3994, 3993, 3994, 3993 
+## Summary of sample sizes: 3993, 3994, 3994, 3993, 3994 
 ## Resampling results:
 ## 
 ##   Accuracy   Kappa     
-##   0.8509616  0.04401816</code></pre>
+##   0.8507618  0.03837582</code></pre>
 <pre class="r"><code>AIC(fit_logistic)</code></pre>
 <pre><code>## [1] 3957.311</code></pre>
 <pre class="r"><code>fit_logistic$formula</code></pre>
@@ -509,22 +501,6 @@ model_caret</code></pre>
 ##     illegal_injected_drug_use + physical_fighting + bullying_electronically + 
 ##     carring_weapon + sex_before_13</code></pre>
 <p>Model 1: current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13</p>
-=======
-<<<<<<< HEAD
-## Summary of sample sizes: 17704, 15172, 15171, 15173, 15173, 15172, ... 
-## Resampling results:
-## 
-##   Accuracy   Kappa     
-##   0.8484683  0.08272878</code></pre>
-=======
-## Summary of sample sizes: 17704, 15173, 15172, 15172, 15171, 15173, ... 
-## Resampling results:
-## 
-##   Accuracy   Kappa     
-##   0.8483306  0.08085571</code></pre>
->>>>>>> e21137e0975012bbaa24a469559cb3e0abe917ed
-<p>Model 1: current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon</p>
->>>>>>> 1a02519b2eed32d22f98556beb529781c1959e70
 </div>
 <div id="method-2-step-aic-regression-generatoion" class="section level1">
 <h1>Method 2: Step AIC regression generatoion</h1>
@@ -587,20 +563,20 @@ AIC(auto_logistic)</code></pre>
 
 #See the accuracy of prediction with this model
 lasso_logistic %&gt;% broom::tidy()</code></pre>
-<pre><code>## # A tibble: 28 x 5
+<pre><code>## # A tibble: 26 x 5
 ##    term                                step estimate  lambda dev.ratio
 ##    &lt;chr&gt;                              &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
-##  1 (Intercept)                            1  2.36    0.00500     0.104
-##  2 age14 years old                        1  0.0435  0.00500     0.104
-##  3 age16 years old                        1 -0.00273 0.00500     0.104
-##  4 sexfemale                              1 -0.221   0.00500     0.104
-##  5 race7Asian                             1  0.399   0.00500     0.104
-##  6 race7Black or African American         1  0.601   0.00500     0.104
-##  7 race7Hispanic/Latino                   1 -0.0129  0.00500     0.104
-##  8 race7Multiple Races (Non-Hispanic)     1  0.0295  0.00500     0.104
-##  9 race7White                             1 -0.342   0.00500     0.104
-## 10 sad_hopelessYes                        1 -0.386   0.00500     0.104
-## # … with 18 more rows</code></pre>
+##  1 (Intercept)                            1  2.35    0.00415     0.105
+##  2 age14 years old                        1  0.0596  0.00415     0.105
+##  3 age16 years old                        1 -0.0147  0.00415     0.105
+##  4 sexfemale                              1 -0.240   0.00415     0.105
+##  5 race7Asian                             1  0.443   0.00415     0.105
+##  6 race7Black or African American         1  0.644   0.00415     0.105
+##  7 race7Multiple Races (Non-Hispanic)     1  0.0870  0.00415     0.105
+##  8 race7White                             1 -0.339   0.00415     0.105
+##  9 sad_hopelessYes                        1 -0.388   0.00415     0.105
+## 10 sad_hopelessNo                         1  0.00617 0.00415     0.105
+## # … with 16 more rows</code></pre>
 <p>Model 3: current_vaping ~ age + sex + race7 + sad_hopeless + attempted_suicide + injurious_suicide_attempt + safety_concerns_at_school + physical_fighting + bullying_electronically + illegal_injected_drug_use + carring_weapon + sex_before_13 + current_sexual_activity</p>
 <p>The LASSO model has tunning paramter lamda equals 0.005 and the model contains more covariates than the above two models since LASSO putting shringkage on the coefficient of each covariate and thus will include more covariates (remember that LASSO will automatically do the variable selection).</p>
 </div>

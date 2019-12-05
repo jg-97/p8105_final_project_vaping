@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 
 <meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -234,7 +235,6 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
-  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -420,12 +420,9 @@ cv_df = cv_df %&gt;%
         accuracy_manualmodel= map2_dbl(.x = manual_model,.y = test, ~accy(data =.y,model =.x)),
         accuracy_lasso= map2_dbl(.x = lasso_model,.y = test, ~accy(data =.y,model =.x))
         )</code></pre>
-<pre><code>## Warning: `as.tibble()` is deprecated, use `as_tibble()` (but mind the new semantics).
-## This warning is displayed once per session.</code></pre>
 <pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
-## = NULL, : input data was converted to data.frame
-
-## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
+## = NULL, : input data was converted to data.frame</code></pre>
+<pre><code>## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
 ## = NULL, : input data was converted to data.frame
 
 ## Warning in (function (formula, data, weights = NULL, offset = NULL, subset
@@ -633,7 +630,7 @@ Final_model =
 <pre><code>## current_vaping ~ sex + race7 + sad_hopeless + attempted_suicide + 
 ##     safety_concerns_at_school + physical_fighting + illegal_injected_drug_use + 
 ##     carring_weapon + sex_before_13 + current_sexual_activity
-## &lt;environment: 0x7fbcd0110e78&gt;</code></pre>
+## &lt;environment: 0x7fc4f57bbef8&gt;</code></pre>
 <pre class="r"><code>Final_model</code></pre>
 <pre><code>## # A tibble: 1 x 5
 ##   train                test                automodel manualmodel lassomodel
