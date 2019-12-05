@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 
 <meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -235,7 +236,6 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
-  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -392,7 +392,8 @@ df = df %&gt;%
      select(-qn65, -qn64, -qn63, -qn61, -qn59, -qn58, -qn55, 
             -qn54, -qn53, -qn52, -qn51, -qn50, -qn49, -qn47, -qn46,
             -qn45, -qn44, -qn43, -qn41, -qn40, -qn37, -qn33, -qn30,
-            -qn27, -qn22, -qn21, -qn19, -qn18, -qn14, -qn13, -qn9, -qn8) %&gt;% 
+            -qn27, -qn22, -qn21, -qn19, -qn18, -qn14, -qn13, -qn9, 
+            -qn8, -qn11, -qn10) %&gt;% 
      # No data
      select(
        -qn20, -qn31, -qn34, -qn36, -qn39, -qn56, -qn84,
@@ -443,24 +444,6 @@ df = df %&gt;%
                      &quot;6&quot; = &quot;White&quot;,
                      &quot;7&quot; = &quot;Multiple Races (Non-Hispanic)&quot;),
       race7 = as.factor(race7)) %&gt;%
-##################################################################################### 
-    # During the past 30 days, how many times did you drive a car or other vehicle when you had been drinking alcohol?
-    mutate(
-      qn10 = recode(qn10,
-                    &quot;1&quot; = &quot;Yes&quot;,
-                    &quot;2&quot; = &quot;No/did not drive&quot;),
-      qn10 = as.factor(qn10),
-      qn10 = fct_relevel(qn10, c(&quot;Yes&quot;, &quot;No/did not drive&quot;))) %&gt;% 
-    rename(drinking_and_driving = qn10) %&gt;% 
-##################################################################################### 
-    # During the past 30 days, on how many days did you text or e-mail while driving a car or other vehicle?
-    mutate(
-      qn11 = recode(qn11,
-                 &quot;1&quot; = &quot;Yes&quot;,
-                 &quot;2&quot; = &quot;No/did not drive&quot;),
-      qn11 = as.factor(qn11),
-      qn11 = fct_relevel(qn11, c(&quot;Yes&quot;, &quot;No/did not drive&quot;))) %&gt;% 
-    rename(texting_and_driving = qn11) %&gt;% 
 ##################################################################################### 
     # During the past 30 days, on how many days did you carry a weapon such as a gun, knife, or club?
     mutate(

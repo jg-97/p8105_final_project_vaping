@@ -81,7 +81,8 @@ df = df %>%
      select(-qn65, -qn64, -qn63, -qn61, -qn59, -qn58, -qn55, 
             -qn54, -qn53, -qn52, -qn51, -qn50, -qn49, -qn47, -qn46,
             -qn45, -qn44, -qn43, -qn41, -qn40, -qn37, -qn33, -qn30,
-            -qn27, -qn22, -qn21, -qn19, -qn18, -qn14, -qn13, -qn9, -qn8) %>% 
+            -qn27, -qn22, -qn21, -qn19, -qn18, -qn14, -qn13, -qn9, 
+            -qn8, -qn11, -qn10) %>% 
      # No data
      select(
        -qn20, -qn31, -qn34, -qn36, -qn39, -qn56, -qn84,
@@ -132,24 +133,6 @@ df = df %>%
                      "6" = "White",
                      "7" = "Multiple Races (Non-Hispanic)"),
       race7 = as.factor(race7)) %>%
-##################################################################################### 
-    # During the past 30 days, how many times did you drive a car or other vehicle when you had been drinking alcohol?
-    mutate(
-      qn10 = recode(qn10,
-                    "1" = "Yes",
-                    "2" = "No/did not drive"),
-      qn10 = as.factor(qn10),
-      qn10 = fct_relevel(qn10, c("Yes", "No/did not drive"))) %>% 
-    rename(drinking_and_driving = qn10) %>% 
-##################################################################################### 
-    # During the past 30 days, on how many days did you text or e-mail while driving a car or other vehicle?
-    mutate(
-      qn11 = recode(qn11,
-                 "1" = "Yes",
-                 "2" = "No/did not drive"),
-      qn11 = as.factor(qn11),
-      qn11 = fct_relevel(qn11, c("Yes", "No/did not drive"))) %>% 
-    rename(texting_and_driving = qn11) %>% 
 ##################################################################################### 
     # During the past 30 days, on how many days did you carry a weapon such as a gun, knife, or club?
     mutate(
