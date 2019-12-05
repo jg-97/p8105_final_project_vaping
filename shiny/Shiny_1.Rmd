@@ -361,7 +361,13 @@ renderPlotly({
 
 ### <span style="color:#69899f"> **Description** </span>
 
+<br> <br>
 
+* **Marijuana**:   used marijuana during the past 30 days   (Yes/No)
+* **Alcohol**:   had at least one drink of alcohol during the past 30 days   (Yes/No)
+* **Cigarettes**:   smoked cigarettes during the past 30 days   (Yes/No)
+* **Vaping**:   used an electronic vapor product during the past 30 days   (Yes/No)
+* **Cigar**:   smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
 
 
 Drug Use over Time
@@ -526,6 +532,14 @@ renderPlotly({
 ```
 
 ### <span style="color:#69899f"> **Description** </span>
+
+<br> <br>
+
+* **Marijuana**:   used marijuana during the past 30 days   (Yes/No)
+* **Alcohol**:   had at least one drink of alcohol during the past 30 days   (Yes/No)
+* **Cigarettes**:   smoked cigarettes during the past 30 days   (Yes/No)
+* **Vaping**:   used an electronic vapor product during the past 30 days   (Yes/No)
+* **Cigar**:   smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
 
 
 
@@ -853,6 +867,13 @@ renderPlotly({
 
 ### <span style="color:#69899f"> **Description** </span>
 
+<br> <br>
+
+* **feel sad or hopeless**:   during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible   (Yes/No)
+* **considered suicide**:   during the past 12 months, seriously considered attempting suicide   (Yes/No)
+* **attempted suicide**:   during the past 12 months, actually attempt suicide   (Yes/No)
+* **injured during attempted suicide**:   attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse   (Yes/No)
+
 
 
 Mental Health over Time
@@ -948,7 +969,12 @@ renderPlotly({
 
 ### <span style="color:#69899f"> **Decription** </span>
 
+<br> <br>
 
+* **feel sad or hopeless**:   during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible   (Yes/No)
+* **considered suicide**:   during the past 12 months, seriously considered attempting suicide   (Yes/No)
+* **attempted suicide**:   during the past 12 months, actually attempt suicide   (Yes/No)
+* **injured during attempted suicide**:   attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse   (Yes/No)
 
 
 
@@ -983,7 +1009,9 @@ selectInput("boroughs_RV",label = h3("Select borough"),
 radioButtons(
   "grouping_choice_RV", 
   label = h3("Group by"),
-  choices = c("texting and driving", "drinking and driving", "carring weapon", "safety concerns at school", "threatened at school", "physical fighting", "bullying at school", "bullying electronically"))
+  choices = c("illegal injected drug use", "carring weapon", 
+              "safety concerns at school", "threatened at school", "physical fighting", 
+              "bullying at school", "bullying electronically", "sex before 13", "current sexual activity"))
 ```
 
 
@@ -1000,82 +1028,44 @@ renderPlotly({
       year == input$years_RV) 
   
   
-  if (input$grouping_choice_RV == "texting and driving")
+  if (input$grouping_choice_RV == "illegal injected drug use")
   {
     if (input$drugs_3 == "Marijuana") {
       df_13 = df_13 %>%
-        filter((!(is.na(current_marijuana_use))) & (!(is.na(texting_and_driving)))) %>% 
+        filter((!(is.na(current_marijuana_use))) & (!(is.na(illegal_injected_drug_use)))) %>% 
         group_by(current_marijuana_use) %>% 
-        count(texting_and_driving) %>% 
-        rename(c = texting_and_driving) %>% 
+        count(illegal_injected_drug_use) %>% 
+        rename(c = illegal_injected_drug_use) %>% 
         rename(x = current_marijuana_use)}
     else if (input$drugs_3 == "Alcohol") {
       df_13 = df_13 %>%
-        filter((!(is.na(current_alcohol_use))) & (!(is.na(texting_and_driving)))) %>% 
+        filter((!(is.na(current_alcohol_use))) & (!(is.na(illegal_injected_drug_use)))) %>% 
         group_by(current_alcohol_use) %>% 
-        count(texting_and_driving) %>% 
-        rename(c = texting_and_driving) %>% 
+        count(illegal_injected_drug_use) %>% 
+        rename(c = illegal_injected_drug_use) %>% 
         rename(x = current_alcohol_use)}
     else if (input$drugs_3 == "Cigarettes") {
       df_13 = df_13 %>%
-        filter((!(is.na(current_cigarette_use))) & (!(is.na(texting_and_driving)))) %>% 
+        filter((!(is.na(current_cigarette_use))) & (!(is.na(illegal_injected_drug_use)))) %>% 
         group_by(current_cigarette_use) %>% 
-        count(texting_and_driving) %>% 
-        rename(c = texting_and_driving) %>% 
+        count(illegal_injected_drug_use) %>% 
+        rename(c = illegal_injected_drug_use) %>% 
         rename(x = current_cigarette_use)}
     else if (input$drugs_3 == "Vaping") {
       df_13 = df_13 %>%
-        filter((!(is.na(current_vaping ))) & (!(is.na(texting_and_driving)))) %>% 
+        filter((!(is.na(current_vaping ))) & (!(is.na(illegal_injected_drug_use)))) %>% 
         group_by(current_vaping ) %>% 
-        count(texting_and_driving) %>% 
-        rename(c = texting_and_driving) %>% 
+        count(illegal_injected_drug_use) %>% 
+        rename(c = illegal_injected_drug_use) %>% 
         rename(x = current_vaping )}
     else if (input$drugs_3 == "Cigar") {
       df_13 = df_13 %>%
-        filter((!(is.na(current_cigar_use))) & (!(is.na(texting_and_driving)))) %>% 
+        filter((!(is.na(current_cigar_use))) & (!(is.na(illegal_injected_drug_use)))) %>% 
         group_by(current_cigar_use) %>% 
-        count(texting_and_driving) %>% 
-        rename(c = texting_and_driving) %>% 
+        count(illegal_injected_drug_use) %>% 
+        rename(c = illegal_injected_drug_use) %>% 
         rename(x = current_cigar_use)}
   } 
-  else if (input$grouping_choice_RV == "drinking and driving")
-  {
-    if (input$drugs_3 == "Marijuana") {
-      df_13 = df_13 %>%
-        filter((!(is.na(current_marijuana_use))) & (!(is.na(drinking_and_driving)))) %>% 
-        group_by(current_marijuana_use) %>% 
-        count(drinking_and_driving) %>% 
-        rename(c = drinking_and_driving) %>% 
-        rename(x = current_marijuana_use)}
-    else if (input$drugs_3 == "Alcohol") {
-      df_13 = df_13 %>%
-        filter((!(is.na(current_alcohol_use))) & (!(is.na(drinking_and_driving)))) %>% 
-        group_by(current_alcohol_use) %>% 
-        count(drinking_and_driving) %>% 
-        rename(c = drinking_and_driving) %>% 
-        rename(x = current_alcohol_use)}
-    else if (input$drugs_3 == "Cigarettes") {
-      df_13 = df_13 %>%
-        filter((!(is.na(current_cigarette_use))) & (!(is.na(drinking_and_driving)))) %>% 
-        group_by(current_cigarette_use) %>% 
-        count(drinking_and_driving) %>% 
-        rename(c = drinking_and_driving) %>% 
-        rename(x = current_cigarette_use)}
-    else if (input$drugs_3 == "Vaping") {
-      df_13 = df_13 %>%
-        filter((!(is.na(current_vaping ))) & (!(is.na(drinking_and_driving)))) %>% 
-        group_by(current_vaping ) %>% 
-        count(drinking_and_driving) %>% 
-        rename(c = drinking_and_driving) %>% 
-        rename(x = current_vaping )}
-    else if (input$drugs_3 == "Cigar") {
-      df_13 = df_13 %>%
-        filter((!(is.na(current_cigar_use))) & (!(is.na(drinking_and_driving)))) %>% 
-        group_by(current_cigar_use) %>% 
-        count(drinking_and_driving) %>% 
-        rename(c = drinking_and_driving) %>% 
-        rename(x = current_cigar_use)}
-  }
   else if (input$grouping_choice_RV == "carring weapon")
   {
     if (input$drugs_3 == "Marijuana") {
@@ -1304,6 +1294,82 @@ renderPlotly({
         rename(c = bullying_electronically) %>% 
         rename(x = current_cigar_use)}
   }
+  else if (input$grouping_choice_RV == "sex before 13")
+  {
+    if (input$drugs_3 == "Marijuana") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_marijuana_use))) & (!(is.na(sex_before_13)))) %>% 
+        group_by(current_marijuana_use) %>% 
+        count(sex_before_13) %>% 
+        rename(c = sex_before_13) %>% 
+        rename(x = current_marijuana_use)}
+    else if (input$drugs_3 == "Alcohol") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_alcohol_use))) & (!(is.na(sex_before_13)))) %>% 
+        group_by(current_alcohol_use) %>% 
+        count(sex_before_13) %>% 
+        rename(c = sex_before_13) %>% 
+        rename(x = current_alcohol_use)}
+    else if (input$drugs_3 == "Cigarettes") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigarette_use))) & (!(is.na(sex_before_13)))) %>% 
+        group_by(current_cigarette_use) %>% 
+        count(sex_before_13) %>% 
+        rename(c = sex_before_13) %>% 
+        rename(x = current_cigarette_use)}
+    else if (input$drugs_3 == "Vaping") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_vaping ))) & (!(is.na(sex_before_13)))) %>% 
+        group_by(current_vaping ) %>% 
+        count(sex_before_13) %>% 
+        rename(c = sex_before_13) %>% 
+        rename(x = current_vaping )}
+    else if (input$drugs_3 == "Cigar") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigar_use))) & (!(is.na(sex_before_13)))) %>% 
+        group_by(current_cigar_use) %>% 
+        count(sex_before_13) %>% 
+        rename(c = sex_before_13) %>% 
+        rename(x = current_cigar_use)}
+  }
+  else if (input$grouping_choice_RV == "current sexual activity")
+  {
+    if (input$drugs_3 == "Marijuana") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_marijuana_use))) & (!(is.na(current_sexual_activity)))) %>% 
+        group_by(current_marijuana_use) %>% 
+        count(current_sexual_activity) %>% 
+        rename(c = current_sexual_activity) %>% 
+        rename(x = current_marijuana_use)}
+    else if (input$drugs_3 == "Alcohol") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_alcohol_use))) & (!(is.na(current_sexual_activity)))) %>% 
+        group_by(current_alcohol_use) %>% 
+        count(current_sexual_activity) %>% 
+        rename(c = current_sexual_activity) %>% 
+        rename(x = current_alcohol_use)}
+    else if (input$drugs_3 == "Cigarettes") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigarette_use))) & (!(is.na(current_sexual_activity)))) %>% 
+        group_by(current_cigarette_use) %>% 
+        count(current_sexual_activity) %>% 
+        rename(c = current_sexual_activity) %>% 
+        rename(x = current_cigarette_use)}
+    else if (input$drugs_3 == "Vaping") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_vaping ))) & (!(is.na(current_sexual_activity)))) %>% 
+        group_by(current_vaping ) %>% 
+        count(current_sexual_activity) %>% 
+        rename(c = current_sexual_activity) %>% 
+        rename(x = current_vaping )}
+    else if (input$drugs_3 == "Cigar") {
+      df_13 = df_13 %>%
+        filter((!(is.na(current_cigar_use))) & (!(is.na(current_sexual_activity)))) %>% 
+        group_by(current_cigar_use) %>% 
+        count(current_sexual_activity) %>% 
+        rename(c = current_sexual_activity) %>% 
+        rename(x = current_cigar_use)}
+  }
     
 
     df_13 = df_13 %>%
@@ -1352,7 +1418,28 @@ renderPlotly({
 
 ### <span style="color:#69899f"> **Decription** </span>
 
+<br> <br>
 
+* **Marijuana**:   used marijuana during the past 30 days   (Yes/No)
+* **Alcohol**:   had at least one drink of alcohol during the past 30 days   (Yes/No)
+* **Cigarettes**:   smoked cigarettes during the past 30 days   (Yes/No)
+* **Vaping**:   used an electronic vapor product during the past 30 days   (Yes/No)
+* **Cigar**:   smoked cigars, cigarillos, or little cigars during the past 30 days   (Yes/No)
+
+
+
+
+<br> <br>
+
+* **illegal_injected_drug_use**: subject has used needle to inject any illegal drug into body during life time   (Yes/No)
+* **carring weapon**:   subject carried a weapon such as a gun, knife, or club during the past 30 days   (Yes/No)
+* **safety concerns at_school**:  subject did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days   (Yes/No)
+* **threatened at school**:  subject has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months   (Yes/No)
+* **physical fighting**:   subject has been in a physical fight during the past 12 months   (Yes/No)
+* **bullying at school**:   subject has been bullied on school property during the past 12 months   (Yes/No)
+* **bullying electronically**:   subject has been bullied electronically (i.e. facebook) during the past 12 months   (Yes/No)
+* **sex before 13**:   subject had first sexual intercourse before age 13   (Yes/No)
+* **current sexual activity**: subject had sexual intercourse with 1 or more people during the past 3 months   (Yes/No)
 
 
 

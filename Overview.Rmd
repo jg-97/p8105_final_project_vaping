@@ -6,7 +6,7 @@ output:
     theme: journal
 ---
 
-# Motivation
+# Motivation & Related Work
 
 <left><img src = "images/youthvaping.jpg" style = "width:60%"> </left>
 
@@ -25,20 +25,28 @@ We utilized the **YRBSS** dataset publicly available on [CDC.gov](https://www.cd
 
 
 
+<br> <br>
 
-# Methods
+# Research Questions
 
-1.    We used shiny for interactive plots
+<br>
 
-2.    We used use LASSO to automatically choose important predictors in the logistic regression model based on cross-validation error
+1. How did drugs use change over time in NYC's youth?
 
-3.    80/20 was used for cross-validation
+2. How did mental health related issues change over time in NYC's youth?
 
-4.    We first used listwise exclusion for missing data. We than used imputation to replace missingness and run the same models. Since the results did not differ significantly, we used data without any missing replacement. 
+3. How does drug use and mental health status differ by demographics in NYC's youth?
 
-# Findings
+4. How do risky and violent behaviors differ between NYC children using drugs and not using drugs?
 
-Please click here to see our analysis and results section. 
+5. Can we build a model with current available data to predict future vaping use?
+
+
+
+
+
+
+
 
 # More Vaping Facts
 

@@ -78,7 +78,7 @@ df = df %>%
             -qn82, -qn81, -qn80, -qn79, -qn78, -qn77, -qn76, -qn75, -qn74,-qn73, -qn72, -qn71,
             -qn70, -qn69, -qn68, -race4, -stheight, -stweight, -bmi, -bmipct, -grade, -q67, -sexid, -q66, -sexpart) %>% 
     # Deleting unnecessary variables Part III
-     select(-qn65, -qn64, -qn63, -qn61, -qn59, -qn58, -qn57, -qn55, 
+     select(-qn65, -qn64, -qn63, -qn61, -qn59, -qn58, -qn55, 
             -qn54, -qn53, -qn52, -qn51, -qn50, -qn49, -qn47, -qn46,
             -qn45, -qn44, -qn43, -qn41, -qn40, -qn37, -qn33, -qn30,
             -qn27, -qn22, -qn21, -qn19, -qn18, -qn14, -qn13, -qn9, -qn8) %>% 
@@ -286,6 +286,15 @@ df = df %>%
       qn48 = fct_relevel(qn48, c("Yes", "No"))) %>% 
     rename(current_marijuana_use  = qn48) %>%
 #####################################################################################
+# During your life, how many times have you used a needle to inject any illegal drug into your body?
+     mutate(
+       qn57 = recode(qn57,
+                     "1" = "Yes",
+                     "2" = "No"),
+       qn57 = as.factor(qn57),
+       qn57 = fct_relevel(qn57, c("Yes", "No"))) %>% 
+     rename(illegal_injected_drug_use  = qn57) %>%
+ #####################################################################################
     # How old were you when you had sexual intercourse for the first time? 
     mutate(
       qn60 = recode(qn60,

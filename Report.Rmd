@@ -22,12 +22,24 @@ library(reprex)
 theme_set(theme_bw())
 ```
 
+<br>
 
-# Motivation
+# Motivation & Related Work 
 
 <br>
 
-### Facts about vaping
+<left><img src = "images/youthvaping.jpg" style = "width:60%"> </left> 
+
+<br>
+
+Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was initially regarded as a less harmful substitution for cigarettes. However, vaping still introduces nicotine into the body. The prevalence of lung damage caused by vaping is actually so high that the CDC[[1](https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub)] needed to issue guidance explicitly on it. According to the New York Post, a second vaping related death occured on November 9th, 2019. Vaping has claimed at least 42 lives and injured over 2,000 others across the country[[2](https://nypost.com/2019/11/20/second-new-yorker-dead-from-vaping-related-illness-officials/)]. 
+
+As the popularity of vaping grows, concerns about vaping are covered both in academia and in the press[[3](https://health.usnews.com/health-care/for-better/articles/2018-06-13/how-teenage-vaping-puts-structure-in-place-for-heroin-and-cocaine-addiction),[4](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)]. A journal article published recently even describes the prevalence of vaping in a "red alert" state[[5](https://link.springer.com/article/10.1057/s41271-019-00193-2)]. In press, vaping is accused of being both a  gateway drug and a new "drug" itself.  81% Americans report teenagers who would not smoke cigarettes are using flavored e-cigarettes[[6](https://www.kff.org/other/issue-brief/data-note-vaping-and-e-cigarettes/)]. To provide grounds for potential public health interventions on this "scourge of drug"[[6](https://www.cnn.com/2015/09/04/us/vaping-abuse/index.html)], we will evaluate the current landscape of vaping usage among teenagers and young adults in NYC using pre-collected data and analyze the potential risks of vaping in terms of future substance abuse and mental hygiene condistions.
+
+
+<br>
+
+**Facts about vaping**
 
 * 2,051 reported lung illness cases and 39 lung illness deaths due to vaping.[[1](https://www.engadget.com/2019/11/07/cdc-confirms-vaping-lung-injury/)]
 
@@ -38,39 +50,28 @@ theme_set(theme_bw())
 According to reports in recent years, we can see an underlying trend of vaping is increasing, especially in the teenager group.
 
 
-
-
-<br> <br>
-
-# Related Work
-
-<br>
-
-
-
-
 <br> <br>
 
 # Initial Questions
 
 <br>
 
+1. How did drugs use change over time in NYC's youth?
 
-# Our research questions:
+2. How did mental health related issues change over time in NYC's youth?
 
-* Whether the distribution of vaping has been similar trends as other drugs? What will the trend look like? 
+3. How does drug use and mental health status differ by demographics in NYC's youth?
 
-* Is there any association between mental health and vaping in NYC youth?
+4. How do risky and violent behaviors differ between NYC children using drugs and not using drugs?
 
-* What are drugs decomposed by demographics and year?
-
-* Is vaping associated with violenced and other risky behaviors?
-
-
+5. Can we build a model with current available data to predict future vaping use?
+ 
+ 
+Initially, we were interested in building a model to determine associations. However, as our studies in data science class progressed further, we learned new great procedures and methods that we wanted to incorporate into our project. In particular, we became interested in building a predictive model based on data from 2015, and using this data to predict vaping for 2017
 
 <br> <br>
 
-### Data and the Data Cleaning Process
+# Data
 
 <br>
 
@@ -122,8 +123,7 @@ In the end, we worked with the following variables:
 * *physical_fighting*:   subject has been in a physical fight during the past 12 months   (Yes/No)
 * *bullying_at_school*:   subject has been bullied on school property during the past 12 months   (Yes/No)
 * *bullying_electronically*:   subject has been bullied electronically (i.e. facebook) during the past 12 months   (Yes/No)
-* *texting_and_driving*:   subject texted or emailed while driving a car or other vehicle during the past 30 days   (Yes/No)
-* *drinking_and_driving*:   subject drove a car or other vehicle after drinking alcohol during the past 30 days   (Yes/No)
+* *illegal_injected_drug_use*: subject has used needle to inject any illegal drug into body during life time   (Yes/No)
 * *carring_weapon*:   subject carried a weapon such as a gun, knife, or club during the past 30 days   (Yes/No)
 * *sex_before_13*:   subject had first sexual intercourse before age 13   (Yes/No)
 * *current_sexual_activity*: subject had sexual intercourse with 1 or more people during the past 3 months   (Yes/No)
@@ -137,6 +137,8 @@ In the end, we worked with the following variables:
 
 
 # Explorary Analysis
+
+<br>
 
 
 ```{r load_the_cleaned_data}
@@ -519,7 +521,7 @@ combine_gifs(plot1 = yes_p, plot2 = no_p)
 
 <br> <br>
 
-# Logistic Regression Model to Predict Vaping
+# Logistic Regression Model
 
 <br>
 
@@ -529,7 +531,6 @@ Since we were investigating the prevelance and trend in vaping among NYC's youth
 **Demographics**
 
 * *borough*:   one of the five boroughs of NYC
-* *year*:   year of the survey
 * *age*:   age of the subject
 * *sex*:   gender of the subject (male, female)
 * *race7*:   race of the subject
@@ -549,8 +550,7 @@ Since we were investigating the prevelance and trend in vaping among NYC's youth
 * *physical_fighting*:   subject has been in a physical fight during the past 12 months   (Yes/No)
 * *bullying_at_school*:   subject has been bullied on school property during the past 12 months   (Yes/No)
 * *bullying_electronically*:   subject has been bullied electronically (i.e. facebook) during the past 12 months   (Yes/No)
-* *texting_and_driving*:   subject texted or emailed while driving a car or other vehicle during the past 30 days   (Yes/No)
-* *drinking_and_driving*:   subject drove a car or other vehicle after drinking alcohol during the past 30 days   (Yes/No)
+* *illegal_injected_drug_use*: subject has used needle to inject any illegal drug into body during life time   (Yes/No)
 * *carring_weapon*:   subject carried a weapon such as a gun, knife, or club during the past 30 days   (Yes/No)
 * *sex_before_13*:   subject had first sexual intercourse before age 13   (Yes/No)
 * *current_sexual_activity*: subject had sexual intercourse with 1 or more people during the past 3 months   (Yes/No)
@@ -561,13 +561,13 @@ Since we were investigating the prevelance and trend in vaping among NYC's youth
 
 <br>
 
-First, we attempted to find a predictive model, using a form of **stepwise/automatic approach** by hand. We utilized p-values, pseudo R<sup>2</sup>, and prediction accuracy as our guidance for which predictors to choose, starting with the full model (except for *year*). In the end, this process came up with the following possible model:
+First, we attempted to find a predictive model by using a variation on **stepwise/automatic procedures** (by hand). We utilized p-values and prediction accuracy as our guidance for which predictors to choose, starting with the full model. In the end, this process came up with the following possible model:
 
 <br>
 
-**Model 1:**
+**Model 1**
 
-current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon
+current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13
 
 <br> <br>
 
@@ -597,10 +597,5 @@ current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school +
 
 
 
-
-
-
-
-# Conclusion
 
 # Discussion
