@@ -4,99 +4,373 @@ output:
     theme: journal
 ---
 
-# EDA
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.height = 5,
+                      fig.width = 10)
+library(tidyverse)
+library(gganimate)
+library(transformr)
+library(gifski)
+library(magick)
+library(reprex)
+library(modelr)
+library(glmnet)
+library(patchwork)
+###This package provide glm like interface for glmnet
+library(glmnetUtils)
+set.seed(8105)
 
-This section shows the exploratory analyses that we have done for this project.  
+theme_set(theme_bw())
+```
 
-<br>
 
-## Interpretation of vaping & drug use plots 
 
-<br>
-
-<center><img src = "images/cigarette.png" style = "width:100%"> </center>
-
-* We first looked at the proportion of five different types of drug use: alcohol, cigarette, cigar, marijuana and vaping. Alcohol has the highest proportion in year 2003, but started decreasing from 2007 across five boroughs in NYC. Cigarette also showed the same pattern over the years after 2009. 
-
-* Cigar use showed a little peak in year 2013, otherwise stayed persistently low proportion for all five boroughs in NYC. 
-
-* Statent Island had highest Marijuana use over the years among five boroughs in NYC. However, in year 2017, it dropped dramatically and had the lowest proportion among all boroughs. Moreover, the marijuana users in Manhattan increase from the lowest level to highest level among five boroughs during 2007-2011. 
-
-* Although we only have data from 2015 and 2017, our intestered substance - vaping showed the highest usage among youths in all boroughs comparing to other drugs. And it is increasing rapidly in year 2017, which indicates that vaping is growing into a new drug and is threatening public health in our youth.
-
-The following animated graphs shows how differnt drug use changes over time in NYC's youth. 
-These graphs are presented to answer the question: _How did mental health related issues in youth change over time in NYC?_
-
-If you are interested in more details, please visit our [Report](Report.html).
 <br> <br>
 
-## Interpretation of mental health plots
+
+# Exploratory Analysis
 
 <br>
 
-<center><img src = "images/sad.png" style = "width:100%"> </center>
 
-* Above three mental health problems are related to vaping and other drug use in the report/survey. The mood problem: feeling sad and hopeless, has the highest level among three problems. A large number of teenagers reported depressed mood and the trend decreases slightly after 2009. Staten Island keeps the lowest proportion in the reported sadness except 2011. Bronx almost keeps the highest level and Queens fluctuates heavily which decreases a lot during 2005 to 2011. 
+```{r load_the_cleaned_data, echo=FALSE}
+### load the cleaned data
+load("./data/nyc_data.RData")
+nyc_drug <- df_total
 
-* The proportion of attempted suicide holds the level near 0.1 and is higher than that of getting injured due to the attempted suicide. Both of attempted suicide and injurious attempted suicide keep the relative steady trend in proportion and the same level across five boroughs. 
+```
 
-This section's graphs are combined into an animated one to answer the question:
-_How did mental health related issues in youth change over time in NYC?_
+## Exploring the change of Vaping and other drug use over Time
 
-If you are interested in more details, please visit our [Report](Report.html).
+<br>
+
+In order to analyze the change of vaping and other drug usage over time in NYC's youth, we created the following animated plot:
+
+<br>
+
+```{r distribution_vaping_other_drugs, echo=FALSE}
+## filter the data used in this part
+nyc_drug_used <- nyc_drug %>% 
+  select(id, borough, year, 
+         cigarette = current_cigarette_use, cigar = current_cigar_use,
+         alcohol = current_alcohol_use, marijuana = current_marijuana_use,
+         vaping = current_vaping) %>% 
+  mutate(year = factor(year))
+
+## cigarette proportion
+cigarette <- nyc_drug_used %>% 
+  filter(!is.na(cigarette)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            cigarette = sum(cigarette == "Yes")/n) %>% 
+  select(-n)
+
+## cigar proportion
+cigar <- nyc_drug_used %>% 
+  filter(!is.na(cigar)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            cigar = sum(cigar == "Yes")/n) %>% 
+  select(-n) 
+
+## alcohol proportion
+alcohol <- nyc_drug_used %>% 
+  filter(!is.na(alcohol)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            alcohol = sum(alcohol == "Yes")/n) %>% 
+  select(-n) 
+
+
+## vaping proportion 
+vaping <- nyc_drug_used %>% 
+  filter(!is.na(vaping)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            vaping = sum(vaping == "Yes")/n) %>% 
+  select(-n) 
+
+## marijuana proportion with all other proportions
+marijuana_full <- nyc_drug_used %>% 
+  filter(!is.na(marijuana)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            marijuana = sum(marijuana == "Yes")/n) %>% 
+  select(-n) %>% 
+  left_join(cigarette, by = c("year", "borough")) %>% 
+  left_join(cigar, by = c("year", "borough")) %>% 
+  left_join(alcohol, by = c("year", "borough")) %>% 
+  left_join(vaping, by = c("year", "borough")) %>% 
+  pivot_longer(marijuana:vaping,
+               names_to = "drug_type",
+               values_to = "proportion")
+
+drug_p <- marijuana_full %>%
+  filter(!(is.na(proportion))) %>%
+  ggplot(aes(x = year, y = proportion, color = borough, shape = drug_type, 
+             group = interaction(borough, drug_type), frame = drug_type)) +
+  geom_point(size = 2.2) + geom_path(size = .8) +
+  labs(title = "{closest_state}",
+       x = "Year",
+       y = "Proportion of drug use",
+       color = "Borough",
+       shape = "Drug type") +
+  theme(plot.title = element_text(size = 30, face = "bold"),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15,face = "bold")) + 
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = "bold")) +  
+  transition_states(drug_type, transition_length = 1, state_length = 3, wrap = TRUE) +
+  enter_fade() + exit_fade()
+
+animate(drug_p)
+```
+
+After analyzing the plot, we drew the following conclusions:
+
+* Among the five types of drugs considered, alcohol has the highest proportion in year 2003, but started decreasing in use from 2007 onwards across all five boroughs in NYC. In addition, cigarette has a lower total proportion than alcohol but a similar decreasing trend after 2009. 
+
+* Cigar maintains a steady but low-proportion trend during 2003-2017, which could be compared with marijuana holding a steady but higher proportion in total. Moreover, the marijuana use in Manhattan increased from the lowest level in 2007 to the highest level in 2011 among five boroughs. 
+
+* Staten Island had the highest Marijuana use over the years among all five NYC boroughs. However, in year 2017, it dropped dramatically and had the lowest proportion among all boroughs. 
+
+* Vaping, which is our main drug of interest, has a slightly increasing trend from 2015-2017. This trend is quite similar to the alcohol, cigar and cigarette trend observed from 2003 to 2005, and has a proportion about as high as the proportion observed in marijuana in 2015-2017, which indicates that it could possibliy grow into a new drug threatening public health.
+
 <br> <br>
 
-## The demographics of vaping and drug use by gender, races and ages
+## Exploring the change of Mental Health over Time
+<br>
+
+In order to analyze the change of mental health status of NYC's youth over time, we created the following animated plot:
 
 <br>
 
-This section's graphs are combined into an animated one to answer the question:
-_How does drug use and mental health status differ by demographics in NYC youth?_
+```{r distribution_mental_health, echo=FALSE}
+## data for mental health disorder
+nyc_drug_health <- nyc_drug %>% 
+  select(id, year, borough, sad = sad_hopeless, 
+         suicide = attempted_suicide, injury = injurious_suicide_attempt) %>% 
+  mutate(year = factor(year))
+
+## sadless
+sad <- nyc_drug_health %>% 
+  filter(!is.na(sad)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            sad = sum(sad == "Yes")/n) %>% 
+  select(-n)
+
+## attempted suicide
+suicide <- nyc_drug_health %>% 
+  filter(!is.na(suicide)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            suicide = sum(suicide == "Yes")/n) %>% 
+  select(-n)
+
+## injurious attempted suicide
+injury_full <- nyc_drug_health %>% 
+  filter(!is.na(injury)) %>% 
+  group_by(year, borough) %>% 
+  summarize(n = n(),
+            injury = sum(injury == "Yes")/n) %>% 
+  select(-n) %>% 
+  left_join(sad, by = c("year", "borough")) %>% 
+  left_join(suicide, by = c("year", "borough")) %>% 
+  pivot_longer(injury:suicide,
+               names_to = "mental_disorder",
+               values_to = "proportion")
+
+## animated plot
+mental_p <- injury_full %>%
+  filter(!(is.na(proportion))) %>% 
+  ggplot(aes(x = year, y = proportion, color = borough, shape = mental_disorder, 
+             group = interaction(borough, mental_disorder))) +
+  geom_point(size = 2.2) + geom_path(size = .8) +
+  labs(x = "Year",
+       y = "Proportion of mental disorder",
+       color = "Borough",
+       shape = "Mental disorder") +  
+  scale_shape_discrete(labels = c("injurious attempted suicide", "sad and hopeless", "attempted suicide")) +
+  theme(axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15,face = "bold")) + 
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 15, face = "bold"))  +
+  transition_states(mental_disorder, transition_length = 1, state_length = 3, wrap = TRUE) +
+  enter_fade() + exit_fade()
+
+animate(mental_p)
+
+```
+
+Examining this plot, we determined the following:
+
+* Teenagers, feeling sad and hopeless, constitute the highest proportion among all three mental health issues considered. Based on the considered survey data, we see that a high percentage of teenagers do not have a positive mood. The trend decreases slightly after 2009, just to pick up again in 2015. Staten Island has the lowest proportion in the reported sadness with the exception of 2011. Bronx almost alwyas has the highest proportion, and Queens fluctuates greatly.
+
+* The proportion of attempted suicide is approximately constant at about 0.1 and is higher than the proportion associated with getting injured due to an attempted suicide. Both attempted suicide and injurious attempted suicide are relatively steady over time and have about the same magnitude across all five NYC boroughs. 
 
 
-### drug use grouped by the gender in 2017
 
-<br>
 
-<center><img src = "images/sex.png" style = "width:100%"> </center>
-
-This is an example plot showing the condition of the marijuana and vaping use in the NYC grouped by the gender. 
-
-### drug use grouped by the races in 2017
-
-<br>
-
-<center><img src = "images/race.png" style = "width:100%"> </center>
-
-This is an example plot showing the condition of marijuana and vaping use in NYC grouped by races.
-
-### drug use grouped by the ages in 2017
-
-<br>
-
-<center><img src = "images/age.png" style = "width:100%"> </center>
-
-This is an example plot showing the condition of marijuana and vaping use in NYC grouped by ages
-
-If you are interested in more details, please visit our [Explore the Data](https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use).
 <br> <br>
 
-## interpretation of violence & risky behaviors plots
+## Exploring drug use in 2017 by sex within each borough
+<br>
+
+We were interested in whether there is a difference in drug use between female and male teenagers in different boroughs in NYC in 2017. To that end, we created the following plots:
 
 <br>
 
-<center><img src = "images/2003.png" style = "width:90%"> </center>
+```{r Drug_Use_2017_by_Sex, echo=FALSE}
+sex_plot = function(df, borough) {
+df %>% 
+  select(
+    sex, 
+    current_vaping, 
+    current_cigarette_use, 
+    current_cigar_use, 
+    current_alcohol_use, 
+    current_marijuana_use) %>% 
+  pivot_longer(
+    -sex,
+    names_to = "drug",
+    names_prefix = "current_",
+    values_to = "status") %>% 
+  mutate(
+    drug = str_replace(drug, "_use", "")) %>%
+  drop_na() %>% 
+  group_by(
+    drug,
+    sex
+  ) %>% 
+  summarize(
+    number = n()
+  ) %>% 
+  ungroup() %>% 
+  group_by(drug) %>% 
+  mutate(
+    number_in_group = sum(number),
+    percent = number / number_in_group) %>% 
+  select(-number, -number_in_group) %>% 
+  ggplot(aes(x = sex, y = percent, fill = sex)) + 
+  geom_bar(stat = "identity") +
+  labs(
+    title = str_c("Drug Use in 2017 by Sex in ", borough)) + 
+  theme(legend.position = "none") +
+  facet_grid(~drug)}
 
-* The left plot has the twice value than the right plot when the bar is in the same height. Therefore, the proportion of having violence and risky behaviors in the teenagers who use drugs is nearly twice than the that in the teenagers who are non-drug users. Moreover, non-drug users have lower proportion in carrying weapons from 2003 to 2017. 
+sex_Bronx = sex_plot(nyc_drug %>% filter(year == "2017" & borough == "Bronx"),"The Bronx")
+sex_Brooklyn = sex_plot(nyc_drug %>% filter(year == "2017" & borough == "Brooklyn"), "Brooklyn")
+sex_Manhattan = sex_plot(nyc_drug %>% filter(year == "2017" & borough == "Manhattan"), "Manhattan")
+sex_Queens = sex_plot(nyc_drug %>% filter(year == "2017" & borough == "Queens"), "Queens")
+sex_Staten_Island = sex_plot(nyc_drug %>% filter(year == "2017" & borough == "Staten Island"), "Staten Island")
 
-* Physical fighting, feeling unsafe at school and being treantened at school increase in proportion during 2005-2007, keep the same proportion in 2009,  and begin to decrease in 2011. 
+sex_Bronx
 
-* Physical fighting keeps high proportion in both drug users and non-drug users and becomes a issue which is hard to control and intervent in 2003-2017. 
+sex_Brooklyn
 
-* Bullying electronically is another issue whose proportion inceases from 2015 to 2017 in both two groups
+sex_Manhattan
 
-This section's graphs are combined into one animated one to answer the question:
-_How does risky and violent behaviors differ between NYC children using drugs and not using drugs?_
+sex_Queens
 
-If you are interested in more details, please visit our [Report](Report.html).
+sex_Staten_Island
+```
+
+
+
+Studying these plots, we were able to derive the following results:
+
+* According to our survey data, it appears as if independent of the type of drug the proportion of male teenagers in the Bronx using a particular type of drug is higher (about 55%) compared to their female counterparts.
+
+* According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Brooklyn using a particular type of drug is higher (about 55%) compared to their male counterparts.
+
+* According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in Manhattan using a particular type of drug is higher (almost 60%) compared to their male counterparts.
+
+* According to our survey data, it appears as if independent of the type of drug the proportion of female teenagers in  Queens using a particular type of drug is about equal to the proportion of their male counterparts. A similar trend can be observed in Staten Island. However it seems as if marijuana use is slightly higher in female than in males teenagers in Staten Island.
+
+
+<br><br>
+
+## Exploring drug use in 2017 by being involved in fights
+<br>
+
+We were interested in whether there is a difference in drug use between teenagers involved in fights and teenagers not involved in fights in different boroughs of NYC in 2017. To that end, we created the following plots:
+
+<br>
+
+```{r Drug_Use_2017_by_Feeling_Sad_Hopeless, echo=FALSE}
+fight_plot = function(df, borough) {
+df %>% 
+  select(
+    physical_fighting, 
+    current_vaping, 
+    current_cigarette_use, 
+    current_cigar_use, 
+    current_alcohol_use, 
+    current_marijuana_use) %>% 
+  pivot_longer(
+    -physical_fighting,
+    names_to = "drug",
+    names_prefix = "current_",
+    values_to = "status") %>% 
+  mutate(
+    drug = str_replace(drug, "_use", "")) %>%
+  drop_na() %>% 
+  group_by(
+    drug,
+    physical_fighting
+  ) %>% 
+  summarize(
+    number = n()
+  ) %>% 
+  ungroup() %>% 
+  group_by(drug) %>% 
+  mutate(
+    number_in_group = sum(number),
+    percent = number / number_in_group) %>% 
+  select(-number, -number_in_group) %>% 
+  ggplot(aes(x = physical_fighting, y = percent, fill = physical_fighting)) + 
+  geom_bar(stat = "identity") +
+  labs(
+    title = str_c("Drug Use in 2017 by Being Involved in a Fight or Not ", borough)) + 
+  theme(legend.position = "none") +
+  facet_grid(~drug)}
+
+
+
+fight_Bronx = fight_plot(nyc_drug %>% filter(year == "2017" & borough == "Bronx"),"The Bronx")
+fight_Brooklyn = fight_plot(nyc_drug %>% filter(year == "2017" & borough == "Brooklyn"), "Brooklyn")
+fight_Manhattan = fight_plot(nyc_drug %>% filter(year == "2017" & borough == "Manhattan"), "Manhattan")
+fight_Queens = fight_plot(nyc_drug %>% filter(year == "2017" & borough == "Queens"), "Queens")
+fight_Staten_Island = fight_plot(nyc_drug %>% filter(year == "2017" & borough == "Staten Island"), "Staten Island")
+
+fight_Bronx
+
+fight_Brooklyn
+
+fight_Manhattan
+
+fight_Queens
+
+fight_Staten_Island
+```
+
+
+Studying these plots, we were able to derive the following result:
+
+* According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in the Bronx is about 28%, with the exception of alcohol, for which the proportion seems to be about 25%.
+
+* The same trend can be observed in Brooklyn. The only differences appear to be that the proportions itself are a bit lower: 0.22 for alcohol and about 0.25 for the remaining types of drugs.
+
+* According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Manhatten is about 22%.
+
+* According to our survey data, it appears as if the proportion of teenagers involved in a fight in Queens is slightly higher for children vaping (about 0.24%) and smoking cigars (about 0,23%). 
+
+* According to our survey data, it appears as if independent of the type of drug the proportion of teenagers involved in a fight in Staten Island is about 19% - the lowest proportion of all boroughs.
+
+<br>
+
+**If this Exploratory Analysis sparked your interested, feel free to explore the data more using the Explore the Data tab on the top right corner of the website.**
+
 
