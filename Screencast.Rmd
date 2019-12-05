@@ -10,6 +10,6 @@ library(fontawesome)
 
 This is the 2 minute screencast of our project! Have fun watching it!
 
-<iframe width="1120px" height="630" src="https://www.youtube.com/..." frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://youtu.be/5DaxpKyI9go" frameborder="0" allowfullscreen </iframe>
 
 Want to learn more, click here for some [Interactive Plots](https://dani-quigee-shiny.shinyapps.io/My_first_Shiny/#section-drug-use)!
