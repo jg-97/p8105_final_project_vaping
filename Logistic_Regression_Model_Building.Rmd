@@ -10,6 +10,11 @@ library(tidyverse)
 library(modelr)
 library(caret)
 library(pscl)
+library(glmnet)
+library(gmodels)
+###This package provide glm like interface for glmnet
+library(glmnetUtils)
+
 ```
 
 
@@ -22,13 +27,13 @@ load("./data/nyc_data.RData")
 ```{r Data_frame_for_Prediction_Model}
 # Creating the dataset we will use to build the model
 df = df_total %>% 
-  filter(year == 2015 | year == 2017) %>% # Basing model on data from 2015 and 2017
+  ### Select only possible candidates from the data set 
   select(
+    year,
     # binary respone
     current_vaping,
     # possible predictor
     borough,
-    year,
     age,
     sex,
     race7,
@@ -41,20 +46,23 @@ df = df_total %>%
     physical_fighting,
     bullying_at_school,
     bullying_electronically,
-    texting_and_driving,
-    drinking_and_driving, 
+    illegal_injected_drug_use,
     carring_weapon,
     sex_before_13,
-    current_sexual_activity) 
+    current_sexual_activity) %>%
+    #### Basing model on data from 2015
+  filter(year == 2015) %>% 
+    ### we do our anaylsis on complete datasets
+  drop_na()
 ```
 
 
 
-# Manuel Method
+# Method 1: Manual Selection
 
 ```{r Manuel_Method}
 # Fitting a logistic regression model
-fit_logistic = glm(current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())
+fit_logistic = glm(current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13 , data = df, family = binomial(),na.action = na.omit)
 
 # Looking at the model coefficients
 fit_logistic %>% 
@@ -67,11 +75,6 @@ fit_logistic %>%
 # What is the contribution of each predictor? see: https://uc-r.github.io/logistic_regression#multi
 caret::varImp(fit_logistic)
 
-
-# Pseudo R^2: see https://uc-r.github.io/logistic_regression#multi (Pseudo R^2 about 0.40 considered good)
-pR2(  glm(current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon  , data = df, family = binomial())  )["McFadden"]
-
-
 # Cross-Validating the model
 data_train <- trainControl(method = "cv", number = 5)
 
@@ -83,19 +86,67 @@ model_caret <- train(
                    family = binomial(),
                    na.action = na.pass)
   
-# Model predictions using 4 parts of the data for training 
 model_caret
+AIC(fit_logistic)
+
+
+fit_logistic$formula
 ```
 
-
-Model 1: current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon
-
-
-
-# Hao Model
+Model 1: current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + 
+    illegal_injected_drug_use + physical_fighting + bullying_electronically + 
+    carring_weapon + sex_before_13
 
 
 
+# Method 2: Step AIC regression generatoion
+```{r}
+
+###Defining a glm object that contains the regression model generated
+auto_logistic = glm(
+  ###Fixing "current_vaping" as response,whith all the vairble candidtates as pridictors.
+  current_vaping ~., data = df, 
+  ###Runing logistics regression, with complete analysis
+  family = binomial(),na.action = na.omit) %>%
+  ###Choose a model by AIC in a Stepwise Algorithm
+  MASS::stepAIC(trace = FALSE)
+
+AIC(auto_logistic)
+
+auto_logistic %>% broom::tidy()
+auto_logistic$formula
+```
+
+Model 2: current_vaping ~ sex + race7 + sad_hopeless + attempted_suicide + 
+    safety_concerns_at_school + physical_fighting + illegal_injected_drug_use + 
+    carring_weapon + sex_before_13 + current_sexual_activity
 
 
-# Siquan Model
+
+# Method 3:Lasso regression generation
+```{r}
+###Defining a glmnet object that contains the cv lasso model generated to find the best lambda to use
+  lasso_temp = cv.glmnet(
+  ###Fixing "current_vaping" as response,whith all the vairble candidtates as pridictors.
+    current_vaping ~., data = df, 
+    ###Runing for logistics outcom
+    family = "binomial")
+
+###Defining a glmnet object that contains the final lasso model using the best lambda generated
+  lasso_logistic = glmnet(
+  ###Fixing "current_vaping" as response,whith all the vairble candidtates as pridictors.
+    current_vaping ~., data = df, 
+    ###Runing for logistics outcom
+    family = "binomial",
+    ### With the best lambda
+    lambda = lasso_temp$lambda.min
+    )
+
+
+#See the accuracy of prediction with this model
+lasso_logistic %>% broom::tidy()
+```
+
+Model 3: current_vaping ~ age + sex + race7 + sad_hopeless + attempted_suicide + injurious_suicide_attempt + safety_concerns_at_school + physical_fighting + bullying_electronically + illegal_injected_drug_use + carring_weapon + sex_before_13 + current_sexual_activity
+
+The LASSO model has tunning paramter lamda equals 0.005 and the model contains more covariates than the above two models since LASSO putting shringkage on the coefficient of each covariate and thus will include more covariates (remember that LASSO will automatically do the variable selection).
