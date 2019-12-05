@@ -29,12 +29,11 @@ We utilized the **YRBSS** dataset publicly available on [CDC.gov](https://www.cd
 
 # Research Questions
 
+1. Visualize how drug use changed over time in NYC's youth?
 
-1. How did drug use change over time in NYC's youth?
+2. Visualize how mental health related issues changed over time in NYC's youth?
 
-2. How did mental health related issues change over time in NYC's youth?
-
-3. How does drug use and mental health status differ by demographics in NYC's youth?
+3. Visualize how drug use and mental health status differ by demographics in NYC's youth?
 
 4. How do risky and violent behaviors differ between NYC children using drugs and not using drugs?
 
