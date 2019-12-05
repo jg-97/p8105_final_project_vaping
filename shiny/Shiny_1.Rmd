@@ -1397,7 +1397,7 @@ renderPlotly({
           tick0 = 0,
           tickmode = "linear",
           range = c(0, 100)),
-        title = str_c("Percentage currently use ", input$drugs_3," (past 30 days)\n ",input$boroughs_RV, " ", input$years_RV, " \ngrouped by ", input$grouping_choice_RV))
+        title = str_c("Percentage currently use ", input$drugs_3," (past 30 days) ",input$boroughs_RV, " ", input$years_RV, "\ngrouped by ", input$grouping_choice_RV))
     }
     else{
       text_warning = "No data available"
