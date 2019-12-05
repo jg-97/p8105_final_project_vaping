@@ -1,6 +1,6 @@
 # p8105_final_project_vaping
-## This is the repo for p8105 final group project!
-## Our website can be found here:
+
+## This is the repo for p8105 final group project! Our website can be found here:
    https://jg-97.github.io/p8105_final_project_vaping/
 <br>  
    
