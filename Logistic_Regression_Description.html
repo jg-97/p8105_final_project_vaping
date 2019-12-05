@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 
 <meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Logistic_Regression_Description.utf8</title>
+<title>Logistic_Regression_Description.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -233,7 +234,6 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
-  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -331,74 +331,54 @@ $(document).ready(function () {
 <div id="logistic-regression-model" class="section level1">
 <h1>Logistic Regression Model</h1>
 <p><br></p>
-<p>Since we were investigating the prevelance and trend in vaping among NYC’s youth, we were interested in predicting <strong>current_vaping</strong>. We began our model building process considering the following predictors:</p>
-<p><strong>Demographics</strong></p>
-<ul>
-<li><em>borough</em>: one of the five boroughs of NYC</li>
-<li><em>age</em>: age of the subject</li>
-<li><em>sex</em>: gender of the subject (male, female)</li>
-<li><em>race7</em>: race of the subject</li>
-</ul>
-<p><strong>Mental Health</strong></p>
-<ul>
-<li><em>sad_hopeless</em>: during the past 12 months, felt so sad or hopeless almost every day for two weeks or more in a row that doing some usual activities was impossible (Yes/No)</li>
-<li><em>attempted_suicide</em>: during the past 12 months, actually attempt suicide (Yes/No)</li>
-<li><em>injurious_suicide_attempt</em>: attempted suicide, during the past 12 months, resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse (Yes/No)</li>
-<li><em>considered_suicide</em>: during the past 12 months, seriously considered attempting suicide (Yes/No)</li>
-</ul>
-<p><strong>Risky Behaviors/Violence</strong></p>
-<ul>
-<li><em>safety_concerns_at_school</em>: subject did not went to school due to feeling unsafe at school or on way to or from school during the past 30 days (Yes/No)</li>
-<li><em>threatened_at_school</em>: subject has been threatened or injured with a weapon such as a gun, knife, or club on school property during the past 12 months (Yes/No)</li>
-<li><em>physical_fighting</em>: subject has been in a physical fight during the past 12 months (Yes/No)</li>
-<li><em>bullying_at_school</em>: subject has been bullied on school property during the past 12 months (Yes/No)</li>
-<li><em>bullying_electronically</em>: subject has been bullied electronically (i.e. facebook) during the past 12 months (Yes/No)</li>
-<li><em>illegal_injected_drug_use</em>: subject has used needle to inject any illegal drug into body during life time (Yes/No)</li>
-<li><em>carring_weapon</em>: subject carried a weapon such as a gun, knife, or club during the past 30 days (Yes/No)</li>
-<li><em>sex_before_13</em>: subject had first sexual intercourse before age 13 (Yes/No)</li>
-<li><em>current_sexual_activity</em>: subject had sexual intercourse with 1 or more people during the past 3 months (Yes/No)</li>
-</ul>
+<p>Since we were investigating the prevelance and trend in vaping among NYC’s youth, we were interested in predicting <strong>current_vaping</strong>. We began our model building process considering 17 predictors, and employed three different methods:</p>
 <p><br> <br></p>
 <div id="manuel-method" class="section level2">
 <h2>Manuel Method</h2>
 <p><br></p>
 <p>First, we attempted to find a predictive model by using a variation on <strong>stepwise/automatic procedures</strong> (by hand). We utilized p-values and prediction accuracy as our guidance for which predictors to choose, starting with the full model.</p>
 <p>In the end, this process came up with the following possible model:</p>
-<p><br></p>
-<p><strong>Model 1</strong></p>
+<p><br> <strong>Model 1</strong></p>
 <p>current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13</p>
 <p><br> <br></p>
 </div>
 <div id="step-aic-model" class="section level2">
 <h2>Step AIC Model</h2>
 <p><br></p>
-<p>Considering the large number of predictor candidates in our model, we decided to take advantage of modern computational power and use the stepwise regression method to come up with a model. The criteria we used is AIC, a goodness of fit measure that helps to avoid overfitting. It also circumvents the big p value problem introduced by our potentially highly correlated predictor candidates. The actual function used is the StepAIC function from the MASS package.</p>
+<p>Considering the large number of predictor candidates in our model, we decided to take advantage of the existing modern computational power and use the stepwise regression method to come up with a model. We used the AIC criterion, a goodness of fit measure that helps to avoid overfitting. It also circumvents the big p value problem introduced by our potentially highly correlated predictor candidates. The actual function used is the StepAIC function from the MASS package.</p>
 <p>The formula generated by the function is as follows:</p>
-<p><strong>Model 2</strong></p>
+<p><br> <strong>Model 2</strong></p>
 <p>current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide + safety_concerns_at_school + physical_fighting + bullying_electronically + age + race7 + illegal_injected_drug_use + sexual_contact_2</p>
 <p><br> <br></p>
 </div>
 <div id="lasso" class="section level2">
 <h2>LASSO</h2>
 <p><br></p>
-<p>The motivation behind using the LASSO method is that we have a lot of potential predictors available and we cannot (and do not want to) to do an exhaustive search manually. LASSO is a shinkage method that avoids overfitting and help with variable selection. These advantages make LASSO one of the most popular methods in regression problem settings. In our study we chose the penalty paramter lamda based on the cross-validation error. Then we used the optimal lamda to rerun the LASSO again to get our final model.</p>
+<p>The motivation behind using the LASSO method is that we have a lot of potential predictors available and we cannot (and do not want to) to do an exhaustive search manually. LASSO is a shinkage method that avoids overfitting and help with variable selection. These advantages make LASSO one of the most popular methods in regression problem settings. In our study we chose the penalty parameter lamda based on the cross-validation error. Then we used the optimal lamda to rerun the LASSO again to get our final model.</p>
 <p>In the end the final model from LASSO is the following:</p>
-<p>Model 3: current_vaping ~ age + sex + race7 + sad_hopeless + attempted_suicide + injurious_suicide_attempt + safety_concerns_at_school + physical_fighting + bullying_electronically + illegal_injected_drug_use + carring_weapon + sex_before_13 + current_sexual_activity</p>
-<p>The LASSO model has tunning paramter lamda equals 0.005 and the model contains more covariates than the above two models since LASSO putting shringkage on the coefficient of each covariate and thus will include more covariates (remember that LASSO will automatically do the variable selection).</p>
+<p><br> <strong>Model 3:</strong></p>
+<p>current_vaping ~ age + sex + race7 + sad_hopeless + attempted_suicide + injurious_suicide_attempt + safety_concerns_at_school + physical_fighting + bullying_electronically + illegal_injected_drug_use + carring_weapon + sex_before_13 + current_sexual_activity</p>
+<p><br> The LASSO model has tunning paramter lamda equals 0.005 and the model contains more covariates than the above two models since LASSO putting shringkage on the coefficient of each covariate and thus will include more covariates (remember that LASSO will automatically do the variable selection).</p>
 <p><br></p>
 </div>
 <div id="model-selection" class="section level2">
 <h2>Model Selection</h2>
+<p><br></p>
 <div id="picking-the-best-model" class="section level3">
 <h3>Picking the “best” Model</h3>
-<p>At this point we had three predictive models. In order to decide which of them is the “best”, we employed cross-validation prediction accuracy as our criteria. The prediction accuracy is calculated as the proportion of correct prediction made by the model.</p>
+<p><br></p>
+<p>At this point we had three predictive models. In order to decide which of them is the “best” one, we employed the cross-validation prediction accuracy as our criterion. The prediction accuracy is calculated as the proportion of correct predictions made by the model.</p>
 <p>To perform the cross-validation in a compact and well-integrated manner, we coded our model selection process as robust functions that can be mapped to a modlr cv object by purrr to streamline the cross-validation process. We conducted a 5 fold 10 times CV on the three models.</p>
+<p><br></p>
 <p><left><img src = "Logistic_Regression_Model_Selection_files/figure-html/CrossValidation-1.png" style = "width:60%"> </left></p>
-<p>According to the violin plot, which shows the distribution of prediction accuracy, the model that was generated by stepAIC (StepAIC model) has an accuracy about 1% better than the accuracy of the model generated by lasso (Lasso model) and an accuracy about and 2% better than the one from the manual selection (Manual model) method. Therefore, we picked the stepAIC model as our finial model.</p>
+<p>According to the violin plot, which shows the distribution of prediction accuracy, the model that was generated by stepAIC (StepAIC model) has an accuracy of about 1% better than the accuracy of the model generated by lasso (Lasso model) and an accuracy of about 2% better than the model generated by the manual selection (Manual model) method. Therefore, we picked the stepAIC model as our finial model.</p>
+<p><br></p>
 </div>
 <div id="model-applied-to-2017-data" class="section level3">
 <h3>Model applied to 2017 Data</h3>
+<p><br></p>
 <p>Subsequently, we used all three models to predict the vaping status of teenagers in 2017. As can be seen in the table below, the StepAIC model also performed best among the three models considered, giving a more than 87% accuracy rate.</p>
+<p><br></p>
 <p>In conclusion, the final logistic regression model (StepAIC model) has the following formulae:</p>
 <p><strong>current_vaping ~ carring_weapon + sad_hopeless + attempted_suicide + safety_concerns_at_school + physical_fighting + bullying_electronically + age + race7 + illegal_injected_drug_use + sexual_contact_2</strong></p>
 <p><br><br></p>
