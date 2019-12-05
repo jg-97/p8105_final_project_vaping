@@ -134,7 +134,7 @@ After analyzing the plot, we drew the following conclusions:
 
 * Staten Island had the highest Marijuana use over the years among all five NYC boroughs. However, in year 2017, it dropped dramatically and had the lowest proportion among all boroughs. Overall Marijuana stayed almost the same among all boroughs over the years. 
 
-* Vaping, which is our main drug of interest, has a slightly increasing trend from 2015-2017. This trend is quite similar to the alcohol, cigar and cigarette trend observed from 2003 to 2005, and has a proportion about as high as the proportion observed in marijuana in 2015-2017, which indicates that it could possibliy grow into a new drug threatening public health.
+* Vaping, which is our main drug of interest, has a slightly increasing trend from 2015-2017. This trend is quite similar to the alcohol, cigar and cigarette trend observed from 2003 to 2005. Moreover, vaping has a proportion about as high as the proportion observed in marijuana in 2015-2017, which indicates that it could possibliy grow into a new drug threatening public health.
 
 <br> <br>
 
