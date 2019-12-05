@@ -23,10 +23,15 @@ library(reprex)
 theme_set(theme_bw())
 ```
 
+<br>
 
-# Motivation & Related Work
+# Motivation & Related Work 
 
-<left><img src = "images/youthvaping.jpg" style = "width:60%"> </left>
+<br>
+
+<left><img src = "images/youthvaping.jpg" style = "width:60%"> </left> 
+
+<br>
 
 Vaping, the inhaling of a vapor created by vaping devices like e-cigarettes, was initially regarded as a less harmful substitution for cigarettes. However, vaping still introduces nicotine into the body. The prevalence of lung damage caused by vaping is actually so high that the CDC[[1](https://www.sciencedirect.com/science/article/pii/S2213260019304096?via=ihub)] needed to issue guidance explicitly on it. According to the New York Post, a second vaping related death occured on November 9th, 2019. Vaping has claimed at least 42 lives and injured over 2,000 others across the country[[2](https://nypost.com/2019/11/20/second-new-yorker-dead-from-vaping-related-illness-officials/)]. 
 
@@ -35,7 +40,7 @@ As the popularity of vaping grows, concerns about vaping are covered both in aca
 
 <br>
 
-### Facts about vaping
+**Facts about vaping**
 
 * 2,051 reported lung illness cases and 39 lung illness deaths due to vaping.[[1](https://www.engadget.com/2019/11/07/cdc-confirms-vaping-lung-injury/)]
 
@@ -50,18 +55,24 @@ According to reports in recent years, we can see an underlying trend of vaping i
 
 # Initial Questions
 
-1. How did drugs use in youth change over time in NYC?
+<br>
 
-2. How did mental health related issues in youth change over time in NYC?
+1. How did drugs use change over time in NYC's youth?
 
-3. How does drug use and mental health status differ by demographics in NYC youth?
+2. How did mental health related issues change over time in NYC's youth?
 
-4. Can we build a model with current available data to predict future vaping use?
+3. How does drug use and mental health status differ by demographics in NYC's youth?
+
+4. How do risky and violent behaviors differ between NYC children using drugs and not using drugs?
+
+5. Can we build a model with current available data to predict future vaping use?
  
+ 
+Initially, we were interested in building a model to determine associations. However, as our studies in data science class progressed further, we learned new great procedures and methods that we wanted to incorporate into our project. In particular, we became interested in building a predictive model based on data from 2015, and using this data to predict vaping for 2017
 
 <br> <br>
 
-### Data and the Data Cleaning Process
+# Data
 
 <br>
 
@@ -127,6 +138,8 @@ In the end, we worked with the following variables:
 
 
 # Explorary Analysis
+
+<br>
 
 
 ```{r load_the_cleaned_data}
@@ -509,7 +522,7 @@ combine_gifs(plot1 = yes_p, plot2 = no_p)
 
 <br> <br>
 
-# Logistic Regression Model to Predict Vaping
+# Logistic Regression Model
 
 <br>
 
@@ -519,7 +532,6 @@ Since we were investigating the prevelance and trend in vaping among NYC's youth
 **Demographics**
 
 * *borough*:   one of the five boroughs of NYC
-* *year*:   year of the survey
 * *age*:   age of the subject
 * *sex*:   gender of the subject (male, female)
 * *race7*:   race of the subject
@@ -550,13 +562,13 @@ Since we were investigating the prevelance and trend in vaping among NYC's youth
 
 <br>
 
-First, we attempted to find a predictive model, using a form of **stepwise/automatic approach** by hand. We utilized p-values, pseudo R<sup>2</sup>, and prediction accuracy as our guidance for which predictors to choose, starting with the full model (except for *year*). In the end, this process came up with the following possible model:
+First, we attempted to find a predictive model by using a variation on **stepwise/automatic procedures** (by hand). We utilized p-values and prediction accuracy as our guidance for which predictors to choose, starting with the full model. In the end, this process came up with the following possible model:
 
 <br>
 
-**Model 1:**
+**Model 1**
 
-current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school + threatened_at_school + physical_fighting + bullying_electronically + carring_weapon
+current_vaping ~ sad_hopeless + attempted_suicide + safety_concerns_at_school + illegal_injected_drug_use + physical_fighting + bullying_electronically + carring_weapon + sex_before_13
 
 <br> <br>
 
@@ -586,10 +598,5 @@ current_vaping ~ sad_hopeless  + attempted_suicide + safety_concerns_at_school +
 
 
 
-
-
-
-
-# Conclusion
 
 # Discussion
